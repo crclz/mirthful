@@ -1,5 +1,5 @@
-﻿using Leopard.Domain.Model;
-using Leopard.Domain.Model.UserAggregate;
+﻿using Leopard.Domain;
+using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
 using System;
 using System.Linq;

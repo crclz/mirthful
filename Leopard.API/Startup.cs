@@ -59,8 +59,7 @@ namespace Leopard.API
 			services.AddMediatR(Assembly.GetExecutingAssembly());
 			services.AddSingleton(new LeopardDatabase());
 			services.AddTransient(typeof(Repository<>));
-			services.AddScoped<MiddleStore>();
-			services.AddScoped<SessionStore>();
+			services.AddScoped<AuthStore>();
 
 			var blobStorePath = Environment.GetEnvironmentVariable("BLOB_STORE");
 			blobStorePath = blobStorePath ?? throw new InvalidOperationException("$BLOB_STORE is null");

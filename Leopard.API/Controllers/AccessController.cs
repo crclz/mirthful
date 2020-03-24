@@ -2,7 +2,7 @@
 using Leopard.API.Filters;
 using Leopard.API.ResponseConvension;
 using Leopard.Domain;
-using Leopard.Domain.Model.UserAggregate;
+using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +20,9 @@ namespace Leopard.API.Controllers
 		private readonly SecretStore secretStore;
 
 		public Repository<User> UserRepository { get; }
-		public MiddleStore Store { get; }
+		public AuthStore Store { get; }
 
-		public AccessController(Repository<User> userRepository, MiddleStore store, SecretStore secretStore)
+		public AccessController(Repository<User> userRepository, AuthStore store, SecretStore secretStore)
 		{
 			UserRepository = userRepository;
 			Store = store;
@@ -46,21 +46,22 @@ namespace Leopard.API.Controllers
 
 
 		[NotCommand]
-		[HttpPost("login")]
+		[HttpPost("Login")]
 		[Consumes(System.Net.Mime.MediaTypeNames.Application.Json)]
 		// Should not use string type.
 		[Produces(typeof(LoginResponse))]
 		public async Task<IActionResult> Login([FromBody]LoginModel data)
 		{
-			var id = XUtils.ParseId(data.Id);
+			var username = data.Username;
 			var password = data.Password;
 
-			var user = await UserRepository.FirstOrDefaultAsync(p => p.Id == id);
+			var user = await UserRepository.FirstOrDefaultAsync(p => p.Username == username);
+
 			if (user == null)
-				return new ApiError(MyErrorCode.IdNotFound, "User not exist").Wrap();
+				return new ApiError(MyErrorCode.UsernameNotFound, "用户名不存在").Wrap();
 
 			if (!user.IsPasswordCorrect(password))
-				return new ApiError(MyErrorCode.WrongPassword, "Password is wrong").Wrap();
+				return new ApiError(MyErrorCode.WrongPassword, "密码错误").Wrap();
 
 			// Success
 
@@ -81,7 +82,7 @@ namespace Leopard.API.Controllers
 		{
 			[Required]
 			[MaxLength(100)]
-			public string Id { get; set; }
+			public string Username { get; set; }
 
 			[Required]
 			[MaxLength(100)]

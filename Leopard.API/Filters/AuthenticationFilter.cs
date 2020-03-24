@@ -1,6 +1,6 @@
 ﻿using Jose;
 using Leopard.Domain;
-using Leopard.Domain.Model.UserAggregate;
+using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,7 +16,7 @@ namespace Leopard.API.Filters
 {
 	public class AuthenticationFilter : IAsyncActionFilter
 	{
-		public AuthenticationFilter(Repository<User> userRepository, MiddleStore store, SecretStore secretStore)
+		public AuthenticationFilter(Repository<User> userRepository, AuthStore store, SecretStore secretStore)
 		{
 			UserRepository = userRepository;
 			Store = store;
@@ -24,7 +24,7 @@ namespace Leopard.API.Filters
 		}
 
 		public Repository<User> UserRepository { get; }
-		public MiddleStore Store { get; }
+		public AuthStore Store { get; }
 		public SecretStore SecretStore { get; }
 
 		public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

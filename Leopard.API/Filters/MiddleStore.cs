@@ -1,9 +1,9 @@
-﻿using Leopard.Domain.Model.UserAggregate;
+﻿using Leopard.Domain.UserAG;
 using MongoDB.Bson;
 
 namespace Leopard.API.Filters
 {
-	public class MiddleStore
+	public class AuthStore
 	{
 		public ObjectId? UserId { get; set; }
 		public User User { get; set; }
