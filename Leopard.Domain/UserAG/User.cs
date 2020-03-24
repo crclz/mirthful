@@ -17,7 +17,12 @@ namespace Leopard.Domain.UserAG
 		public int SecurityVersion { get; private set; } = 0;
 		public string Avatar { get; private set; }
 
-		private User(string username, string password, string nickname, string description)
+		private User()
+		{
+
+		}
+
+		public User(string username, string password, string nickname, string description)
 		{
 			Username = username ?? throw new ArgumentNullException(nameof(username));
 			Nickname = nickname ?? throw new ArgumentNullException(nameof(nickname));
