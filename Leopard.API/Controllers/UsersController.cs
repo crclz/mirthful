@@ -9,6 +9,7 @@ using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Leopard.API.ResponseConvension;
+using MongoDB.Driver;
 
 namespace Leopard.API.Controllers
 {
@@ -34,9 +35,12 @@ namespace Leopard.API.Controllers
 				await UserRepository.PutAsync(user);
 				return Ok();
 			}
-			catch (ConcurrencyConflictException)
+			catch (MongoWriteException e)
 			{
-				return new ApiError(MyErrorCode.UsernameExist, "用户名已经存在").Wrap();
+				if (e.Message.Contains("E11000"))
+					return new ApiError(MyErrorCode.UsernameExist, "用户名已经存在").Wrap();
+				else
+					throw;
 			}
 		}
 		public class RegisterModel
