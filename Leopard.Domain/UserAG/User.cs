@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Leopard.Domain.UserAG
 {
-	public class User
+	public class User : RootEntity
 	{
 		// TODO: Unique Index
 		public string Username { get; private set; }
