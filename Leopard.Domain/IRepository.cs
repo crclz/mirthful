@@ -3,7 +3,7 @@ using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Leopard.Domain.Interfaces
+namespace Leopard.Domain
 {
 	public interface IRepository<T> where T : RootEntity
 	{

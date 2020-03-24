@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Leopard.Domain.Model
+namespace Leopard.Domain
 {
 	public abstract class Entity
 	{

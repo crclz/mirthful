@@ -1,4 +1,4 @@
-﻿namespace Leopard.Domain.Model
+﻿namespace Leopard.Domain
 {
 	public class ValueObject
 	{

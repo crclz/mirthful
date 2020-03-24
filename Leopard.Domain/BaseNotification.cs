@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MongoDB.Bson;
 
-namespace Leopard.Domain.Model
+namespace Leopard.Domain
 {
 	public abstract class BaseNotification : INotification
 	{

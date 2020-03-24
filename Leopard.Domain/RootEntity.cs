@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Leopard.Domain.Model
+namespace Leopard.Domain
 {
 	public abstract class RootEntity : Entity
 	{
