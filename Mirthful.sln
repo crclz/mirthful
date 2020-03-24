@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.API", "Leopard.API\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.DBInit", "Leopard.DBInit\Leopard.DBInit.csproj", "{1F0E386C-66C6-4528-93D0-4E0DD5A19793}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Org.OpenAPITools", "Org.OpenAPITools\Org.OpenAPITools.csproj", "{D012FC13-17DB-4852-BBC2-34C1965B3A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Leopard.API.Test", "Leopard.API.Test\Leopard.API.Test.csproj", "{9B88871D-8B7B-41A8-B56C-6B8E47B56850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{1F0E386C-66C6-4528-93D0-4E0DD5A19793}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F0E386C-66C6-4528-93D0-4E0DD5A19793}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F0E386C-66C6-4528-93D0-4E0DD5A19793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D012FC13-17DB-4852-BBC2-34C1965B3A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D012FC13-17DB-4852-BBC2-34C1965B3A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D012FC13-17DB-4852-BBC2-34C1965B3A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D012FC13-17DB-4852-BBC2-34C1965B3A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B88871D-8B7B-41A8-B56C-6B8E47B56850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B88871D-8B7B-41A8-B56C-6B8E47B56850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B88871D-8B7B-41A8-B56C-6B8E47B56850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B88871D-8B7B-41A8-B56C-6B8E47B56850}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

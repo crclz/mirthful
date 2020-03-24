@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Leopard.API.ResponseConvension;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Leopard.API.Controllers
 {
@@ -26,6 +27,7 @@ namespace Leopard.API.Controllers
 
 		[HttpPost("register")]
 		[Consumes(MediaTypeNames.Application.Json)]
+		[Produces(typeof(RegisterResponse))]
 		public async Task<IActionResult> Register([FromBody]RegisterModel model)
 		{
 			var user = new User(model.Username, model.Password, model.Nickname, model.Description);
@@ -33,7 +35,7 @@ namespace Leopard.API.Controllers
 			try
 			{
 				await UserRepository.PutAsync(user);
-				return Ok();
+				return Ok(new RegisterResponse { Id = user.Id });
 			}
 			catch (MongoWriteException e)
 			{
@@ -63,6 +65,10 @@ namespace Leopard.API.Controllers
 			[Required(AllowEmptyStrings = true)]
 			[MaxLength(32)]
 			public string Description { get; set; }
+		}
+		public class RegisterResponse
+		{
+			public ObjectId Id { get; set; }
 		}
 	}
 }

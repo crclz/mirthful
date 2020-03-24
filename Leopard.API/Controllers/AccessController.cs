@@ -46,7 +46,7 @@ namespace Leopard.API.Controllers
 
 
 		[NotCommand]
-		[HttpPost("Login")]
+		[HttpPost("login")]
 		[Consumes(System.Net.Mime.MediaTypeNames.Application.Json)]
 		// Should not use string type.
 		[Produces(typeof(LoginResponse))]

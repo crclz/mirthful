@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Crucialize.LangExt;
+using MongoDB.Bson;
 using System.Security.Cryptography;
 
 namespace Leopard.Domain
@@ -14,6 +15,13 @@ namespace Leopard.Domain
 
 				return data;
 			}
+		}
+
+		public static string GetRandomString(int length)
+		{
+			var data = GetRandomBytes(length * 2);
+			var s = data.ToBase64();
+			return s.Substring(0, length);
 		}
 
 		public static (ObjectId, ObjectId) SmallerBigger(ObjectId a, ObjectId b)
