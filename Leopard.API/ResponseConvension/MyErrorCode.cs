@@ -5,6 +5,7 @@
 		public static string ModelInvalid => "ModelInvalid";
 		public static string IdNotFound => "IdNotFound";
 		public static string UsernameNotFound => "UsernameNotFound";
+		public static string UsernameExist => "UsernameExist";
 		public static string WrongPassword => "WrongPassword";
 		public static string AlreadFriends => "AlreadFriends";
 		public static string NotFriends => "NotFriends";
