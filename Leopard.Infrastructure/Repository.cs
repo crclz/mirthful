@@ -1,5 +1,4 @@
-﻿using Leopard.Domain.Interfaces;
-using Leopard.Domain.Model;
+﻿using Leopard.Domain;
 using MediatR;
 using MongoDB.Driver;
 using System;

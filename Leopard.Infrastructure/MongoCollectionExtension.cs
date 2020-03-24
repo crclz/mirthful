@@ -1,4 +1,4 @@
-﻿using Leopard.Domain.Model;
+﻿using Leopard.Domain;
 using MongoDB.Driver;
 using System.Threading.Tasks;
 

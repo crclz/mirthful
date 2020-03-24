@@ -1,9 +1,4 @@
-﻿using Leopard.Domain.Model;
-using Leopard.Domain.Model.ChatMessageAggregate;
-using Leopard.Domain.Model.FriendshipDealerAggregates;
-using Leopard.Domain.Model.SessionMemberAggregate;
-using Leopard.Domain.Model.UserAggregate;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
 
 namespace Leopard.Infrastructure
@@ -12,12 +7,6 @@ namespace Leopard.Infrastructure
 	{
 		public IMongoClient Client { get; }
 		public IMongoDatabase Database { get; }
-
-		public IMongoCollection<User> Users { get; private set; }
-		public IMongoCollection<FriendshipDealer> FriendshipDealers { get; private set; }
-		public IMongoCollection<Session> Sessions { get; private set; }
-		public IMongoCollection<SessionMember> SessionMembers { get; private set; }
-		public IMongoCollection<ChatMessage> ChatMessages { get; private set; }
 
 		public LeopardDatabase()
 		{
@@ -39,13 +28,7 @@ namespace Leopard.Infrastructure
 			// Strong Consistency
 			Client = Client.WithReadConcern(ReadConcern.Majority).WithWriteConcern(WriteConcern.WMajority);
 
-			Database = Client.GetDatabase("leopard-play");
-
-			// Collections
-			Users = Database.GetCollection<User>("Users");
-			FriendshipDealers = Database.GetCollection<FriendshipDealer>("FriendshipDealers");
-			Sessions = Database.GetCollection<Session>("Sessions");
-			ChatMessages = Database.GetCollection<ChatMessage>("ChatMessages");
+			Database = Client.GetDatabase("mirthful-dev");
 		}
 
 		private static string GetCollectionName<T>()
