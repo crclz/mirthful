@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Leopard.Domain
 {
-	public static class Useful
+	public static class XUtils
 	{
 		public static byte[] GetRandomBytes(int byteCount)
 		{

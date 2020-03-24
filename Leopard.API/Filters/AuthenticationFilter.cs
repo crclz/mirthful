@@ -58,7 +58,7 @@ namespace Leopard.API.Filters
 			if (claims.Expire < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
 				goto failure;
 
-			var userId = Useful.ParseId(claims.UserId);
+			var userId = XUtils.ParseId(claims.UserId);
 			if (userId == null)
 				goto failure;
 

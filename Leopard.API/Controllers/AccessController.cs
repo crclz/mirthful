@@ -52,7 +52,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(LoginResponse))]
 		public async Task<IActionResult> Login([FromBody]LoginModel data)
 		{
-			var id = Useful.ParseId(data.Id);
+			var id = XUtils.ParseId(data.Id);
 			var password = data.Password;
 
 			var user = await UserRepository.FirstOrDefaultAsync(p => p.Id == id);

@@ -29,4 +29,9 @@
     <ProjectReference Include="..\Leopard.Infrastructure\Leopard.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ApiDoc\" />
+    <Folder Include="EventHandlers\" />
+  </ItemGroup>
+
 </Project>
