@@ -35,8 +35,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>RegisterResponse</returns>
-        RegisterResponse Register (RegisterModel registerModel = default(RegisterModel));
+        /// <returns>IdResponse</returns>
+        IdResponse Register (RegisterModel registerModel = default(RegisterModel));
 
         /// <summary>
         /// 
@@ -46,8 +46,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>ApiResponse of RegisterResponse</returns>
-        ApiResponse<RegisterResponse> RegisterWithHttpInfo (RegisterModel registerModel = default(RegisterModel));
+        /// <returns>ApiResponse of IdResponse</returns>
+        ApiResponse<IdResponse> RegisterWithHttpInfo (RegisterModel registerModel = default(RegisterModel));
         #endregion Synchronous Operations
     }
 
@@ -65,8 +65,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>Task of RegisterResponse</returns>
-        System.Threading.Tasks.Task<RegisterResponse> RegisterAsync (RegisterModel registerModel = default(RegisterModel));
+        /// <returns>Task of IdResponse</returns>
+        System.Threading.Tasks.Task<IdResponse> RegisterAsync (RegisterModel registerModel = default(RegisterModel));
 
         /// <summary>
         /// 
@@ -76,8 +76,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>Task of ApiResponse (RegisterResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<RegisterResponse>> RegisterAsyncWithHttpInfo (RegisterModel registerModel = default(RegisterModel));
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IdResponse>> RegisterAsyncWithHttpInfo (RegisterModel registerModel = default(RegisterModel));
         #endregion Asynchronous Operations
     }
 
@@ -203,10 +203,10 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>RegisterResponse</returns>
-        public RegisterResponse Register (RegisterModel registerModel = default(RegisterModel))
+        /// <returns>IdResponse</returns>
+        public IdResponse Register (RegisterModel registerModel = default(RegisterModel))
         {
-             Org.OpenAPITools.Client.ApiResponse<RegisterResponse> localVarResponse = RegisterWithHttpInfo(registerModel);
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = RegisterWithHttpInfo(registerModel);
              return localVarResponse.Data;
         }
 
@@ -215,8 +215,8 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>ApiResponse of RegisterResponse</returns>
-        public Org.OpenAPITools.Client.ApiResponse< RegisterResponse > RegisterWithHttpInfo (RegisterModel registerModel = default(RegisterModel))
+        /// <returns>ApiResponse of IdResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse< IdResponse > RegisterWithHttpInfo (RegisterModel registerModel = default(RegisterModel))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -241,7 +241,7 @@ namespace Org.OpenAPITools.Api
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post< RegisterResponse >("/api/users/register", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post< IdResponse >("/api/users/register", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
@@ -257,10 +257,10 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>Task of RegisterResponse</returns>
-        public async System.Threading.Tasks.Task<RegisterResponse> RegisterAsync (RegisterModel registerModel = default(RegisterModel))
+        /// <returns>Task of IdResponse</returns>
+        public async System.Threading.Tasks.Task<IdResponse> RegisterAsync (RegisterModel registerModel = default(RegisterModel))
         {
-             Org.OpenAPITools.Client.ApiResponse<RegisterResponse> localVarResponse = await RegisterAsyncWithHttpInfo(registerModel);
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = await RegisterAsyncWithHttpInfo(registerModel);
              return localVarResponse.Data;
 
         }
@@ -270,8 +270,8 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="registerModel"> (optional)</param>
-        /// <returns>Task of ApiResponse (RegisterResponse)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<RegisterResponse>> RegisterAsyncWithHttpInfo (RegisterModel registerModel = default(RegisterModel))
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<IdResponse>> RegisterAsyncWithHttpInfo (RegisterModel registerModel = default(RegisterModel))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -298,7 +298,7 @@ namespace Org.OpenAPITools.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.PostAsync<RegisterResponse>("/api/users/register", localVarRequestOptions, this.Configuration);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<IdResponse>("/api/users/register", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {

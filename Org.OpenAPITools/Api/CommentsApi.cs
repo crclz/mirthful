@@ -35,8 +35,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns></returns>
-        void CreateComment (CreateCommentModel createCommentModel = default(CreateCommentModel));
+        /// <returns>IdResponse</returns>
+        IdResponse CreateComment (CreateCommentModel createCommentModel = default(CreateCommentModel));
 
         /// <summary>
         /// 
@@ -46,8 +46,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> CreateCommentWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel));
+        /// <returns>ApiResponse of IdResponse</returns>
+        ApiResponse<IdResponse> CreateCommentWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel));
         #endregion Synchronous Operations
     }
 
@@ -65,8 +65,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task CreateCommentAsync (CreateCommentModel createCommentModel = default(CreateCommentModel));
+        /// <returns>Task of IdResponse</returns>
+        System.Threading.Tasks.Task<IdResponse> CreateCommentAsync (CreateCommentModel createCommentModel = default(CreateCommentModel));
 
         /// <summary>
         /// 
@@ -76,8 +76,8 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> CreateCommentAsyncWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel));
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IdResponse>> CreateCommentAsyncWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel));
         #endregion Asynchronous Operations
     }
 
@@ -203,10 +203,11 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns></returns>
-        public void CreateComment (CreateCommentModel createCommentModel = default(CreateCommentModel))
+        /// <returns>IdResponse</returns>
+        public IdResponse CreateComment (CreateCommentModel createCommentModel = default(CreateCommentModel))
         {
-             CreateCommentWithHttpInfo(createCommentModel);
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = CreateCommentWithHttpInfo(createCommentModel);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -214,8 +215,8 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns>ApiResponse of Object(void)</returns>
-        public Org.OpenAPITools.Client.ApiResponse<Object> CreateCommentWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel))
+        /// <returns>ApiResponse of IdResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse< IdResponse > CreateCommentWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -225,6 +226,9 @@ namespace Org.OpenAPITools.Api
 
             // to determine the Accept header
             String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
             };
 
             var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
@@ -237,7 +241,7 @@ namespace Org.OpenAPITools.Api
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<Object>("/api/comments/create", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post< IdResponse >("/api/comments/create", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
@@ -253,10 +257,11 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task CreateCommentAsync (CreateCommentModel createCommentModel = default(CreateCommentModel))
+        /// <returns>Task of IdResponse</returns>
+        public async System.Threading.Tasks.Task<IdResponse> CreateCommentAsync (CreateCommentModel createCommentModel = default(CreateCommentModel))
         {
-             await CreateCommentAsyncWithHttpInfo(createCommentModel);
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = await CreateCommentAsyncWithHttpInfo(createCommentModel);
+             return localVarResponse.Data;
 
         }
 
@@ -265,8 +270,8 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createCommentModel"> (optional)</param>
-        /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<Object>> CreateCommentAsyncWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel))
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<IdResponse>> CreateCommentAsyncWithHttpInfo (CreateCommentModel createCommentModel = default(CreateCommentModel))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -277,6 +282,9 @@ namespace Org.OpenAPITools.Api
 
             // to determine the Accept header
             String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
             };
             
             foreach (var _contentType in _contentTypes)
@@ -290,7 +298,7 @@ namespace Org.OpenAPITools.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.PostAsync<Object>("/api/comments/create", localVarRequestOptions, this.Configuration);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<IdResponse>("/api/comments/create", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
