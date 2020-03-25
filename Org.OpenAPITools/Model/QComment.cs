@@ -42,7 +42,9 @@ namespace Org.OpenAPITools.Model
         /// <param name="title">title.</param>
         /// <param name="text">text.</param>
         /// <param name="rating">rating.</param>
-        public QComment(string id = default(string), long createdAt = default(long), long updatedAt = default(long), string senderId = default(string), string workId = default(string), string title = default(string), string text = default(string), int rating = default(int))
+        /// <param name="agreeCount">agreeCount.</param>
+        /// <param name="disagreeCount">disagreeCount.</param>
+        public QComment(string id = default(string), long createdAt = default(long), long updatedAt = default(long), string senderId = default(string), string workId = default(string), string title = default(string), string text = default(string), int rating = default(int), int agreeCount = default(int), int disagreeCount = default(int))
         {
             this.Id = id;
             this.CreatedAt = createdAt;
@@ -52,6 +54,8 @@ namespace Org.OpenAPITools.Model
             this.Title = title;
             this.Text = text;
             this.Rating = rating;
+            this.AgreeCount = agreeCount;
+            this.DisagreeCount = disagreeCount;
         }
         
         /// <summary>
@@ -103,6 +107,18 @@ namespace Org.OpenAPITools.Model
         public int Rating { get; set; }
 
         /// <summary>
+        /// Gets or Sets AgreeCount
+        /// </summary>
+        [DataMember(Name="agreeCount", EmitDefaultValue=false)]
+        public int AgreeCount { get; set; }
+
+        /// <summary>
+        /// Gets or Sets DisagreeCount
+        /// </summary>
+        [DataMember(Name="disagreeCount", EmitDefaultValue=false)]
+        public int DisagreeCount { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -118,6 +134,8 @@ namespace Org.OpenAPITools.Model
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("  Rating: ").Append(Rating).Append("\n");
+            sb.Append("  AgreeCount: ").Append(AgreeCount).Append("\n");
+            sb.Append("  DisagreeCount: ").Append(DisagreeCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -188,6 +206,14 @@ namespace Org.OpenAPITools.Model
                 (
                     this.Rating == input.Rating ||
                     this.Rating.Equals(input.Rating)
+                ) && 
+                (
+                    this.AgreeCount == input.AgreeCount ||
+                    this.AgreeCount.Equals(input.AgreeCount)
+                ) && 
+                (
+                    this.DisagreeCount == input.DisagreeCount ||
+                    this.DisagreeCount.Equals(input.DisagreeCount)
                 );
         }
 
@@ -213,6 +239,8 @@ namespace Org.OpenAPITools.Model
                 if (this.Text != null)
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
                 hashCode = hashCode * 59 + this.Rating.GetHashCode();
+                hashCode = hashCode * 59 + this.AgreeCount.GetHashCode();
+                hashCode = hashCode * 59 + this.DisagreeCount.GetHashCode();
                 return hashCode;
             }
         }

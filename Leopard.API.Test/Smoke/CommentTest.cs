@@ -86,7 +86,8 @@ namespace Leopard.API.Test.Smoke
 
 			// attitude count
 			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentResponse.Id);
-			
+			Assert.Equal(1, comment.AgreeCount);
+			Assert.Equal(0, comment.DisagreeCount);
 		}
 	}
 }

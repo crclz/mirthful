@@ -152,6 +152,8 @@ namespace Leopard.API.Controllers
 
 			// Modify or update attitude
 
+			// TODO: Unique Index
+
 			if (attitude == null)
 				attitude = new Attitude((ObjectId)AuthStore.UserId, (ObjectId)cid, agree);
 			else
