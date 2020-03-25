@@ -60,6 +60,13 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal(text, comment.Text);
 			Assert.Equal(a.UserId, comment.SenderId);
 			Assert.Equal(rating, comment.Rating);
+
+			// Duplication
+			await Assert.ThrowsAnyAsync<Exception>(async () =>
+			{
+				await a.Api<CommentsApi>().CreateCommentAsync(
+					new CreateCommentModel(Work01Id, title, text, rating));
+			});
 		}
 
 		[Fact]

@@ -24,5 +24,6 @@
 		public static string FounderCannotQuitGroup => "FounderCannotQuitGroup";
 		public static string NotAMember => "NotAMember";
 		public static string PermissionDenied => "PermissionDenied";
+		public static string UniqueConstraintConflict => "UniqueConstraintConflict";
 	}
 }

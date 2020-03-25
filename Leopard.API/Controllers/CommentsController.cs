@@ -39,7 +39,6 @@ namespace Leopard.API.Controllers
 			AttitudeRepository = attitudeRepository;
 		}
 
-		// TODO: 重复打分
 
 		[HttpPost("create")]
 		[Consumes(Application.Json)]
@@ -53,7 +52,11 @@ namespace Leopard.API.Controllers
 			if (work == null)
 				return new ApiError(MyErrorCode.IdNotFound, "不存在对应id的作品").Wrap();
 
-			var comment = new Comment((ObjectId)AuthStore.UserId, (ObjectId)workId, model.Title, model.Text, model.Rating);
+			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.WorkId == workId && p.SenderId == AuthStore.UserId);
+			if (comment != null)
+				return new ApiError(MyErrorCode.UniqueConstraintConflict, "你已经评价过此作品").Wrap();
+
+			comment = new Comment((ObjectId)AuthStore.UserId, (ObjectId)workId, model.Title, model.Text, model.Rating);
 
 			await CommentRepository.PutAsync(comment);
 
@@ -145,8 +148,6 @@ namespace Leopard.API.Controllers
 				.FirstOrDefaultAsync(p => p.SenderId == AuthStore.UserId && p.CommentId == cid);
 
 			// Modify or update attitude
-
-			// TODO: Unique Index
 
 			if (attitude == null)
 			{
