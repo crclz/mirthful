@@ -241,7 +241,7 @@ namespace Org.OpenAPITools.Api
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post< RegisterResponse >("/users/register", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post< RegisterResponse >("/api/users/register", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
@@ -298,7 +298,7 @@ namespace Org.OpenAPITools.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.PostAsync<RegisterResponse>("/users/register", localVarRequestOptions, this.Configuration);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<RegisterResponse>("/api/users/register", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
