@@ -75,19 +75,27 @@ namespace Leopard.API.Test.Smoke
 			var commentResponse = await a.Api<CommentsApi>().CreateCommentAsync(
 				new CreateCommentModel(Work01Id, title, text, rating));
 
+			var commentId = commentResponse.Id;
+
 			// Create attitude
 			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id, true);
-			var atts = await Db.GetCollection<Attitude>().AsQueryable()
-				.Where(p => p.CommentId == ObjectId.Parse(commentResponse.Id))
-				.ToListAsync();
 
-			var ok = atts.Any(p => p.SenderId.ToString() == a.UserId && p.CommentId.ToString() == commentResponse.Id);
-			Assert.True(ok);
-
-			// attitude count
-			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentResponse.Id);
+			// Test attitude count
+			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentId);
 			Assert.Equal(1, comment.AgreeCount);
 			Assert.Equal(0, comment.DisagreeCount);
+
+			// Duplication attitude
+			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id, true);
+			comment = await a.Api<CommentsApi>().GetByIdAsync(commentId);
+			Assert.Equal(1, comment.AgreeCount);
+			Assert.Equal(0, comment.DisagreeCount);
+
+			// Change attitude
+			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id, false);
+			comment = await a.Api<CommentsApi>().GetByIdAsync(commentId);
+			Assert.Equal(0, comment.AgreeCount);
+			Assert.Equal(1, comment.DisagreeCount);
 		}
 	}
 }

@@ -92,6 +92,29 @@ namespace Org.OpenAPITools.Api
         /// <param name="id"> (optional)</param>
         /// <returns>ApiResponse of QComment</returns>
         ApiResponse<QComment> GetByIdWithHttpInfo (string id = default(string));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>List&lt;QComment&gt;</returns>
+        List<QComment> GetByWork (string workId = default(string), OrderByType order = default(OrderByType));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QComment&gt;</returns>
+        ApiResponse<List<QComment>> GetByWorkWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType));
         #endregion Synchronous Operations
     }
 
@@ -166,6 +189,29 @@ namespace Org.OpenAPITools.Api
         /// <param name="id"> (optional)</param>
         /// <returns>Task of ApiResponse (QComment)</returns>
         System.Threading.Tasks.Task<ApiResponse<QComment>> GetByIdAsyncWithHttpInfo (string id = default(string));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>Task of List&lt;QComment&gt;</returns>
+        System.Threading.Tasks.Task<List<QComment>> GetByWorkAsync (string workId = default(string), OrderByType order = default(OrderByType));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QComment&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QComment>>> GetByWorkAsyncWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType));
         #endregion Asynchronous Operations
     }
 
@@ -661,6 +707,157 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetById", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>List&lt;QComment&gt;</returns>
+        public List<QComment> GetByWork (string workId = default(string), OrderByType order = default(OrderByType))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QComment>> localVarResponse = GetByWorkWithHttpInfo(workId, order);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QComment&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QComment> > GetByWorkWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (workId != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "workId", workId))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (order != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "order", order))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<QComment> >("/api/comments/by-work", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetByWork", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>Task of List&lt;QComment&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QComment>> GetByWorkAsync (string workId = default(string), OrderByType order = default(OrderByType))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QComment>> localVarResponse = await GetByWorkAsyncWithHttpInfo(workId, order);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="workId"> (optional)</param>
+        /// <param name="order"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QComment&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QComment>>> GetByWorkAsyncWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (workId != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "workId", workId))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (order != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "order", order))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<QComment>>("/api/comments/by-work", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetByWork", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

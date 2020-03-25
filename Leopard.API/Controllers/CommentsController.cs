@@ -149,17 +149,34 @@ namespace Leopard.API.Controllers
 			// TODO: Unique Index
 
 			if (attitude == null)
+			{
 				attitude = new Attitude((ObjectId)AuthStore.UserId, (ObjectId)cid, agree);
-			else
+
+				if (agree)
+					comment.SetAgreeCount(comment.AgreeCount + 1);
+				else
+					comment.SetDisagreeCount(comment.DisagreeCount + 1);
+			}
+			else // Already exist attitude
+			{
+				if (attitude.Agree == agree)
+					return Ok();// Unchanged
+
 				attitude.SetAgree(agree);
 
+				if (agree)
+				{
+					comment.SetAgreeCount(comment.AgreeCount + 1);
+					comment.SetDisagreeCount(comment.DisagreeCount - 1);
+				}
+				else
+				{
+					comment.SetAgreeCount(comment.AgreeCount - 1);
+					comment.SetDisagreeCount(comment.DisagreeCount + 1);
+				}
+			}
+
 			await AttitudeRepository.PutAsync(attitude);
-
-			if (agree)
-				comment.SetAgreeCount(comment.AgreeCount + 1);
-			else
-				comment.SetDisagreeCount(comment.DisagreeCount + 1);
-
 			await CommentRepository.PutAsync(comment);
 
 			return Ok();
@@ -167,13 +184,19 @@ namespace Leopard.API.Controllers
 
 
 		[HttpGet("by-work")]
-		public async Task<QComment[]> GetByWork(string workId, OrderByType order)
+		[Produces(typeof(QComment[]))]
+		public async Task<IActionResult> GetByWork(string workId, OrderByType order, int limit, long t)
 		{
+			if (!Enum.IsDefined(typeof(OrderByType), order))
+				return new ApiError(MyErrorCode.ModelInvalid, "Invalid 'order'").Wrap();
+
+			limit = Math.Min(1, limit);
+			limit = Math.Max(25, limit);
+			t = t < 0 ? long.MaxValue : t;
+
 			var wid = XUtils.ParseId(workId);
-			var db2 = Db.GetCollection<Attitude>().AsQueryable();
-			var query = from p in Db.GetCollection<Comment>().AsQueryable().Where(p => p.WorkId == wid)
-						select new { p, cnt = db2.Where(q => q.CommentId == p.Id).Count() };
-			var a = query.ToList();
+
+			//var query = Db.GetCollection<Comment>().AsQueryable().Where(p => p.)
 			throw new NotImplementedException();
 		}
 
