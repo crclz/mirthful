@@ -1,4 +1,5 @@
-﻿using Org.OpenAPITools.Api;
+﻿using Leopard.Domain;
+using Org.OpenAPITools.Api;
 using Org.OpenAPITools.Client;
 using Org.OpenAPITools.Model;
 using System;
@@ -40,6 +41,12 @@ namespace Leopard.API.Test
 			var attacher = new AccessTokenAttacher(loginRes.AccessToken);
 
 			return new ClientSesion(attacher, username);
+		}
+
+		public static async Task<ClientSesion> RandomInstance()
+		{
+			var username = XUtils.GetRandomString(12);
+			return await InstanceByRegisterAndLogin(username, "test-user", "testtest123123", "This is a test user");
 		}
 
 		public T Api<T>() where T : IApiAccessor
