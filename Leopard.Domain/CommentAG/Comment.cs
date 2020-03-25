@@ -13,6 +13,8 @@ namespace Leopard.Domain.CommentAG
 		public string Title { get; private set; }
 		public string Text { get; private set; }
 		public int Rating { get; private set; }
+		public int AgreeCount { get; private set; } = 0;
+		public int DisagreeCount { get; private set; } = 0;
 
 		private Comment()
 		{
@@ -27,10 +29,22 @@ namespace Leopard.Domain.CommentAG
 			SetRating(rating);
 		}
 
-		private void SetRating(int rating)
+		public void SetRating(int rating)
 		{
 			Guard.Argument(() => rating).InRange(1, 5);
 			Rating = rating;
+		}
+
+		public void SetAgreeCount(int agreeCount)
+		{
+			Guard.Argument(() => agreeCount).Min(0);
+			AgreeCount = agreeCount;
+		}
+
+		public void SetDisagreeCount(int disagreeCount)
+		{
+			Guard.Argument(() => disagreeCount).Min(0);
+			DisagreeCount++;
 		}
 	}
 }

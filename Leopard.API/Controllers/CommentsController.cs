@@ -91,13 +91,7 @@ namespace Leopard.API.Controllers
 			if (commentId == null)
 				return null;
 
-			// TODO:
-			var agreeCount = await Db.GetCollection<Attitude>().AsQueryable()
-				.Where(p => p.CommentId == commentId && p.Agree == true).CountAsync();
-			var disagreeCount = await Db.GetCollection<Attitude>().AsQueryable()
-				.Where(p => p.CommentId == commentId && p.Agree == false).CountAsync();
-
-			return QComment.NormalView(comment, agreeCount, disagreeCount);
+			return QComment.NormalView(comment);
 		}
 		public class QComment
 		{
@@ -113,7 +107,7 @@ namespace Leopard.API.Controllers
 			public int AgreeCount { get; set; }
 			public int DisagreeCount { get; set; }
 
-			public static QComment NormalView(Comment c, int agreeCount, int disagreeCount)
+			public static QComment NormalView(Comment c)
 			{
 				return c == null ? null : new QComment
 				{
@@ -126,8 +120,8 @@ namespace Leopard.API.Controllers
 					Text = c.Text,
 					Rating = c.Rating,
 
-					AgreeCount = agreeCount,
-					DisagreeCount = disagreeCount
+					AgreeCount = c.AgreeCount,
+					DisagreeCount = c.DisagreeCount
 				};
 			}
 		}
@@ -160,7 +154,33 @@ namespace Leopard.API.Controllers
 				attitude.SetAgree(agree);
 
 			await AttitudeRepository.PutAsync(attitude);
+
+			if (agree)
+				comment.SetAgreeCount(comment.AgreeCount + 1);
+			else
+				comment.SetDisagreeCount(comment.DisagreeCount + 1);
+
+			await CommentRepository.PutAsync(comment);
+
 			return Ok();
+		}
+
+
+		[HttpGet("by-work")]
+		public async Task<QComment[]> GetByWork(string workId, OrderByType order)
+		{
+			var wid = XUtils.ParseId(workId);
+			var db2 = Db.GetCollection<Attitude>().AsQueryable();
+			var query = from p in Db.GetCollection<Comment>().AsQueryable().Where(p => p.WorkId == wid)
+						select new { p, cnt = db2.Where(q => q.CommentId == p.Id).Count() };
+			var a = query.ToList();
+			throw new NotImplementedException();
+		}
+
+		public enum OrderByType
+		{
+			Newest,
+			Hottest,
 		}
 	}
 }
