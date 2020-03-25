@@ -14,7 +14,7 @@ using MongoDB.Bson;
 
 namespace Leopard.API.Controllers
 {
-	[Route("users")]
+	[Route("api/users")]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
