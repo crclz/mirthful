@@ -23,12 +23,15 @@ namespace Leopard.API.Controllers
 		public Repository<Comment> CommentRepository { get; }
 		public Repository<Work> WorkRepository { get; }
 		public AuthStore AuthStore { get; }
+		public LeopardDatabase Db { get; }
 
-		public CommentsController(Repository<Comment> commentRepository, Repository<Work> workRepository, AuthStore authStore)
+		public CommentsController(Repository<Comment> commentRepository, Repository<Work> workRepository, AuthStore authStore,
+			LeopardDatabase db)
 		{
 			CommentRepository = commentRepository;
 			WorkRepository = workRepository;
 			AuthStore = authStore;
+			Db = db;
 		}
 
 		// TODO: 重复打分
@@ -69,5 +72,44 @@ namespace Leopard.API.Controllers
 			public int Rating { get; set; }
 		}
 
+
+		[HttpGet("get-by-id")]
+		[Produces(typeof(QComment))]
+		public async Task<QComment> GetById(string id)
+		{
+			var commentId = XUtils.ParseId(id);
+			if (commentId == null)
+				return null;
+
+			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == commentId);
+
+			return QComment.NormalView(comment);
+		}
+		public class QComment
+		{
+			public ObjectId Id { get; set; }
+			public long CreatedAt { get; set; }
+			public long UpdatedAt { get; set; }
+			public ObjectId SenderId { get; set; }
+			public ObjectId WorkId { get; set; }
+			public string Title { get; set; }
+			public string Text { get; set; }
+			public int Rating { get; set; }
+
+			public static QComment NormalView(Comment c)
+			{
+				return c == null ? null : new QComment
+				{
+					Id = c.Id,
+					CreatedAt = c.CreatedAt,
+					UpdatedAt = c.UpdatedAt,
+					SenderId = c.SenderId,
+					WorkId = c.WorkId,
+					Title = c.Title,
+					Text = c.Text,
+					Rating = c.Rating
+				};
+			}
+		}
 	}
 }

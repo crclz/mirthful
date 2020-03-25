@@ -26,11 +26,27 @@ namespace Leopard.API.Test.Smoke
 		public static string Work01Id = "5e7ac5057108f920d4bd3c37";
 
 		[Fact]
-		async Task LeaveComment()
+		async Task LeaveCommentAndGetById()
 		{
 			var a = await ClientSesion.RandomInstance();
-			await a.Api<CommentsApi>().CreateCommentAsync(
-				new CreateCommentModel(Work01Id, "good work", "TESTETSTETETTEXTTTTTTTTESTETSTETETTEXTTTTTTT", 5));
+
+			var title = "good work";
+			var text = "TESTETSTETETTEXTTTTTTTTESTETSTETETTEXTTTTTTT";
+			var rating = 5;
+
+			// Create comment
+			var commentResponse = await a.Api<CommentsApi>().CreateCommentAsync(
+				new CreateCommentModel(Work01Id, title, text, rating));
+
+			Assert.NotNull(commentResponse);
+			Assert.NotNull(commentResponse.Id);
+
+			// Get by id
+			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentResponse.Id);
+			Assert.Equal(title, comment.Title);
+			Assert.Equal(text, comment.Text);
+			Assert.Equal(a.UserId, comment.SenderId);
+			Assert.Equal(rating, comment.Rating);
 		}
 	}
 }

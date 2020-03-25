@@ -40,7 +40,13 @@ namespace Leopard.API.Test
 
 			var attacher = new AccessTokenAttacher(loginRes.AccessToken);
 
-			return new ClientSesion(attacher, username);
+			attacher.Attach(accessApi);
+
+			// Test me and get id
+			var me = await accessApi.MeAsync();
+			Assert.NotNull(me.Id);
+
+			return new ClientSesion(attacher, me.Id);
 		}
 
 		public static async Task<ClientSesion> RandomInstance()
