@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages {
-        stage('RestorePackage') { 
+        stage('Restore Packages') { 
             steps {
                 sh 'dotnet restore Leopard.API'
             }
@@ -16,11 +16,11 @@ pipeline {
                 sh 'dotnet build'
             }
         }
-        stage('UnitTest') {
-            steps {
-                sh 'dotnet test Leopard.Domain.Test'
-            }
-        }
+        // stage('UnitTest') {
+        //     steps {
+        //         sh 'dotnet test Leopard.Domain.Test'
+        //     }
+        // }
         stage('ApiTest') {
             environment {
                 MONGO_HOST = 'mongo_test'
