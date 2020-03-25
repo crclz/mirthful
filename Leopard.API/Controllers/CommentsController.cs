@@ -8,6 +8,7 @@ using Leopard.API.ResponseConvension;
 using Leopard.Domain;
 using Leopard.Domain.AttitudeAG;
 using Leopard.Domain.CommentAG;
+using Leopard.Domain.ReportAG;
 using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -28,15 +29,17 @@ namespace Leopard.API.Controllers
 		public AuthStore AuthStore { get; }
 		public LeopardDatabase Db { get; }
 		public Repository<Attitude> AttitudeRepository { get; }
+		public Repository<Report> ReportRepository { get; }
 
 		public CommentsController(Repository<Comment> commentRepository, Repository<Work> workRepository, AuthStore authStore,
-			LeopardDatabase db, Repository<Attitude> attitudeRepository)
+			LeopardDatabase db, Repository<Attitude> attitudeRepository, Repository<Report> reportRepository)
 		{
 			CommentRepository = commentRepository;
 			WorkRepository = workRepository;
 			AuthStore = authStore;
 			Db = db;
 			AttitudeRepository = attitudeRepository;
+			ReportRepository = reportRepository;
 		}
 
 
@@ -217,6 +220,45 @@ namespace Leopard.API.Controllers
 		{
 			Newest,
 			Hottest,
+		}
+
+
+		[HttpPost("report")]
+		[Consumes(Application.Json)]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> Report([FromBody]ReportModel model)
+		{
+			var commentId = XUtils.ParseId(model.CommentId);
+			if (commentId == null)
+				return new ApiError(MyErrorCode.IdNotFound, "CommentId parse error").Wrap();
+
+			var report = await ReportRepository.FirstOrDefaultAsync(p => p.CommentId == commentId && p.SenderId == AuthStore.UserId);
+			if (report != null)
+				return new ApiError(MyErrorCode.UniqueConstraintConflict, "你已经举报过了").Wrap();
+
+			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == commentId);
+			if (comment == null)
+				return new ApiError(MyErrorCode.IdNotFound, "评论id不存在").Wrap();
+
+			// send report
+			report = new Report((ObjectId)AuthStore.UserId, (ObjectId)commentId, model.Title, model.Text);
+			await ReportRepository.PutAsync(report);
+
+			return Ok();
+		}
+		public class ReportModel
+		{
+			[Required]
+			public string CommentId { get; set; }
+
+			[Required]
+			[MinLength(1)]
+			public string Title { get; set; }
+
+			[Required]
+			[MinLength(15)]
+			public string Text { get; set; }
 		}
 	}
 }

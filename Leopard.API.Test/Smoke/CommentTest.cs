@@ -117,5 +117,31 @@ namespace Leopard.API.Test.Smoke
 			comments = await a.Api<CommentsApi>().GetByWorkAsync(Work01Id, OrderByType.Newest, 0);
 			Assert.NotEmpty(comments);
 		}
+
+
+		[Fact]
+		async Task Report()
+		{
+			var a = await ClientSesion.RandomInstance();
+
+			var title = "good work";
+			var text = "TESTETSTETETTEXTTTTTTTTESTETSTETETTEXTTTTTTT";
+			var rating = 5;
+
+			// Create comment
+			var commentResponse = await a.Api<CommentsApi>().CreateCommentAsync(
+				new CreateCommentModel(Work01Id, title, text, rating));
+
+			var commentId = commentResponse.Id;
+
+			// Report
+			string reportTitle = "shit", reportText = "helloooooooooooooooooooooooooooo";
+
+			await a.Api<CommentsApi>().ReportAsync(new ReportModel(commentId, reportTitle, reportText));
+
+			// Duplicate report
+			await Assert.ThrowsAnyAsync<Exception>(
+				() => a.Api<CommentsApi>().ReportAsync(new ReportModel(commentId, reportTitle, reportText)));
+		}
 	}
 }
