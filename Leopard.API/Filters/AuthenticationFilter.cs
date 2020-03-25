@@ -76,6 +76,7 @@ namespace Leopard.API.Filters
 		failure:
 			// Let Store.UserId remain null and delete AccessToken in cookie
 			context.HttpContext.Response.Cookies.Delete("AccessToken");
+			context.Result = new UnauthorizedResult();
 		}
 	}
 }
