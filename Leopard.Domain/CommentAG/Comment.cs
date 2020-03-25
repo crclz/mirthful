@@ -30,6 +30,7 @@ namespace Leopard.Domain.CommentAG
 		private void SetRating(int rating)
 		{
 			Guard.Argument(() => rating).InRange(1, 5);
+			Rating = rating;
 		}
 	}
 }
