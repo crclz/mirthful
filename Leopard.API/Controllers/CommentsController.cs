@@ -185,19 +185,31 @@ namespace Leopard.API.Controllers
 
 		[HttpGet("by-work")]
 		[Produces(typeof(QComment[]))]
-		public async Task<IActionResult> GetByWork(string workId, OrderByType order, int limit, long t)
+		public async Task<IActionResult> GetByWork(string workId, OrderByType order, int page)
 		{
 			if (!Enum.IsDefined(typeof(OrderByType), order))
 				return new ApiError(MyErrorCode.ModelInvalid, "Invalid 'order'").Wrap();
 
-			limit = Math.Min(1, limit);
-			limit = Math.Max(25, limit);
-			t = t < 0 ? long.MaxValue : t;
+			page = Math.Max(page, 0);
+
+			const int pageSize = 20;
 
 			var wid = XUtils.ParseId(workId);
+			if (wid == null)
+				return new ApiError(MyErrorCode.ModelInvalid, "wordId parse error").Wrap();
 
-			//var query = Db.GetCollection<Comment>().AsQueryable().Where(p => p.)
-			throw new NotImplementedException();
+			var query = Db.GetCollection<Comment>().AsQueryable().Where(p => p.WorkId == wid);
+
+			if (order == OrderByType.Hottest)
+				query = query.OrderByDescending(p => p.AgreeCount);
+			else
+				query = query.OrderByDescending(p => p.CreatedAt);
+
+			query = query.Skip(page * pageSize).Take(pageSize);
+
+			var comments = await query.ToListAsync();
+
+			return Ok(comments);
 		}
 
 		public enum OrderByType

@@ -101,8 +101,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QComment&gt;</returns>
-        List<QComment> GetByWork (string workId = default(string), OrderByType order = default(OrderByType));
+        List<QComment> GetByWork (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -113,8 +114,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QComment&gt;</returns>
-        ApiResponse<List<QComment>> GetByWorkWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType));
+        ApiResponse<List<QComment>> GetByWorkWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?));
         #endregion Synchronous Operations
     }
 
@@ -198,8 +200,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of List&lt;QComment&gt;</returns>
-        System.Threading.Tasks.Task<List<QComment>> GetByWorkAsync (string workId = default(string), OrderByType order = default(OrderByType));
+        System.Threading.Tasks.Task<List<QComment>> GetByWorkAsync (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -210,8 +213,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QComment&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<QComment>>> GetByWorkAsyncWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType));
+        System.Threading.Tasks.Task<ApiResponse<List<QComment>>> GetByWorkAsyncWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?));
         #endregion Asynchronous Operations
     }
 
@@ -719,10 +723,11 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QComment&gt;</returns>
-        public List<QComment> GetByWork (string workId = default(string), OrderByType order = default(OrderByType))
+        public List<QComment> GetByWork (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QComment>> localVarResponse = GetByWorkWithHttpInfo(workId, order);
+             Org.OpenAPITools.Client.ApiResponse<List<QComment>> localVarResponse = GetByWorkWithHttpInfo(workId, order, page);
              return localVarResponse.Data;
         }
 
@@ -732,8 +737,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QComment&gt;</returns>
-        public Org.OpenAPITools.Client.ApiResponse< List<QComment> > GetByWorkWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType))
+        public Org.OpenAPITools.Client.ApiResponse< List<QComment> > GetByWorkWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -773,6 +779,16 @@ namespace Org.OpenAPITools.Api
                     }
                 }
             }
+            if (page != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
 
 
             // make the HTTP request
@@ -793,10 +809,11 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of List&lt;QComment&gt;</returns>
-        public async System.Threading.Tasks.Task<List<QComment>> GetByWorkAsync (string workId = default(string), OrderByType order = default(OrderByType))
+        public async System.Threading.Tasks.Task<List<QComment>> GetByWorkAsync (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QComment>> localVarResponse = await GetByWorkAsyncWithHttpInfo(workId, order);
+             Org.OpenAPITools.Client.ApiResponse<List<QComment>> localVarResponse = await GetByWorkAsyncWithHttpInfo(workId, order, page);
              return localVarResponse.Data;
 
         }
@@ -807,8 +824,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="workId"> (optional)</param>
         /// <param name="order"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QComment&gt;)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QComment>>> GetByWorkAsyncWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QComment>>> GetByWorkAsyncWithHttpInfo (string workId = default(string), OrderByType order = default(OrderByType), int? page = default(int?))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -842,6 +860,16 @@ namespace Org.OpenAPITools.Api
             if (order != null)
             {
                 foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "order", order))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (page != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
                 {
                     foreach (var _kvpValue in _kvp.Value)
                     {

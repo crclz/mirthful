@@ -97,5 +97,18 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal(0, comment.AgreeCount);
 			Assert.Equal(1, comment.DisagreeCount);
 		}
+
+
+		[Fact]
+		async Task GetCommentsByWork()
+		{
+			var a = await ClientSesion.RandomInstance();
+
+			var comments = await a.Api<CommentsApi>().GetByWorkAsync(Work01Id, OrderByType.Hottest, 0);
+			Assert.NotEmpty(comments);
+
+			comments = await a.Api<CommentsApi>().GetByWorkAsync(Work01Id, OrderByType.Newest, 0);
+			Assert.NotEmpty(comments);
+		}
 	}
 }
