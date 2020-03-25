@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Leopard.Domain\Leopard.Domain.csproj" />
+    <ProjectReference Include="..\Leopard.Infrastructure\Leopard.Infrastructure.csproj" />
     <ProjectReference Include="..\Org.OpenAPITools\Org.OpenAPITools.csproj" />
   </ItemGroup>
 

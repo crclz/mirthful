@@ -8,7 +8,7 @@ namespace Leopard.Domain.AttitudeAG
 	public class Attitude : RootEntity
 	{
 		public ObjectId SenderId { get; private set; }
-		public ObjectId ReceiverId { get; private set; }
+		public ObjectId CommentId { get; private set; }
 		public bool Agree { get; private set; }
 
 		private Attitude()
@@ -16,11 +16,17 @@ namespace Leopard.Domain.AttitudeAG
 
 		}
 
-		public Attitude(ObjectId senderId, ObjectId receiverId, bool agree)
+		public Attitude(ObjectId senderId, ObjectId commentId, bool agree)
 		{
 			SenderId = senderId;
-			ReceiverId = receiverId;
+			CommentId = commentId;
 			Agree = agree;
+		}
+
+		public void SetAgree(bool agree)
+		{
+			Agree = agree;
+			UpdatedAtNow();
 		}
 	}
 }

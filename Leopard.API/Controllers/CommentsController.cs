@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Leopard.API.Filters;
 using Leopard.API.ResponseConvension;
 using Leopard.Domain;
+using Leopard.Domain.AttitudeAG;
 using Leopard.Domain.CommentAG;
 using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
@@ -24,14 +25,16 @@ namespace Leopard.API.Controllers
 		public Repository<Work> WorkRepository { get; }
 		public AuthStore AuthStore { get; }
 		public LeopardDatabase Db { get; }
+		public Repository<Attitude> AttitudeRepository { get; }
 
 		public CommentsController(Repository<Comment> commentRepository, Repository<Work> workRepository, AuthStore authStore,
-			LeopardDatabase db)
+			LeopardDatabase db, Repository<Attitude> attitudeRepository)
 		{
 			CommentRepository = commentRepository;
 			WorkRepository = workRepository;
 			AuthStore = authStore;
 			Db = db;
+			AttitudeRepository = attitudeRepository;
 		}
 
 		// TODO: 重复打分
@@ -110,6 +113,35 @@ namespace Leopard.API.Controllers
 					Rating = c.Rating
 				};
 			}
+		}
+
+
+		[HttpPost("express-attitude")]
+		[Consumes(Application.Json)]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> ExpressAttitude(string commentId, bool agree)
+		{
+			var cid = XUtils.ParseId(commentId);
+			if (cid == null)
+				return new ApiError(MyErrorCode.IdNotFound, "评论的id不存在（解析错误）").Wrap();
+
+			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == cid);
+			if (comment == null)
+				return new ApiError(MyErrorCode.IdNotFound, "评论的id不存在").Wrap();
+
+			var attitude = await AttitudeRepository
+				.FirstOrDefaultAsync(p => p.SenderId == AuthStore.UserId && p.CommentId == cid);
+
+			// Modify or update attitude
+
+			if (attitude == null)
+				attitude = new Attitude((ObjectId)AuthStore.UserId, (ObjectId)cid, agree);
+			else
+				attitude.SetAgree(agree);
+
+			await AttitudeRepository.PutAsync(attitude);
+			return Ok();
 		}
 	}
 }
