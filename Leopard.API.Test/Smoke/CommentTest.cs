@@ -83,6 +83,10 @@ namespace Leopard.API.Test.Smoke
 
 			var ok = atts.Any(p => p.SenderId.ToString() == a.UserId && p.CommentId.ToString() == commentResponse.Id);
 			Assert.True(ok);
+
+			// attitude count
+			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentResponse.Id);
+			
 		}
 	}
 }

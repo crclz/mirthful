@@ -13,6 +13,8 @@ using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -86,7 +88,16 @@ namespace Leopard.API.Controllers
 
 			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == commentId);
 
-			return QComment.NormalView(comment);
+			if (commentId == null)
+				return null;
+
+			// TODO:
+			var agreeCount = await Db.GetCollection<Attitude>().AsQueryable()
+				.Where(p => p.CommentId == commentId && p.Agree == true).CountAsync();
+			var disagreeCount = await Db.GetCollection<Attitude>().AsQueryable()
+				.Where(p => p.CommentId == commentId && p.Agree == false).CountAsync();
+
+			return QComment.NormalView(comment, agreeCount, disagreeCount);
 		}
 		public class QComment
 		{
@@ -99,7 +110,10 @@ namespace Leopard.API.Controllers
 			public string Text { get; set; }
 			public int Rating { get; set; }
 
-			public static QComment NormalView(Comment c)
+			public int AgreeCount { get; set; }
+			public int DisagreeCount { get; set; }
+
+			public static QComment NormalView(Comment c, int agreeCount, int disagreeCount)
 			{
 				return c == null ? null : new QComment
 				{
@@ -110,7 +124,10 @@ namespace Leopard.API.Controllers
 					WorkId = c.WorkId,
 					Title = c.Title,
 					Text = c.Text,
-					Rating = c.Rating
+					Rating = c.Rating,
+
+					AgreeCount = agreeCount,
+					DisagreeCount = disagreeCount
 				};
 			}
 		}
