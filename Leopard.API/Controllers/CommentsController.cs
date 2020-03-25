@@ -35,6 +35,7 @@ namespace Leopard.API.Controllers
 
 		[HttpPost("create")]
 		[Consumes(Application.Json)]
+		[Produces(typeof(IdResponse))]
 
 		[TypeFilter(typeof(AuthenticationFilter))]
 		public async Task<IActionResult> CreateComment([FromBody]CreateCommentModel model)
@@ -48,7 +49,7 @@ namespace Leopard.API.Controllers
 
 			await CommentRepository.PutAsync(comment);
 
-			return Ok();
+			return Ok(new IdResponse(comment.Id));
 		}
 		public class CreateCommentModel
 		{
@@ -67,5 +68,6 @@ namespace Leopard.API.Controllers
 			[Range(1, 5)]
 			public int Rating { get; set; }
 		}
+
 	}
 }
