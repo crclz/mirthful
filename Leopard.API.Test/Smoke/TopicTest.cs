@@ -75,7 +75,7 @@ namespace Leopard.API.Test.Smoke
 
 
 		[Fact]
-		async Task JoinTopicAndSendPost()
+		async Task JoinTopicAndSendPostAndGetPosts()
 		{
 			var a = await ClientSesion.RandomInstance();
 			var b = await ClientSesion.RandomInstance();
@@ -102,10 +102,16 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal(MemberRole.Normal, member.Role);
 
 			// a send post 
-			await a.Api<TopicApi>().SendPostAsync(topicId, "hello", "Hello everyone!");
+			await a.Api<TopicApi>().SendPostAsync(topicId, "hello1", "Hello everyone!");
 
 			// b send post
-			await b.Api<TopicApi>().SendPostAsync(topicId, "hello", "Hello everyone!");
+			await b.Api<TopicApi>().SendPostAsync(topicId, "hello2", "Hello everyone!");
+
+
+			// get posts
+			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0, true);
+
+			Assert.Equal(2, posts.Count);
 		}
 	}
 }

@@ -15,6 +15,8 @@ using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -28,15 +30,17 @@ namespace Leopard.API.Controllers
 		public AuthStore AuthStore { get; }
 		public Repository<TopicMember> MemberRepository { get; }
 		public Repository<Post> PostRepository { get; }
+		public LeopardDatabase Db { get; }
 
 		public TopicController(Repository<Topic> topicRepository, Repository<Work> workRepository, AuthStore authStore,
-			Repository<TopicMember> memberRepository, Repository<Post> postRepository)
+			Repository<TopicMember> memberRepository, Repository<Post> postRepository, LeopardDatabase db)
 		{
 			TopicRepository = topicRepository;
 			WorkRepository = workRepository;
 			AuthStore = authStore;
 			MemberRepository = memberRepository;
 			PostRepository = postRepository;
+			Db = db;
 		}
 
 
@@ -157,6 +161,58 @@ namespace Leopard.API.Controllers
 			public string Text { get; set; }
 
 			public IFormFile Image { get; set; }
+		}
+
+
+		[HttpPost("get-posts")]
+		[Produces(typeof(QPost[]))]
+		public async Task<IActionResult> GetPosts(string topicId, int page, bool newest)
+		{
+			const int pageSize = 20;
+			page = Math.Max(0, page);
+
+			var tid = XUtils.ParseId(topicId);
+			if (tid == null)
+				return new ApiError(MyErrorCode.IdNotFound, "topicId parse error").Wrap();
+
+			var query = Db.GetCollection<Post>().AsQueryable().Where(p => p.TopicId == tid);
+			if (newest)
+				query = query.OrderByDescending(p => p.CreatedAt);
+			else
+				query = query.OrderBy(p => p.CreatedAt);
+
+			query = query.Skip(page * pageSize).Take(pageSize);
+
+			var comments = await query.ToListAsync();
+
+			var data = comments.Select(p => QPost.NormalView(p)).ToList();
+
+			return Ok(data);
+		}
+		public class QPost
+		{
+			public ObjectId Id { get; set; }
+			public long CreatedAt { get; set; }
+			public long UpdatedAt { get; set; }
+
+			public ObjectId SenderId { get; set; }
+			public string Image { get; set; }
+			public string Title { get; set; }
+			public string Text { get; set; }
+
+			public static QPost NormalView(Post p)
+			{
+				return p == null ? null : new QPost
+				{
+					Id = p.Id,
+					CreatedAt = p.CreatedAt,
+					UpdatedAt = p.UpdatedAt,
+					SenderId = p.SenderId,
+					Image = p.Image,
+					Title = p.Title,
+					Text = p.Text
+				};
+			}
 		}
 	}
 }

@@ -55,6 +55,31 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>List&lt;QPost&gt;</returns>
+        List<QPost> GetPosts (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QPost&gt;</returns>
+        ApiResponse<List<QPost>> GetPostsWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="joinTopicModel"> (optional)</param>
         /// <returns></returns>
         void JoinTopic (JoinTopicModel joinTopicModel = default(JoinTopicModel));
@@ -126,6 +151,31 @@ namespace Org.OpenAPITools.Api
         /// <param name="createTopicModel"> (optional)</param>
         /// <returns>Task of ApiResponse (IdResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<IdResponse>> CreateTopicAsyncWithHttpInfo (CreateTopicModel createTopicModel = default(CreateTopicModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of List&lt;QPost&gt;</returns>
+        System.Threading.Tasks.Task<List<QPost>> GetPostsAsync (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QPost&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QPost>>> GetPostsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
         /// <summary>
         /// 
         /// </summary>
@@ -399,6 +449,181 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("CreateTopic", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>List&lt;QPost&gt;</returns>
+        public List<QPost> GetPosts (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QPost>> localVarResponse = GetPostsWithHttpInfo(topicId, page, newest);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QPost&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QPost> > GetPostsWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (topicId != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (page != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (newest != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post< List<QPost> >("/api/topic/get-posts", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetPosts", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of List&lt;QPost&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QPost>> GetPostsAsync (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QPost>> localVarResponse = await GetPostsAsyncWithHttpInfo(topicId, page, newest);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QPost&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QPost>>> GetPostsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (topicId != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (page != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (newest != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<List<QPost>>("/api/topic/get-posts", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetPosts", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
