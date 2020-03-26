@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="ApiDoc\" />
-    <Folder Include="EventHandlers\" />
   </ItemGroup>
 
 </Project>

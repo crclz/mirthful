@@ -37,5 +37,6 @@ namespace Leopard.Domain.TopicMemberAG
 	{
 		Normal = 0,
 		Admin = 1,
+		Super = 2,
 	}
 }
