@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Leopard.API.Filters;
+using Leopard.API.ResponseConvension;
 using Leopard.Domain;
 using Leopard.Domain.TopicAG;
+using Leopard.Domain.TopicMemberAG;
 using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +24,15 @@ namespace Leopard.API.Controllers
 		public Repository<Topic> TopicRepository { get; }
 		public Repository<Work> WorkRepository { get; }
 		public AuthStore AuthStore { get; }
+		public Repository<TopicMember> MemberRepository { get; }
 
-		public TopicController(Repository<Topic> topicRepository, Repository<Work> workRepository, AuthStore authStore)
+		public TopicController(Repository<Topic> topicRepository, Repository<Work> workRepository, AuthStore authStore,
+			Repository<TopicMember> memberRepository)
 		{
 			TopicRepository = topicRepository;
 			WorkRepository = workRepository;
 			AuthStore = authStore;
+			MemberRepository = memberRepository;
 		}
 
 
@@ -66,6 +71,36 @@ namespace Leopard.API.Controllers
 			public string Description { get; set; }
 
 			public string RelatedWork { get; set; }
+		}
+
+
+		[HttpPost("join-topic")]
+		[Consumes(Application.Json)]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> JoinTopic([FromBody]JoinTopicModel model)
+		{
+			var topicId = XUtils.ParseId(model.TopicId);
+			if (topicId == null)
+				return new ApiError(MyErrorCode.IdNotFound, "Id parse error").Wrap();
+
+			// Check if already in topic
+			var member = await MemberRepository
+				.FirstOrDefaultAsync(p => p.TopicId == topicId.Value && p.UserId == AuthStore.UserId.Value);
+
+			if (member != null)
+				return new ApiError(MyErrorCode.UniqueConstraintConflict, "你已经加入过了").Wrap();
+
+			// join topic
+			member = new TopicMember(topicId.Value, AuthStore.UserId.Value, MemberRole.Normal);
+			await MemberRepository.PutAsync(member);
+
+			return Ok();
+		}
+		public class JoinTopicModel
+		{
+			[Required]
+			public string TopicId { get; set; }
 		}
 	}
 }

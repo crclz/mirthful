@@ -9,6 +9,7 @@ using Org.OpenAPITools.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -33,6 +34,7 @@ namespace Leopard.API.Test.Smoke
 
 			await CreateByModel(new CreateTopicModel(false, "some-topic", "haha", CommentTest.Work01Id));
 		}
+
 
 		async Task CreateByModel(CreateTopicModel model)
 		{
@@ -69,6 +71,32 @@ namespace Leopard.API.Test.Smoke
 				Assert.Equal(MemberRole.Super, member.Role);
 			else
 				Assert.Equal(MemberRole.Normal, member.Role);
+		}
+
+
+		[Fact]
+		async Task JoinTopic()
+		{
+			var a = await ClientSesion.RandomInstance();
+			var b = await ClientSesion.RandomInstance();
+
+			// b create topic
+			var model = new CreateTopicModel(false, "some-topic", "haha", null);
+			var idRes = await b.Api<TopicApi>().CreateTopicAsync(model);
+			var topicId = idRes.Id;
+
+			// join topic
+			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId));
+
+			// Check member
+			var members = await Db.GetCollection<TopicMember>().AsQueryable()
+				.Where(p => p.TopicId == ObjectId.Parse(topicId)).ToListAsync();
+
+			Assert.Equal(2, members.Count);
+
+			var member = members.Where(p => p.UserId.ToString() == a.UserId).FirstOrDefault();
+			Assert.NotNull(member);
+			Assert.Equal(MemberRole.Normal, member.Role);
 		}
 	}
 }
