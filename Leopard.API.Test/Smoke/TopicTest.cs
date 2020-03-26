@@ -75,7 +75,7 @@ namespace Leopard.API.Test.Smoke
 
 
 		[Fact]
-		async Task JoinTopic()
+		async Task JoinTopicAndSendPost()
 		{
 			var a = await ClientSesion.RandomInstance();
 			var b = await ClientSesion.RandomInstance();
@@ -85,7 +85,10 @@ namespace Leopard.API.Test.Smoke
 			var idRes = await b.Api<TopicApi>().CreateTopicAsync(model);
 			var topicId = idRes.Id;
 
-			// join topic
+			// a send post without join topic
+			await Assert.ThrowsAnyAsync<Exception>(() => a.Api<TopicApi>().SendPostAsync(topicId, "hello", "Hello everyone!"));
+
+			// a join topic
 			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId));
 
 			// Check member
@@ -97,6 +100,12 @@ namespace Leopard.API.Test.Smoke
 			var member = members.Where(p => p.UserId.ToString() == a.UserId).FirstOrDefault();
 			Assert.NotNull(member);
 			Assert.Equal(MemberRole.Normal, member.Role);
+
+			// a send post 
+			await a.Api<TopicApi>().SendPostAsync(topicId, "hello", "Hello everyone!");
+
+			// b send post
+			await b.Api<TopicApi>().SendPostAsync(topicId, "hello", "Hello everyone!");
 		}
 	}
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Leopard.API.Filters;
 using Leopard.API.ResponseConvension;
 using Leopard.Domain;
+using Leopard.Domain.PostAG;
 using Leopard.Domain.TopicAG;
 using Leopard.Domain.TopicMemberAG;
 using Leopard.Domain.WorkAG;
@@ -25,14 +27,16 @@ namespace Leopard.API.Controllers
 		public Repository<Work> WorkRepository { get; }
 		public AuthStore AuthStore { get; }
 		public Repository<TopicMember> MemberRepository { get; }
+		public Repository<Post> PostRepository { get; }
 
 		public TopicController(Repository<Topic> topicRepository, Repository<Work> workRepository, AuthStore authStore,
-			Repository<TopicMember> memberRepository)
+			Repository<TopicMember> memberRepository, Repository<Post> postRepository)
 		{
 			TopicRepository = topicRepository;
 			WorkRepository = workRepository;
 			AuthStore = authStore;
 			MemberRepository = memberRepository;
+			PostRepository = postRepository;
 		}
 
 
@@ -101,6 +105,58 @@ namespace Leopard.API.Controllers
 		{
 			[Required]
 			public string TopicId { get; set; }
+		}
+
+
+		[HttpPost("send-post")]
+		[Consumes("multipart/form-data")]
+		[Produces(typeof(IdResponse))]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> SendPost([FromForm]SendPostModel model, [FromServices]IBlobBucket blobBucket)
+		{
+			// 不需要判断topic是否存在
+
+			// should be a member of the topic
+
+			var topicId = XUtils.ParseId(model.TopicId);
+			if (topicId == null)
+				return new ApiError(MyErrorCode.IdNotFound, "TopicId parse error").Wrap();
+
+			var member = await MemberRepository.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId.Value);
+
+			if (member == null)
+				return new ApiError(MyErrorCode.PermissionDenied, "你不是成员").Wrap();
+
+			// send post
+
+			//	 put image
+			string imageUrl = null;
+			if (model.Image != null)
+			{
+				if (model.Image.Length > 1024 * 1024 * 5)//5mb
+					return new ApiError(MyErrorCode.FileTooLarge, "图片太大，不能超过5MB").Wrap();
+				using (var stream = model.Image.OpenReadStream())
+				{
+					imageUrl = await blobBucket.PutBlobAsync(stream, Path.GetRandomFileName());
+				}
+			}
+
+			var post = new Post(AuthStore.UserId.Value, topicId.Value, model.Text, model.Title, imageUrl);
+			await PostRepository.PutAsync(post);
+
+			return Ok(new IdResponse(post.Id));
+		}
+		public class SendPostModel
+		{
+			[Required]
+			public string TopicId { get; set; }
+
+			public string Title { get; set; }
+
+			public string Text { get; set; }
+
+			public IFormFile Image { get; set; }
 		}
 	}
 }
