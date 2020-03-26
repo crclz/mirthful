@@ -101,6 +101,29 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QReply&gt;</returns>
+        List<QReply> GetReplies (string postId = default(string), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QReply&gt;</returns>
+        ApiResponse<List<QReply>> GetRepliesWithHttpInfo (string postId = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="joinTopicModel"> (optional)</param>
         /// <returns></returns>
         void JoinTopic (JoinTopicModel joinTopicModel = default(JoinTopicModel));
@@ -142,6 +165,27 @@ namespace Org.OpenAPITools.Api
         /// <param name="image"> (optional)</param>
         /// <returns>ApiResponse of IdResponse</returns>
         ApiResponse<IdResponse> SendPostWithHttpInfo (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>IdResponse</returns>
+        IdResponse SendReply (SendReplyModel sendReplyModel = default(SendReplyModel));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>ApiResponse of IdResponse</returns>
+        ApiResponse<IdResponse> SendReplyWithHttpInfo (SendReplyModel sendReplyModel = default(SendReplyModel));
         #endregion Synchronous Operations
     }
 
@@ -225,6 +269,29 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QReply&gt;</returns>
+        System.Threading.Tasks.Task<List<QReply>> GetRepliesAsync (string postId = default(string), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QReply&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QReply>>> GetRepliesAsyncWithHttpInfo (string postId = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="joinTopicModel"> (optional)</param>
         /// <returns>Task of void</returns>
         System.Threading.Tasks.Task JoinTopicAsync (JoinTopicModel joinTopicModel = default(JoinTopicModel));
@@ -266,6 +333,27 @@ namespace Org.OpenAPITools.Api
         /// <param name="image"> (optional)</param>
         /// <returns>Task of ApiResponse (IdResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<IdResponse>> SendPostAsyncWithHttpInfo (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>Task of IdResponse</returns>
+        System.Threading.Tasks.Task<IdResponse> SendReplyAsync (SendReplyModel sendReplyModel = default(SendReplyModel));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IdResponse>> SendReplyAsyncWithHttpInfo (SendReplyModel sendReplyModel = default(SendReplyModel));
         #endregion Asynchronous Operations
     }
 
@@ -803,6 +891,157 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QReply&gt;</returns>
+        public List<QReply> GetReplies (string postId = default(string), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QReply>> localVarResponse = GetRepliesWithHttpInfo(postId, page);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QReply&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QReply> > GetRepliesWithHttpInfo (string postId = default(string), int? page = default(int?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (postId != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "postId", postId))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (page != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<QReply> >("/api/topic/get-replies", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetReplies", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QReply&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QReply>> GetRepliesAsync (string postId = default(string), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QReply>> localVarResponse = await GetRepliesAsyncWithHttpInfo(postId, page);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QReply&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QReply>>> GetRepliesAsyncWithHttpInfo (string postId = default(string), int? page = default(int?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (postId != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "postId", postId))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+            if (page != null)
+            {
+                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
+                {
+                    foreach (var _kvpValue in _kvp.Value)
+                    {
+                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
+                    }
+                }
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<QReply>>("/api/topic/get-replies", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetReplies", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="joinTopicModel"> (optional)</param>
         /// <returns></returns>
         public void JoinTopic (JoinTopicModel joinTopicModel = default(JoinTopicModel))
@@ -1057,6 +1296,117 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("SendPost", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>IdResponse</returns>
+        public IdResponse SendReply (SendReplyModel sendReplyModel = default(SendReplyModel))
+        {
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = SendReplyWithHttpInfo(sendReplyModel);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>ApiResponse of IdResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse< IdResponse > SendReplyWithHttpInfo (SendReplyModel sendReplyModel = default(SendReplyModel))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = sendReplyModel;
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post< IdResponse >("/api/topic/send-reply", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SendReply", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>Task of IdResponse</returns>
+        public async System.Threading.Tasks.Task<IdResponse> SendReplyAsync (SendReplyModel sendReplyModel = default(SendReplyModel))
+        {
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = await SendReplyAsyncWithHttpInfo(sendReplyModel);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendReplyModel"> (optional)</param>
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<IdResponse>> SendReplyAsyncWithHttpInfo (SendReplyModel sendReplyModel = default(SendReplyModel))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            localVarRequestOptions.Data = sendReplyModel;
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<IdResponse>("/api/topic/send-reply", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SendReply", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

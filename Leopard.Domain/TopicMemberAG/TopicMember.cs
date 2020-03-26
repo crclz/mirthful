@@ -22,7 +22,7 @@ namespace Leopard.Domain.TopicMemberAG
 
 			if (!suppressJoinTopicEvent)
 			{
-				PushDomainEvent(new JoinTopicEvent(Id, userId));
+				PushDomainEvent(new JoinTopicEvent(topicId, userId));
 			}
 		}
 

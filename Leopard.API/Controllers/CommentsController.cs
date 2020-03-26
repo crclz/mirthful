@@ -47,7 +47,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
-		[TypeFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(AuthenticationFilter))]
 		public async Task<IActionResult> CreateComment([FromBody]CreateCommentModel model)
 		{
 			var workId = XUtils.ParseId(model.WorkId);

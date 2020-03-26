@@ -8,6 +8,7 @@ using Leopard.API.Filters;
 using Leopard.API.ResponseConvension;
 using Leopard.Domain;
 using Leopard.Domain.PostAG;
+using Leopard.Domain.ReplyAG;
 using Leopard.Domain.TopicAG;
 using Leopard.Domain.TopicMemberAG;
 using Leopard.Domain.WorkAG;
@@ -31,9 +32,11 @@ namespace Leopard.API.Controllers
 		public Repository<TopicMember> MemberRepository { get; }
 		public Repository<Post> PostRepository { get; }
 		public LeopardDatabase Db { get; }
+		public Repository<Reply> ReplyRepository { get; }
 
 		public TopicController(Repository<Topic> topicRepository, Repository<Work> workRepository, AuthStore authStore,
-			Repository<TopicMember> memberRepository, Repository<Post> postRepository, LeopardDatabase db)
+			Repository<TopicMember> memberRepository, Repository<Post> postRepository, LeopardDatabase db,
+			Repository<Reply> replyRepository)
 		{
 			TopicRepository = topicRepository;
 			WorkRepository = workRepository;
@@ -41,6 +44,7 @@ namespace Leopard.API.Controllers
 			MemberRepository = memberRepository;
 			PostRepository = postRepository;
 			Db = db;
+			ReplyRepository = replyRepository;
 		}
 
 
@@ -91,6 +95,11 @@ namespace Leopard.API.Controllers
 			var topicId = XUtils.ParseId(model.TopicId);
 			if (topicId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Id parse error").Wrap();
+
+			// Check topic exist
+			var topic = await TopicRepository.FirstOrDefaultAsync(p => p.Id == topicId);
+			if (topic == null)
+				return new ApiError(MyErrorCode.IdNotFound, "Topic id not found").Wrap();
 
 			// Check if already in topic
 			var member = await MemberRepository
@@ -228,6 +237,85 @@ namespace Leopard.API.Controllers
 			var qpost = QPost.NormalView(post);
 
 			return Ok(qpost);
+		}
+
+
+		[HttpPost("send-reply")]
+		[Consumes(Application.Json)]
+		[Produces(typeof(IdResponse))]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> SendReply([FromBody]SendReplyModel model)
+		{
+			// post exist
+			var postId = XUtils.ParseId(model.PostId);
+			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == postId);
+			if (post == null)
+				return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
+
+			// user is a member of post.topic
+			var member = await MemberRepository.FirstOrDefaultAsync(p => p.UserId == AuthStore.UserId && p.TopicId == post.TopicId);
+			if (member == null)
+				return new ApiError(MyErrorCode.NotAMember, "You are not a member of the topic").Wrap();
+
+			// send reply
+			var reply = new Reply(AuthStore.UserId.Value, post.Id, model.Text);
+			await ReplyRepository.PutAsync(reply);
+			return Ok(new IdResponse(reply.Id));
+		}
+		public class SendReplyModel
+		{
+			[Required]
+			public string PostId { get; set; }
+
+			[Required]
+			[MinLength(25)]
+			public string Text { get; set; }
+		}
+
+
+		[HttpGet("get-replies")]
+		[Produces(typeof(QReply[]))]
+		public async Task<IActionResult> GetReplies(string postId, int page)
+		{
+			const int pageSize = 20;
+
+			// post exist
+			var pid = XUtils.ParseId(postId);
+			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == pid);
+			if (post == null)
+				return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
+
+			// get
+			var replies = await Db.GetCollection<Reply>().AsQueryable()
+				.Where(p => p.PostId == pid)
+				.OrderBy(p => p.CreatedAt)
+				.Skip(pageSize * page)
+				.Take(pageSize)
+				.ToListAsync();
+
+			var qrs = replies.Select(p => QReply.NormalView(p)).ToList();
+
+			return Ok(qrs);
+		}
+
+		public class QReply
+		{
+			public ObjectId Id { get; set; }
+			public ObjectId SenderId { get; set; }
+			public ObjectId PostId { get; set; }
+			public string Text { get; set; }
+
+			public static QReply NormalView(Reply p)
+			{
+				return p == null ? null : new QReply
+				{
+					Id = p.Id,
+					SenderId = p.SenderId,
+					PostId = p.PostId,
+					Text = p.Text
+				};
+			}
 		}
 	}
 }

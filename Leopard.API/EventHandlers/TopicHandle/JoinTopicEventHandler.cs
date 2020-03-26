@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Leopard.API.EventHandlers.TopicMemberHandle
+namespace Leopard.API.EventHandlers.TopicHandle
 {
 	public class JoinTopicEventHandler : INotificationHandler<JoinTopicEvent>
 	{

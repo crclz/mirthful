@@ -108,13 +108,24 @@ namespace Leopard.API.Test.Smoke
 
 			// b send post
 			idRes = await b.Api<TopicApi>().SendPostAsync(topicId, "hello2", "Hello everyone!");
-			post = await a.Api<TopicApi>().GetByIdAsync(idRes.Id);
+			post = await b.Api<TopicApi>().GetByIdAsync(idRes.Id);
 			Assert.Equal("hello2", post.Title);
 
 			// get posts
 			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0, true);
 
 			Assert.Equal(2, posts.Count);
+
+
+			// Send reply
+			var postId = posts[0].Id;
+			idRes = await a.Api<TopicApi>().SendReplyAsync(new SendReplyModel(postId, "123123asd1dasd25字数asd12e12312asd"));
+			var replyId = idRes.Id;
+
+			// Check reply
+			var replies = await a.Api<TopicApi>().GetRepliesAsync(postId, 0);
+			Assert.Single(replies);
+			Assert.Equal(replyId, replies[0].Id);
 		}
 	}
 }

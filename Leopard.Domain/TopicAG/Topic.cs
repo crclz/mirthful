@@ -14,6 +14,10 @@ namespace Leopard.Domain.TopicAG
 		public ObjectId? RelatedWork { get; private set; }
 		public int MemberCount { get; private set; }
 
+		private Topic()
+		{
+		}
+
 		public Topic(bool isGroup, string name, string description, ObjectId? relatedWork, ObjectId creatorId)
 		{
 			IsGroup = isGroup;
