@@ -164,7 +164,7 @@ namespace Leopard.API.Controllers
 		}
 
 
-		[HttpPost("get-posts")]
+		[HttpGet("get-posts")]
 		[Produces(typeof(QPost[]))]
 		public async Task<IActionResult> GetPosts(string topicId, int page, bool newest)
 		{
@@ -213,6 +213,21 @@ namespace Leopard.API.Controllers
 					Text = p.Text
 				};
 			}
+		}
+
+		[HttpGet("by-id")]
+		[Produces(typeof(QPost))]
+		public async Task<IActionResult> GetById(string id)
+		{
+			var postId = XUtils.ParseId(id);
+			if (postId == null)
+				return new ApiError(MyErrorCode.IdNotFound, "Id parse error").Wrap();
+
+			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == postId);
+
+			var qpost = QPost.NormalView(post);
+
+			return Ok(qpost);
 		}
 	}
 }
