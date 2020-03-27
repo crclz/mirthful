@@ -21,7 +21,6 @@ namespace Leopard.API.EventHandlers.TopicHandle
 
 		public async Task Handle(JoinTopicEvent e, CancellationToken cancellationToken)
 		{
-			throw new InvalidOperationException();
 			var topic = await TopicRepository.FirstOrDefaultAsync(p => p.Id == e.TopicId);
 			topic.MemberIncr(1);
 			await TopicRepository.PutAsync(topic);
