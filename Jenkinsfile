@@ -37,9 +37,7 @@ pipeline {
 
                 sh 'dotnet test Leopard.API.Test'
 
-                sh 'if grep -q Exception server-output.txt; then has_exception=1; else has_exception=0; fi;'
-                sh 'if [[ $has_exception -eq 1 ]]; then cat server-output.txt;'
-                sh 'test $has_exception -eq 0'
+                sh './check-server-output.sh'
             }
         }
     }
