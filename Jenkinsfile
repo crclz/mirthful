@@ -32,10 +32,14 @@ pipeline {
                 // Prerequisite: Mongo test db already running.'
                 sh 'mkdir /var/blob-store'
 
-                sh 'dotnet run --project Leopard.API &'
+                sh 'dotnet run --project Leopard.API > server-output.txt &'
                 sh 'dotnet run --project Leopard.DBInit'
 
                 sh 'dotnet test Leopard.API.Test'
+
+                sh 'if grep -q Exception server-output.txt; then has_exception=1; else has_exception=0; fi;'
+                sh 'if [[ $has_exception -eq 1 ]]; then cat server-output.txt;'
+                sh 'test $has_exception -eq 0'
             }
         }
     }
