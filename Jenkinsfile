@@ -37,6 +37,7 @@ pipeline {
 
                 sh 'dotnet test Leopard.API.Test'
 
+                sh 'chmod u+x check-server-output.sh'
                 sh './check-server-output.sh'
             }
         }
