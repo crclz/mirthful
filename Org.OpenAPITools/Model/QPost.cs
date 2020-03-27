@@ -150,11 +150,13 @@ namespace Org.OpenAPITools.Model
                 ) && 
                 (
                     this.CreatedAt == input.CreatedAt ||
-                    this.CreatedAt.Equals(input.CreatedAt)
+                    (this.CreatedAt != null &&
+                    this.CreatedAt.Equals(input.CreatedAt))
                 ) && 
                 (
                     this.UpdatedAt == input.UpdatedAt ||
-                    this.UpdatedAt.Equals(input.UpdatedAt)
+                    (this.UpdatedAt != null &&
+                    this.UpdatedAt.Equals(input.UpdatedAt))
                 ) && 
                 (
                     this.SenderId == input.SenderId ||
@@ -189,8 +191,10 @@ namespace Org.OpenAPITools.Model
                 int hashCode = 41;
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
-                hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
-                hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
+                if (this.CreatedAt != null)
+                    hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
+                if (this.UpdatedAt != null)
+                    hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
                 if (this.SenderId != null)
                     hashCode = hashCode * 59 + this.SenderId.GetHashCode();
                 if (this.Image != null)

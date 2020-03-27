@@ -141,7 +141,8 @@ namespace Org.OpenAPITools.Model
                 ) && 
                 (
                     this.Rating == input.Rating ||
-                    this.Rating.Equals(input.Rating)
+                    (this.Rating != null &&
+                    this.Rating.Equals(input.Rating))
                 );
         }
 
@@ -160,7 +161,8 @@ namespace Org.OpenAPITools.Model
                     hashCode = hashCode * 59 + this.Title.GetHashCode();
                 if (this.Text != null)
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
-                hashCode = hashCode * 59 + this.Rating.GetHashCode();
+                if (this.Rating != null)
+                    hashCode = hashCode * 59 + this.Rating.GetHashCode();
                 return hashCode;
             }
         }

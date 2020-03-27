@@ -125,7 +125,8 @@ namespace Org.OpenAPITools.Model
             return 
                 (
                     this.IsGroup == input.IsGroup ||
-                    this.IsGroup.Equals(input.IsGroup)
+                    (this.IsGroup != null &&
+                    this.IsGroup.Equals(input.IsGroup))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -153,7 +154,8 @@ namespace Org.OpenAPITools.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                hashCode = hashCode * 59 + this.IsGroup.GetHashCode();
+                if (this.IsGroup != null)
+                    hashCode = hashCode * 59 + this.IsGroup.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Description != null)

@@ -625,13 +625,7 @@ namespace Org.OpenAPITools.Api
 
             if (id != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "id", id))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "id", id));
             }
 
 
@@ -689,13 +683,7 @@ namespace Org.OpenAPITools.Api
             
             if (id != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "id", id))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "id", id));
             }
 
 
@@ -756,33 +744,15 @@ namespace Org.OpenAPITools.Api
 
             if (topicId != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
             }
             if (page != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
             }
             if (newest != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest));
             }
 
 
@@ -844,33 +814,15 @@ namespace Org.OpenAPITools.Api
             
             if (topicId != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
             }
             if (page != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
             }
             if (newest != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest));
             }
 
 
@@ -929,23 +881,11 @@ namespace Org.OpenAPITools.Api
 
             if (postId != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "postId", postId))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "postId", postId));
             }
             if (page != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
             }
 
 
@@ -1005,23 +945,11 @@ namespace Org.OpenAPITools.Api
             
             if (postId != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "postId", postId))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "postId", postId));
             }
             if (page != null)
             {
-                foreach (var _kvp in Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page))
-                {
-                    foreach (var _kvpValue in _kvp.Value)
-                    {
-                        localVarRequestOptions.QueryParameters.Add(_kvp.Key, _kvpValue);
-                    }
-                }
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
             }
 
 
