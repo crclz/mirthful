@@ -105,5 +105,51 @@ namespace Leopard.API.Controllers
 				};
 			}
 		}
+
+
+		[HttpPost("handle-request")]
+		[Consumes(Application.Json)]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> HandleRequest([FromBody]HandleRequestModel model)
+		{
+			// request should be unhandled
+			var requestId = XUtils.ParseId(model.RequestId);
+			var request = await RequestRepository.FirstOrDefaultAsync(p => p.Id == requestId);
+			if (request == null)
+				return new ApiError(MyErrorCode.IdNotFound, "Request id not found").Wrap();
+			if (request.Status != RequestStatus.Unhandled)
+				return new ApiError(MyErrorCode.TypeMismatch, "Request is not unhandled").Wrap();
+
+			// should have super role
+			var member = await MemberRepository
+				.FirstOrDefaultAsync(p => p.UserId == AuthStore.UserId && p.TopicId == request.TopicId);
+			if (member.Role != MemberRole.Super)
+				return new ApiError(MyErrorCode.PermissionDenied, "You are not super administrator of the group").Wrap();
+
+			// handle
+			request.Handle(model.Accept);
+			await RequestRepository.PutAsync(request);
+
+			if (model.Accept)
+			{
+				var membership2 = await MemberRepository
+					.FirstOrDefaultAsync(p => p.UserId == request.SenderId && p.TopicId == request.TopicId);
+
+				membership2.SetRole(MemberRole.Admin);
+				await MemberRepository.PutAsync(membership2);
+			}
+
+			return Ok();
+
+		}
+		public class HandleRequestModel
+		{
+			[Required]
+			public string RequestId { get; set; }
+
+			[Required]
+			public bool Accept { get; set; }
+		}
 	}
 }

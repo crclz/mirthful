@@ -26,6 +26,9 @@ namespace Leopard.Domain.AdminRequestAG
 
 		public void Handle(bool accept)
 		{
+			if (Status != RequestStatus.Unhandled)
+				throw new InvalidOperationException();
+
 			if (accept)
 				Status = RequestStatus.Accepted;
 			else
