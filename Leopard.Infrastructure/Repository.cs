@@ -70,7 +70,7 @@ namespace Leopard.Infrastructure
 				else
 				{
 					// Use optimistic concurrency, UPDATE.
-					var options = new UpdateOptions()
+					var options = new ReplaceOptions()
 					{
 						IsUpsert = false
 					};
@@ -113,7 +113,7 @@ namespace Leopard.Infrastructure
 					// UPDATE SET notification.AllAck = true 
 
 					notification.AllAcknowledged();
-					var options = new UpdateOptions() { IsUpsert = false };
+					var options = new ReplaceOptions() { IsUpsert = true };
 					// TODO: directly Update (instead of replacing)
 					// Precondition: strong consistency guarantee of the store
 					await eventCollection.ReplaceOneAsync((p) => p.Id == notification.Id, notification, options);
