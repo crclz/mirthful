@@ -33,18 +33,21 @@ namespace Leopard.Domain.CommentAG
 		{
 			Guard.Argument(() => rating).InRange(1, 5);
 			Rating = rating;
+			UpdatedAtNow();
 		}
 
 		public void SetAgreeCount(int agreeCount)
 		{
 			Guard.Argument(() => agreeCount).Min(0);
 			AgreeCount = agreeCount;
+			UpdatedAtNow();
 		}
 
 		public void SetDisagreeCount(int disagreeCount)
 		{
 			Guard.Argument(() => disagreeCount).Min(0);
 			DisagreeCount++;
+			UpdatedAtNow();
 		}
 	}
 }

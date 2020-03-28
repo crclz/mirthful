@@ -84,6 +84,7 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[NotCommand]
 		[HttpGet("get-by-id")]
 		[Produces(typeof(QComment))]
 		public async Task<QComment> GetById(string id)
@@ -187,6 +188,7 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[NotCommand]
 		[HttpGet("by-work")]
 		[Produces(typeof(QComment[]))]
 		public async Task<IActionResult> GetByWork(string workId, OrderByType order, int page)

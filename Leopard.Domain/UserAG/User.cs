@@ -47,6 +47,8 @@ namespace Leopard.Domain.UserAG
 			PasswordHash = passAndSalt.ToUTF8().GetSHA256();
 
 			SecurityVersion++;
+
+			UpdatedAtNow();
 		}
 	}
 }

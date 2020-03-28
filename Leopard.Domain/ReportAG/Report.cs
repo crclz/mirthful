@@ -13,6 +13,11 @@ namespace Leopard.Domain.ReportAG
 		public string Text { get; private set; }
 		public bool Handled { get; private set; }
 
+		private Report()
+		{
+
+		}
+
 		public Report(ObjectId senderId, ObjectId commentId, string title, string text)
 		{
 			SenderId = senderId;

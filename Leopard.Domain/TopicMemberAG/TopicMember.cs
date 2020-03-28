@@ -12,6 +12,11 @@ namespace Leopard.Domain.TopicMemberAG
 		public ObjectId UserId { get; private set; }
 		public MemberRole Role { get; private set; }
 
+		private TopicMember()
+		{
+
+		}
+
 		public TopicMember(ObjectId topicId, ObjectId userId, MemberRole role, bool suppressJoinTopicEvent = false)
 		{
 			Guard.Argument(() => role).Defined();
@@ -30,6 +35,7 @@ namespace Leopard.Domain.TopicMemberAG
 		{
 			Guard.Argument(() => role).Defined();
 			Role = role;
+			UpdatedAtNow();
 		}
 	}
 

@@ -12,6 +12,11 @@ namespace Leopard.Domain.ReplyAG
 		public ObjectId PostId { get; private set; }
 		public string Text { get; private set; }
 
+		private Reply()
+		{
+
+		}
+
 		public Reply(ObjectId senderId, ObjectId postId, string text)
 		{
 			SenderId = senderId;
@@ -23,6 +28,7 @@ namespace Leopard.Domain.ReplyAG
 		{
 			Guard.Argument(() => text).NotNull().MinLength(25);
 			Text = text;
+			UpdatedAtNow();
 		}
 	}
 }

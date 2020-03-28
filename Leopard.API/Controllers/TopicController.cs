@@ -173,6 +173,7 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[NotCommand]
 		[HttpGet("get-posts")]
 		[Produces(typeof(QPost[]))]
 		public async Task<IActionResult> GetPosts(string topicId, int page, bool newest)
@@ -224,6 +225,7 @@ namespace Leopard.API.Controllers
 			}
 		}
 
+		[NotCommand]
 		[HttpGet("by-id")]
 		[Produces(typeof(QPost))]
 		public async Task<IActionResult> GetById(string id)
@@ -274,6 +276,7 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[NotCommand]
 		[HttpGet("get-replies")]
 		[Produces(typeof(QReply[]))]
 		public async Task<IActionResult> GetReplies(string postId, int page)

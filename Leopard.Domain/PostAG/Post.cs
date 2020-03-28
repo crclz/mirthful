@@ -17,6 +17,11 @@ namespace Leopard.Domain.PostAG
 		public string Text { get; private set; }
 		public string Image { get; private set; }
 
+		private Post()
+		{
+
+		}
+
 		public Post(ObjectId senderId, ObjectId topicId, string text, string title = null, string imageUrl = null)
 		{
 			SenderId = senderId;

@@ -33,6 +33,7 @@ namespace Leopard.Domain.TopicAG
 		{
 			Guard.Argument(() => cnt).Min(0);
 			MemberCount = cnt;
+			UpdatedAtNow();
 		}
 
 		public void MemberIncr(int delta)
@@ -42,6 +43,7 @@ namespace Leopard.Domain.TopicAG
 				throw new ArgumentException("'delta' makes MemberCount negative", nameof(delta));
 
 			SetMemberCount(newCnt);
+			UpdatedAtNow();
 		}
 	}
 }
