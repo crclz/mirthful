@@ -41,7 +41,9 @@ namespace Org.OpenAPITools.Model
         /// <param name="image">image.</param>
         /// <param name="title">title.</param>
         /// <param name="text">text.</param>
-        public QPost(string id = default(string), long createdAt = default(long), long updatedAt = default(long), string senderId = default(string), string image = default(string), string title = default(string), string text = default(string))
+        /// <param name="isPinned">isPinned.</param>
+        /// <param name="isEssense">isEssense.</param>
+        public QPost(string id = default(string), long createdAt = default(long), long updatedAt = default(long), string senderId = default(string), string image = default(string), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool))
         {
             this.Id = id;
             this.CreatedAt = createdAt;
@@ -50,6 +52,8 @@ namespace Org.OpenAPITools.Model
             this.Image = image;
             this.Title = title;
             this.Text = text;
+            this.IsPinned = isPinned;
+            this.IsEssense = isEssense;
         }
         
         /// <summary>
@@ -95,6 +99,18 @@ namespace Org.OpenAPITools.Model
         public string Text { get; set; }
 
         /// <summary>
+        /// Gets or Sets IsPinned
+        /// </summary>
+        [DataMember(Name="isPinned", EmitDefaultValue=false)]
+        public bool IsPinned { get; set; }
+
+        /// <summary>
+        /// Gets or Sets IsEssense
+        /// </summary>
+        [DataMember(Name="isEssense", EmitDefaultValue=false)]
+        public bool IsEssense { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -109,6 +125,8 @@ namespace Org.OpenAPITools.Model
             sb.Append("  Image: ").Append(Image).Append("\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
+            sb.Append("  IsPinned: ").Append(IsPinned).Append("\n");
+            sb.Append("  IsEssense: ").Append(IsEssense).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -150,13 +168,11 @@ namespace Org.OpenAPITools.Model
                 ) && 
                 (
                     this.CreatedAt == input.CreatedAt ||
-                    (this.CreatedAt != null &&
-                    this.CreatedAt.Equals(input.CreatedAt))
+                    this.CreatedAt.Equals(input.CreatedAt)
                 ) && 
                 (
                     this.UpdatedAt == input.UpdatedAt ||
-                    (this.UpdatedAt != null &&
-                    this.UpdatedAt.Equals(input.UpdatedAt))
+                    this.UpdatedAt.Equals(input.UpdatedAt)
                 ) && 
                 (
                     this.SenderId == input.SenderId ||
@@ -177,6 +193,14 @@ namespace Org.OpenAPITools.Model
                     this.Text == input.Text ||
                     (this.Text != null &&
                     this.Text.Equals(input.Text))
+                ) && 
+                (
+                    this.IsPinned == input.IsPinned ||
+                    this.IsPinned.Equals(input.IsPinned)
+                ) && 
+                (
+                    this.IsEssense == input.IsEssense ||
+                    this.IsEssense.Equals(input.IsEssense)
                 );
         }
 
@@ -191,10 +215,8 @@ namespace Org.OpenAPITools.Model
                 int hashCode = 41;
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.CreatedAt != null)
-                    hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
-                if (this.UpdatedAt != null)
-                    hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
+                hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
+                hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
                 if (this.SenderId != null)
                     hashCode = hashCode * 59 + this.SenderId.GetHashCode();
                 if (this.Image != null)
@@ -203,6 +225,8 @@ namespace Org.OpenAPITools.Model
                     hashCode = hashCode * 59 + this.Title.GetHashCode();
                 if (this.Text != null)
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
+                hashCode = hashCode * 59 + this.IsPinned.GetHashCode();
+                hashCode = hashCode * 59 + this.IsEssense.GetHashCode();
                 return hashCode;
             }
         }

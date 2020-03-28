@@ -127,5 +127,44 @@ namespace Leopard.API.Test.Smoke
 			Assert.Single(replies);
 			Assert.Equal(replyId, replies[0].Id);
 		}
+
+
+		[Fact]
+		async Task DoAdmin()
+		{
+			var a = await ClientSesion.RandomInstance();
+
+			// Create topic (IsGroup=true)
+			var model = new CreateTopicModel(true, "pin-test-topic", "haha", null);
+			var idRes = await a.Api<TopicApi>().CreateTopicAsync(model);
+			var topicId = idRes.Id;
+
+			// Send Posts
+
+			await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+
+			await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+
+			idRes = await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+			var pinnedId = idRes.Id;
+
+			await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+
+			var deleteId = (await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25")).Id;
+
+			var essenseId = (await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25")).Id;
+
+			// do admin
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(pinnedId, true, false, false));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(deleteId, false, false, true));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId, false, true, false));
+
+			// check
+			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0, true);
+			Assert.Equal(5, posts.Count);
+			Assert.Equal(pinnedId, posts[0].Id);
+			Assert.DoesNotContain(posts, p => p.Id == deleteId);
+			Assert.Contains(posts, p => p.Id == essenseId && p.IsEssense);
+		}
 	}
 }

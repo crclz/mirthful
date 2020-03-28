@@ -185,15 +185,18 @@ namespace Leopard.API.Controllers
 			if (tid == null)
 				return new ApiError(MyErrorCode.IdNotFound, "topicId parse error").Wrap();
 
-			var query = Db.GetCollection<Post>().AsQueryable().Where(p => p.TopicId == tid);
+			var query = Db.GetCollection<Post>().AsQueryable()
+				.Where(p => p.TopicId == tid)
+				.OrderByDescending(p => p.IsPinned);
+
 			if (newest)
-				query = query.OrderByDescending(p => p.CreatedAt);
+				query = query.ThenByDescending(p => p.CreatedAt);
 			else
-				query = query.OrderBy(p => p.CreatedAt);
+				query = query.ThenBy(p => p.CreatedAt);
 
-			query = query.Skip(page * pageSize).Take(pageSize);
+			var q2 = query.Skip(page * pageSize).Take(pageSize);
 
-			var comments = await query.ToListAsync();
+			var comments = await q2.ToListAsync();
 
 			var data = comments.Select(p => QPost.NormalView(p)).ToList();
 
@@ -209,6 +212,8 @@ namespace Leopard.API.Controllers
 			public string Image { get; set; }
 			public string Title { get; set; }
 			public string Text { get; set; }
+			public bool IsPinned { get; set; }
+			public bool IsEssense { get; set; }
 
 			public static QPost NormalView(Post p)
 			{
@@ -220,7 +225,9 @@ namespace Leopard.API.Controllers
 					SenderId = p.SenderId,
 					Image = p.Image,
 					Title = p.Title,
-					Text = p.Text
+					Text = p.Text,
+					IsPinned = p.IsPinned,
+					IsEssense = p.IsEssence
 				};
 			}
 		}

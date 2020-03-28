@@ -177,13 +177,11 @@ namespace Org.OpenAPITools.Model
                 ) && 
                 (
                     this.CreatedAt == input.CreatedAt ||
-                    (this.CreatedAt != null &&
-                    this.CreatedAt.Equals(input.CreatedAt))
+                    this.CreatedAt.Equals(input.CreatedAt)
                 ) && 
                 (
                     this.UpdatedAt == input.UpdatedAt ||
-                    (this.UpdatedAt != null &&
-                    this.UpdatedAt.Equals(input.UpdatedAt))
+                    this.UpdatedAt.Equals(input.UpdatedAt)
                 ) && 
                 (
                     this.SenderId == input.SenderId ||
@@ -207,18 +205,15 @@ namespace Org.OpenAPITools.Model
                 ) && 
                 (
                     this.Rating == input.Rating ||
-                    (this.Rating != null &&
-                    this.Rating.Equals(input.Rating))
+                    this.Rating.Equals(input.Rating)
                 ) && 
                 (
                     this.AgreeCount == input.AgreeCount ||
-                    (this.AgreeCount != null &&
-                    this.AgreeCount.Equals(input.AgreeCount))
+                    this.AgreeCount.Equals(input.AgreeCount)
                 ) && 
                 (
                     this.DisagreeCount == input.DisagreeCount ||
-                    (this.DisagreeCount != null &&
-                    this.DisagreeCount.Equals(input.DisagreeCount))
+                    this.DisagreeCount.Equals(input.DisagreeCount)
                 );
         }
 
@@ -233,10 +228,8 @@ namespace Org.OpenAPITools.Model
                 int hashCode = 41;
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.CreatedAt != null)
-                    hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
-                if (this.UpdatedAt != null)
-                    hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
+                hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
+                hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
                 if (this.SenderId != null)
                     hashCode = hashCode * 59 + this.SenderId.GetHashCode();
                 if (this.WorkId != null)
@@ -245,12 +238,9 @@ namespace Org.OpenAPITools.Model
                     hashCode = hashCode * 59 + this.Title.GetHashCode();
                 if (this.Text != null)
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
-                if (this.Rating != null)
-                    hashCode = hashCode * 59 + this.Rating.GetHashCode();
-                if (this.AgreeCount != null)
-                    hashCode = hashCode * 59 + this.AgreeCount.GetHashCode();
-                if (this.DisagreeCount != null)
-                    hashCode = hashCode * 59 + this.DisagreeCount.GetHashCode();
+                hashCode = hashCode * 59 + this.Rating.GetHashCode();
+                hashCode = hashCode * 59 + this.AgreeCount.GetHashCode();
+                hashCode = hashCode * 59 + this.DisagreeCount.GetHashCode();
                 return hashCode;
             }
         }
