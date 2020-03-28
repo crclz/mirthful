@@ -10,9 +10,8 @@ using Leopard.Domain.AdminRequestAG;
 using Leopard.Domain.TopicAG;
 using Leopard.Domain.TopicMemberAG;
 using Leopard.Infrastructure;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -40,7 +39,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
-		[ServiceFilter(typeof(AuthenticationService))]
+		[ServiceFilter(typeof(AuthenticationFilter))]
 		public async Task<IActionResult> SendAdminRequest([FromBody]SendAdminRequestModel model)
 		{
 			var topicId = XUtils.ParseId(model.TopicId);
@@ -69,6 +68,42 @@ namespace Leopard.API.Controllers
 			[Required(AllowEmptyStrings = true)]
 			[MaxLength(64)]
 			public string Text { get; set; }
+		}
+
+
+		[NotCommand]
+		[HttpGet("get-request")]
+		[Consumes(Application.Json)]
+		[Produces(typeof(QAdminRequest))]
+		public async Task<IActionResult> GetRequestById(string id)
+		{
+			var requestId = XUtils.ParseId(id);
+
+			var request = await RequestRepository.FirstOrDefaultAsync(p => p.Id == requestId);
+
+			var data = QAdminRequest.NormalView(request);
+
+			return Ok(data);
+		}
+		public class QAdminRequest
+		{
+			public ObjectId Id { get; set; }
+			public ObjectId TopicId { get; set; }
+			public ObjectId SenderId { get; set; }
+			public string Text { get; set; }
+			public RequestStatus Status { get; set; }
+
+			public static QAdminRequest NormalView(AdminRequest p)
+			{
+				return p == null ? null : new QAdminRequest
+				{
+					Id = p.Id,
+					TopicId = p.TopicId,
+					SenderId = p.SenderId,
+					Text = p.Text,
+					Status = p.Status
+				};
+			}
 		}
 	}
 }
