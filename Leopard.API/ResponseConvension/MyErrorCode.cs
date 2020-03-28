@@ -25,5 +25,7 @@
 		public static string NotAMember => "NotAMember";
 		public static string PermissionDenied => "PermissionDenied";
 		public static string UniqueConstraintConflict => "UniqueConstraintConflict";
+		public static string TypeMismatch => "TypeMismatch";
+		public static string RoleMismatch => "RoleMismatch";
 	}
 }
