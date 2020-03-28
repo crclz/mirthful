@@ -55,6 +55,31 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>List&lt;QAdminRequest&gt;</returns>
+        List<QAdminRequest> GetUnhandledRequests (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QAdminRequest&gt;</returns>
+        ApiResponse<List<QAdminRequest>> GetUnhandledRequestsWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="handleRequestModel"> (optional)</param>
         /// <returns></returns>
         void HandleRequest (HandleRequestModel handleRequestModel = default(HandleRequestModel));
@@ -120,6 +145,31 @@ namespace Org.OpenAPITools.Api
         /// <param name="id"> (optional)</param>
         /// <returns>Task of ApiResponse (QAdminRequest)</returns>
         System.Threading.Tasks.Task<ApiResponse<QAdminRequest>> GetRequestByIdAsyncWithHttpInfo (string id = default(string));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of List&lt;QAdminRequest&gt;</returns>
+        System.Threading.Tasks.Task<List<QAdminRequest>> GetUnhandledRequestsAsync (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QAdminRequest&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QAdminRequest>>> GetUnhandledRequestsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
         /// <summary>
         /// 
         /// </summary>
@@ -391,6 +441,145 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetRequestById", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>List&lt;QAdminRequest&gt;</returns>
+        public List<QAdminRequest> GetUnhandledRequests (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QAdminRequest>> localVarResponse = GetUnhandledRequestsWithHttpInfo(topicId, page, newest);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QAdminRequest&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QAdminRequest> > GetUnhandledRequestsWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+            if (newest != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest));
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<QAdminRequest> >("/api/group-management/unhandled-requests", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetUnhandledRequests", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of List&lt;QAdminRequest&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QAdminRequest>> GetUnhandledRequestsAsync (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QAdminRequest>> localVarResponse = await GetUnhandledRequestsAsyncWithHttpInfo(topicId, page, newest);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <param name="newest"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QAdminRequest&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QAdminRequest>>> GetUnhandledRequestsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+            if (newest != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest));
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<QAdminRequest>>("/api/group-management/unhandled-requests", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetUnhandledRequests", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

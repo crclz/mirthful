@@ -45,15 +45,24 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal(b.UserId, request.SenderId);
 			Assert.Equal(topicId, request.TopicId);
 
+			var requests = await a.Api<GroupManageApi>().GetUnhandledRequestsAsync(topicId, 0, true);
+			Assert.Single(requests);
+
 
 			// accept
 			await a.Api<GroupManageApi>().HandleRequestAsync(new HandleRequestModel(requestId, true));
 
-			// check request
+
+			// check request in two ways
+
 			var q = await a.Api<GroupManageApi>().GetRequestByIdAsyncWithHttpInfo(requestId);
+
+			requests = await a.Api<GroupManageApi>().GetUnhandledRequestsAsync(topicId, 0, true);
+			Assert.Empty(requests);
 
 			request = await a.Api<GroupManageApi>().GetRequestByIdAsync(requestId);
 			Assert.Equal(RequestStatus.Accepted, request.Status);
+
 
 			// check membership
 			var membership = await Db.GetCollection<TopicMember>().AsQueryable()
@@ -61,6 +70,7 @@ namespace Leopard.API.Test.Smoke
 				.FirstOrDefaultAsync();
 
 			Assert.Equal(MemberRole.Admin, membership.Role);
+
 
 		}
 	}

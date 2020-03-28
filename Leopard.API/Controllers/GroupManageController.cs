@@ -12,6 +12,8 @@ using Leopard.Domain.TopicMemberAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -24,14 +26,17 @@ namespace Leopard.API.Controllers
 		public Repository<Topic> TopicRepository { get; }
 		public Repository<TopicMember> MemberRepository { get; }
 		public Repository<AdminRequest> RequestRepository { get; }
+		public LeopardDatabase Db { get; }
 
 		public GroupManageController(AuthStore authStore, Repository<Topic> topicRepository,
-			Repository<TopicMember> memberRepository, Repository<AdminRequest> requestRepository)
+			Repository<TopicMember> memberRepository, Repository<AdminRequest> requestRepository,
+			LeopardDatabase db)
 		{
 			AuthStore = authStore;
 			TopicRepository = topicRepository;
 			MemberRepository = memberRepository;
 			RequestRepository = requestRepository;
+			Db = db;
 		}
 
 
@@ -151,6 +156,31 @@ namespace Leopard.API.Controllers
 
 			[Required]
 			public bool Accept { get; set; }
+		}
+
+
+		[NotCommand]
+		[HttpGet("unhandled-requests")]
+		[Produces(typeof(QAdminRequest[]))]
+		public async Task<IActionResult> GetUnhandledRequests(string topicId, int page, bool newest)
+		{
+			const int pageSize = 20;
+
+			var tid = XUtils.ParseId(topicId);
+			var query = Db.GetCollection<AdminRequest>().AsQueryable()
+				.Where(p => p.TopicId == tid && p.Status == RequestStatus.Unhandled);
+
+			if (newest)
+				query = query.OrderByDescending(p => p.CreatedAt);
+			else
+				query = query.OrderBy(p => p.CreatedAt);
+
+			query = query.Skip(page * pageSize).Take(pageSize);
+
+			var requests = await query.ToListAsync();
+			var data = requests.Select(p => QAdminRequest.NormalView(p)).ToList();
+
+			return Ok(data);
 		}
 	}
 }
