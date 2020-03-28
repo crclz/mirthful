@@ -301,7 +301,6 @@ namespace Leopard.API.Controllers
 
 			return Ok(qrs);
 		}
-
 		public class QReply
 		{
 			public ObjectId Id { get; set; }
@@ -319,6 +318,42 @@ namespace Leopard.API.Controllers
 					Text = p.Text
 				};
 			}
+		}
+
+
+		[HttpPost("do-admin")]
+		[Consumes(Application.Json)]
+
+		[ServiceFilter(typeof(AuthenticationFilter))]
+		public async Task<IActionResult> DoAdmin([FromBody]DoAdminModel model)
+		{
+			// post exist
+			var postId = XUtils.ParseId(model.PostId);
+			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == postId);
+			if (post == null) return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
+
+			// user >= post.Topic.Admin
+			var member = await MemberRepository.FirstOrDefaultAsync(p => p.TopicId == post.TopicId && p.UserId == AuthStore.UserId);
+			if (member == null) return new ApiError(MyErrorCode.NotAMember, "You are not a member").Wrap();
+			if ((int)member.Role < (int)MemberRole.Admin)
+				return new ApiError(MyErrorCode.PermissionDenied, "You should be at least admin").Wrap();
+
+			// ok
+			post.SetPinned(model.IsPinned);
+			post.SetEssence(model.IsEssence);
+
+			if (model.Delete)
+				post.MarkForDeletion();
+			await PostRepository.PutAsync(post);
+
+			return Ok();
+		}
+		public class DoAdminModel
+		{
+			public string PostId { get; set; }
+			public bool IsPinned { get; set; }
+			public bool IsEssence { get; set; }
+			public bool Delete { get; set; }
 		}
 	}
 }
