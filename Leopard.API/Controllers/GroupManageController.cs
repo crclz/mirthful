@@ -82,6 +82,7 @@ namespace Leopard.API.Controllers
 			var request = await RequestRepository.FirstOrDefaultAsync(p => p.Id == requestId);
 
 			var data = QAdminRequest.NormalView(request);
+			Console.WriteLine($"AAAAA {request.Status}");
 
 			return Ok(data);
 		}

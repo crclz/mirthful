@@ -1,4 +1,8 @@
-﻿using Leopard.Infrastructure;
+﻿using Leopard.Domain;
+using Leopard.Domain.TopicMemberAG;
+using Leopard.Infrastructure;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Org.OpenAPITools.Api;
 using Org.OpenAPITools.Model;
 using System;
@@ -20,7 +24,7 @@ namespace Leopard.API.Test.Smoke
 
 
 		[Fact]
-		async Task SendAdminRequest()
+		async Task SendAdminRequestAndHandle()
 		{
 			var a = await ClientSesion.RandomInstance();
 			var b = await ClientSesion.RandomInstance();
@@ -40,6 +44,24 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal(requestId, request.Id);
 			Assert.Equal(b.UserId, request.SenderId);
 			Assert.Equal(topicId, request.TopicId);
+
+
+			// accept
+			await a.Api<GroupManageApi>().HandleRequestAsync(new HandleRequestModel(requestId, true));
+
+			// check request
+			var q = await a.Api<GroupManageApi>().GetRequestByIdAsyncWithHttpInfo(requestId);
+
+			request = await a.Api<GroupManageApi>().GetRequestByIdAsync(requestId);
+			Assert.Equal(RequestStatus.Accepted, request.Status);
+
+			// check membership
+			var membership = await Db.GetCollection<TopicMember>().AsQueryable()
+				.Where(p => p.TopicId == XUtils.ParseId(topicId) && p.UserId == XUtils.ParseId(b.UserId))
+				.FirstOrDefaultAsync();
+
+			Assert.Equal(MemberRole.Admin, membership.Role);
+
 		}
 	}
 }

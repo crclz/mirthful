@@ -55,6 +55,27 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns></returns>
+        void HandleRequest (HandleRequestModel handleRequestModel = default(HandleRequestModel));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns>ApiResponse of Object(void)</returns>
+        ApiResponse<Object> HandleRequestWithHttpInfo (HandleRequestModel handleRequestModel = default(HandleRequestModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sendAdminRequestModel"> (optional)</param>
         /// <returns>IdResponse</returns>
         IdResponse SendAdminRequest (SendAdminRequestModel sendAdminRequestModel = default(SendAdminRequestModel));
@@ -99,6 +120,27 @@ namespace Org.OpenAPITools.Api
         /// <param name="id"> (optional)</param>
         /// <returns>Task of ApiResponse (QAdminRequest)</returns>
         System.Threading.Tasks.Task<ApiResponse<QAdminRequest>> GetRequestByIdAsyncWithHttpInfo (string id = default(string));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns>Task of void</returns>
+        System.Threading.Tasks.Task HandleRequestAsync (HandleRequestModel handleRequestModel = default(HandleRequestModel));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns>Task of ApiResponse</returns>
+        System.Threading.Tasks.Task<ApiResponse<Object>> HandleRequestAsyncWithHttpInfo (HandleRequestModel handleRequestModel = default(HandleRequestModel));
         /// <summary>
         /// 
         /// </summary>
@@ -349,6 +391,109 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetRequestById", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns></returns>
+        public void HandleRequest (HandleRequestModel handleRequestModel = default(HandleRequestModel))
+        {
+             HandleRequestWithHttpInfo(handleRequestModel);
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns>ApiResponse of Object(void)</returns>
+        public Org.OpenAPITools.Client.ApiResponse<Object> HandleRequestWithHttpInfo (HandleRequestModel handleRequestModel = default(HandleRequestModel))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = handleRequestModel;
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<Object>("/api/group-management/handle-request", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("HandleRequest", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns>Task of void</returns>
+        public async System.Threading.Tasks.Task HandleRequestAsync (HandleRequestModel handleRequestModel = default(HandleRequestModel))
+        {
+             await HandleRequestAsyncWithHttpInfo(handleRequestModel);
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="handleRequestModel"> (optional)</param>
+        /// <returns>Task of ApiResponse</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<Object>> HandleRequestAsyncWithHttpInfo (HandleRequestModel handleRequestModel = default(HandleRequestModel))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            localVarRequestOptions.Data = handleRequestModel;
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<Object>("/api/group-management/handle-request", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("HandleRequest", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
