@@ -9,6 +9,7 @@ using Leopard.Domain;
 using Leopard.Domain.AttitudeAG;
 using Leopard.Domain.CommentAG;
 using Leopard.Domain.ReportAG;
+using Leopard.Domain.UserAG;
 using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -93,12 +94,17 @@ namespace Leopard.API.Controllers
 			if (commentId == null)
 				return null;
 
-			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == commentId);
+			var query = from p in Db.GetCollection<Comment>().AsQueryable().Where(r => r.Id == commentId)
+						join q in Db.GetCollection<User>().AsQueryable()
+						on p.SenderId equals q.Id
+						select new { comment = p, user = q };
 
-			if (commentId == null)
-				return null;
+			var data = await query.FirstOrDefaultAsync();
 
-			return QComment.NormalView(comment);
+			var user = QUser.NormalView(data.user);
+			var commentQ = QComment.NormalView(data.comment, user);
+
+			return commentQ;
 		}
 		public class QComment
 		{
@@ -110,11 +116,12 @@ namespace Leopard.API.Controllers
 			public string Title { get; set; }
 			public string Text { get; set; }
 			public int Rating { get; set; }
-
 			public int AgreeCount { get; set; }
 			public int DisagreeCount { get; set; }
 
-			public static QComment NormalView(Comment c)
+			public QUser User { get; set; }
+
+			public static QComment NormalView(Comment c, QUser user)
 			{
 				return c == null ? null : new QComment
 				{
@@ -126,9 +133,9 @@ namespace Leopard.API.Controllers
 					Title = c.Title,
 					Text = c.Text,
 					Rating = c.Rating,
-
 					AgreeCount = c.AgreeCount,
-					DisagreeCount = c.DisagreeCount
+					DisagreeCount = c.DisagreeCount,
+					User = user
 				};
 			}
 		}
@@ -204,18 +211,23 @@ namespace Leopard.API.Controllers
 			if (wid == null)
 				return new ApiError(MyErrorCode.ModelInvalid, "wordId parse error").Wrap();
 
-			var query = Db.GetCollection<Comment>().AsQueryable().Where(p => p.WorkId == wid);
+			var query = from p in Db.GetCollection<Comment>().AsQueryable()
+						where p.WorkId == wid
+						join q in Db.GetCollection<User>().AsQueryable()
+						on p.SenderId equals q.Id
+						select new { comment = p, user = q };
 
 			if (order == OrderByType.Hottest)
-				query = query.OrderByDescending(p => p.AgreeCount);
+				query = query.OrderByDescending(p => p.comment.AgreeCount);
 			else
-				query = query.OrderByDescending(p => p.CreatedAt);
+				query = query.OrderByDescending(p => p.comment.CreatedAt);
 
 			query = query.Skip(page * pageSize).Take(pageSize);
 
-			var comments = await query.ToListAsync();
+			var data = await query.ToListAsync();
+			var commentsQ = data.Select(p => QComment.NormalView(p.comment, QUser.NormalView(p.user))).ToList();
 
-			return Ok(comments);
+			return Ok(commentsQ);
 		}
 
 		public enum OrderByType
