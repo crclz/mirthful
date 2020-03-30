@@ -1,36 +1,34 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace Leopard.Domain
 {
 	public abstract class Entity
 	{
+		public Guid Id { get; protected set; }
+		public long CreatedAt { get; protected set; }
+		public long UpdatedAt { get; protected set; }
+
 		protected Entity()
 		{
 			// Safe design / convension first: Id and CreatedAt can be freely overwitten if value provided
-			Id = ObjectId.GenerateNewId();
+			Id = Guid.NewGuid();
 			CreatedAt = UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 		}
 
-		protected Entity(ObjectId id)
+		protected Entity(Guid id)
 		{
 			Id = id;
 			CreatedAt = UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 		}
-
-		public ObjectId Id { get; protected set; }
-		public long CreatedAt { get; protected set; }
-		public long UpdatedAt { get; protected set; }
 
 		protected void UpdatedAtNow()
 		{
 			UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 		}
 
-		[BsonIgnore]
 		private List<BaseNotification> _domainEvents { get; set; } = new List<BaseNotification>();
 
 		internal void PushDomainEvent(BaseNotification notification)

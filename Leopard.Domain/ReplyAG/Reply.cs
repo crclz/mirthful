@@ -1,5 +1,4 @@
 ﻿using Dawn;
-using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +7,8 @@ namespace Leopard.Domain.ReplyAG
 {
 	public class Reply : RootEntity
 	{
-		public ObjectId SenderId { get; private set; }
-		public ObjectId PostId { get; private set; }
+		public Guid SenderId { get; private set; }
+		public Guid PostId { get; private set; }
 		public string Text { get; private set; }
 
 		private Reply()
@@ -17,7 +16,7 @@ namespace Leopard.Domain.ReplyAG
 
 		}
 
-		public Reply(ObjectId senderId, ObjectId postId, string text)
+		public Reply(Guid senderId, Guid postId, string text)
 		{
 			SenderId = senderId;
 			PostId = postId;

@@ -1,5 +1,4 @@
 ﻿using Dawn;
-using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +7,8 @@ namespace Leopard.Domain.TopicMemberAG
 {
 	public class TopicMember : RootEntity
 	{
-		public ObjectId TopicId { get; private set; }
-		public ObjectId UserId { get; private set; }
+		public Guid TopicId { get; private set; }
+		public Guid UserId { get; private set; }
 		public MemberRole Role { get; private set; }
 
 		private TopicMember()
@@ -17,7 +16,7 @@ namespace Leopard.Domain.TopicMemberAG
 
 		}
 
-		public TopicMember(ObjectId topicId, ObjectId userId, MemberRole role, bool suppressJoinTopicEvent = false)
+		public TopicMember(Guid topicId, Guid userId, MemberRole role, bool suppressJoinTopicEvent = false)
 		{
 			Guard.Argument(() => role).Defined();
 

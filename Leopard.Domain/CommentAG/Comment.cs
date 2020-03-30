@@ -1,5 +1,4 @@
 ﻿using Dawn;
-using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +7,8 @@ namespace Leopard.Domain.CommentAG
 {
 	public class Comment : RootEntity
 	{
-		public ObjectId SenderId { get; private set; }
-		public ObjectId WorkId { get; private set; }
+		public Guid SenderId { get; private set; }
+		public Guid WorkId { get; private set; }
 		public string Title { get; private set; }
 		public string Text { get; private set; }
 		public int Rating { get; private set; }
@@ -20,7 +19,7 @@ namespace Leopard.Domain.CommentAG
 		{
 		}
 
-		public Comment(ObjectId senderId, ObjectId workId, string title, string text, int rating)
+		public Comment(Guid senderId, Guid workId, string title, string text, int rating)
 		{
 			SenderId = senderId;
 			WorkId = workId;

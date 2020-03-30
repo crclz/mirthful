@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,10 +6,10 @@ namespace Leopard.Domain.TopicMemberAG
 {
 	public class JoinTopicEvent : BaseNotification
 	{
-		public ObjectId TopicId { get; private set; }
-		public ObjectId UserId { get; private set; }
+		public Guid TopicId { get; private set; }
+		public Guid UserId { get; private set; }
 
-		public JoinTopicEvent(ObjectId topicId, ObjectId userId)
+		public JoinTopicEvent(Guid topicId, Guid userId)
 		{
 			TopicId = topicId;
 			UserId = userId;

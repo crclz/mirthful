@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,8 +6,8 @@ namespace Leopard.Domain.AdminRequestAG
 {
 	public class AdminRequest : RootEntity
 	{
-		public ObjectId TopicId { get; private set; }
-		public ObjectId SenderId { get; private set; }
+		public Guid TopicId { get; private set; }
+		public Guid SenderId { get; private set; }
 		public string Text { get; private set; }
 		public RequestStatus Status { get; private set; }
 
@@ -16,7 +15,7 @@ namespace Leopard.Domain.AdminRequestAG
 		{
 		}
 
-		public AdminRequest(ObjectId topicId, ObjectId senderId, string text)
+		public AdminRequest(Guid topicId, Guid senderId, string text)
 		{
 			TopicId = topicId;
 			SenderId = senderId;

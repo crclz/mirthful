@@ -1,16 +1,16 @@
 ﻿using MediatR;
-using MongoDB.Bson;
+using System;
 
 namespace Leopard.Domain
 {
 	public abstract class BaseNotification : INotification
 	{
-		public ObjectId Id { get; private set; }
+		public Guid Id { get; private set; }
 		public bool AllAck { get; private set; }
 
 		public BaseNotification()
 		{
-			Id = ObjectId.GenerateNewId();
+			Id = Guid.NewGuid();
 			AllAck = false;
 		}
 

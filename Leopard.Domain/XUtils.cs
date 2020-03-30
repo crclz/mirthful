@@ -1,5 +1,5 @@
 ﻿using Crucialize.LangExt;
-using MongoDB.Bson;
+using System;
 using System.Security.Cryptography;
 
 namespace Leopard.Domain
@@ -24,19 +24,11 @@ namespace Leopard.Domain
 			return s.Substring(0, length);
 		}
 
-		public static (ObjectId, ObjectId) SmallerBigger(ObjectId a, ObjectId b)
+		public static Guid? ParseId(string guidString)
 		{
-			if (a > b)
-				return (b, a);
-			else
-				return (a, b);
-		}
-
-		public static ObjectId? ParseId(string objectIdString)
-		{
-			if (!ObjectId.TryParse(objectIdString, out ObjectId lastRecordId))
+			if (!Guid.TryParse(guidString, out Guid id))
 				return null;
-			return lastRecordId;
+			return id;
 		}
 	}
 }

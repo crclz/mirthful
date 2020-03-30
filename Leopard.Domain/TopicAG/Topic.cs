@@ -1,5 +1,4 @@
 ﻿using Dawn;
-using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,14 +10,14 @@ namespace Leopard.Domain.TopicAG
 		public bool IsGroup { get; private set; }
 		public string Name { get; private set; }
 		public string Description { get; private set; }
-		public ObjectId? RelatedWork { get; private set; }
+		public Guid? RelatedWork { get; private set; }
 		public int MemberCount { get; private set; }
 
 		private Topic()
 		{
 		}
 
-		public Topic(bool isGroup, string name, string description, ObjectId? relatedWork, ObjectId creatorId)
+		public Topic(bool isGroup, string name, string description, Guid? relatedWork, Guid creatorId)
 		{
 			IsGroup = isGroup;
 			Name = name ?? throw new ArgumentNullException(nameof(name));
