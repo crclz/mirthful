@@ -11,6 +11,7 @@ using Leopard.Domain.PostAG;
 using Leopard.Domain.ReplyAG;
 using Leopard.Domain.TopicAG;
 using Leopard.Domain.TopicMemberAG;
+using Leopard.Domain.UserAG;
 using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -185,20 +186,24 @@ namespace Leopard.API.Controllers
 			if (tid == null)
 				return new ApiError(MyErrorCode.IdNotFound, "topicId parse error").Wrap();
 
-			var query = Db.GetCollection<Post>().AsQueryable()
-				.Where(p => p.TopicId == tid)
-				.OrderByDescending(p => p.IsPinned);
+			var query = from p in Db.GetCollection<Post>().AsQueryable()
+						where p.TopicId == tid
+						join q in Db.GetCollection<User>().AsQueryable()
+						on p.SenderId equals q.Id
+						select new { post = p, user = q };
+
+			var oq = query.OrderByDescending(p => p.post.IsPinned);
 
 			if (newest)
-				query = query.ThenByDescending(p => p.CreatedAt);
+				oq = oq.ThenByDescending(p => p.post.CreatedAt);
 			else
-				query = query.ThenBy(p => p.CreatedAt);
+				oq = oq.ThenBy(p => p.post.CreatedAt);
 
-			var q2 = query.Skip(page * pageSize).Take(pageSize);
+			var q2 = oq.Skip(page * pageSize).Take(pageSize);
 
-			var comments = await q2.ToListAsync();
+			var posts = await q2.ToListAsync();
 
-			var data = comments.Select(p => QPost.NormalView(p)).ToList();
+			var data = posts.Select(p => QPost.NormalView(p.post, QUser.NormalView(p.user))).ToList();
 
 			return Ok(data);
 		}
@@ -215,7 +220,9 @@ namespace Leopard.API.Controllers
 			public bool IsPinned { get; set; }
 			public bool IsEssense { get; set; }
 
-			public static QPost NormalView(Post p)
+			public QUser User { get; set; }
+
+			public static QPost NormalView(Post p, QUser user)
 			{
 				return p == null ? null : new QPost
 				{
@@ -227,7 +234,9 @@ namespace Leopard.API.Controllers
 					Title = p.Title,
 					Text = p.Text,
 					IsPinned = p.IsPinned,
-					IsEssense = p.IsEssence
+					IsEssense = p.IsEssence,
+
+					User = user
 				};
 			}
 		}
@@ -241,9 +250,15 @@ namespace Leopard.API.Controllers
 			if (postId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Id parse error").Wrap();
 
-			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == postId);
+			var query = from p in Db.GetCollection<Post>().AsQueryable()
+						where p.Id == postId
+						join q in Db.GetCollection<User>().AsQueryable()
+						on p.SenderId equals q.Id
+						select new { post = p, user = q }; ;
 
-			var qpost = QPost.NormalView(post);
+			var data = await query.FirstOrDefaultAsync();
+
+			var qpost = QPost.NormalView(data.post, QUser.NormalView(data.user));
 
 			return Ok(qpost);
 		}
@@ -297,16 +312,17 @@ namespace Leopard.API.Controllers
 				return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
 
 			// get
-			var replies = await Db.GetCollection<Reply>().AsQueryable()
-				.Where(p => p.PostId == pid)
-				.OrderBy(p => p.CreatedAt)
-				.Skip(pageSize * page)
-				.Take(pageSize)
-				.ToListAsync();
+			var query = (from p in Db.GetCollection<Reply>().AsQueryable().Where(p => p.PostId == pid)
+						 join q in Db.GetCollection<User>().AsQueryable()
+						 on p.SenderId equals q.Id
+						 select new { reply = p, user = q })
+						 .OrderBy(p => p.reply.CreatedAt);
 
-			var qrs = replies.Select(p => QReply.NormalView(p)).ToList();
+			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
 
-			return Ok(qrs);
+			var repliesV = data.Select(p => QReply.NormalView(p.reply, p.user));
+
+			return Ok(repliesV);
 		}
 		public class QReply
 		{
@@ -315,14 +331,18 @@ namespace Leopard.API.Controllers
 			public ObjectId PostId { get; set; }
 			public string Text { get; set; }
 
-			public static QReply NormalView(Reply p)
+			public QUser User { get; set; }
+
+			public static QReply NormalView(Reply p, User user)
 			{
 				return p == null ? null : new QReply
 				{
 					Id = p.Id,
 					SenderId = p.SenderId,
 					PostId = p.PostId,
-					Text = p.Text
+					Text = p.Text,
+
+					User = QUser.NormalView(user)
 				};
 			}
 		}
