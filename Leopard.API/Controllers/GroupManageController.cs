@@ -9,6 +9,7 @@ using Leopard.Domain;
 using Leopard.Domain.AdminRequestAG;
 using Leopard.Domain.TopicAG;
 using Leopard.Domain.TopicMemberAG;
+using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -84,12 +85,17 @@ namespace Leopard.API.Controllers
 		{
 			var requestId = XUtils.ParseId(id);
 
-			var request = await RequestRepository.FirstOrDefaultAsync(p => p.Id == requestId);
+			var query = from p in Db.GetCollection<AdminRequest>().AsQueryable()
+						where p.Id == requestId
+						join q in Db.GetCollection<User>().AsQueryable()
+						on p.SenderId equals q.Id
+						select new { request = p, user = q };
 
-			var data = QAdminRequest.NormalView(request);
-			Console.WriteLine($"AAAAA {request.Status}");
+			var data = await query.FirstOrDefaultAsync();
 
-			return Ok(data);
+			var requestV = QAdminRequest.NormalView(data.request, QUser.NormalView(data.user));
+
+			return Ok(requestV);
 		}
 		public class QAdminRequest
 		{
@@ -99,7 +105,9 @@ namespace Leopard.API.Controllers
 			public string Text { get; set; }
 			public RequestStatus Status { get; set; }
 
-			public static QAdminRequest NormalView(AdminRequest p)
+			public QUser User { get; set; }
+
+			public static QAdminRequest NormalView(AdminRequest p, QUser user)
 			{
 				return p == null ? null : new QAdminRequest
 				{
@@ -107,7 +115,9 @@ namespace Leopard.API.Controllers
 					TopicId = p.TopicId,
 					SenderId = p.SenderId,
 					Text = p.Text,
-					Status = p.Status
+					Status = p.Status,
+
+					User = user
 				};
 			}
 		}
@@ -167,18 +177,22 @@ namespace Leopard.API.Controllers
 			const int pageSize = 20;
 
 			var tid = XUtils.ParseId(topicId);
-			var query = Db.GetCollection<AdminRequest>().AsQueryable()
-				.Where(p => p.TopicId == tid && p.Status == RequestStatus.Unhandled);
+
+			var query = from p in Db.GetCollection<AdminRequest>().AsQueryable()
+						where p.TopicId == tid && p.Status == RequestStatus.Unhandled
+						join q in Db.GetCollection<User>().AsQueryable()
+						on p.SenderId equals q.Id
+						select new { request = p, user = q };
 
 			if (newest)
-				query = query.OrderByDescending(p => p.CreatedAt);
+				query = query.OrderByDescending(p => p.request.CreatedAt);
 			else
-				query = query.OrderBy(p => p.CreatedAt);
+				query = query.OrderBy(p => p.request.CreatedAt);
 
 			query = query.Skip(page * pageSize).Take(pageSize);
 
 			var requests = await query.ToListAsync();
-			var data = requests.Select(p => QAdminRequest.NormalView(p)).ToList();
+			var data = requests.Select(p => QAdminRequest.NormalView(p.request, QUser.NormalView(p.user))).ToList();
 
 			return Ok(data);
 		}
