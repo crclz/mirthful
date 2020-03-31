@@ -1,12 +1,12 @@
 ﻿using Leopard.Domain;
 using Leopard.Domain.TopicMemberAG;
 using Leopard.Infrastructure;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Org.OpenAPITools.Api;
 using Org.OpenAPITools.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -15,11 +15,10 @@ namespace Leopard.API.Test.Smoke
 {
 	public class GroupManageTest
 	{
-		public LeopardDatabase Db { get; }
-
+		OneContext Context { get; }
 		public GroupManageTest()
 		{
-			Db = new LeopardDatabase();
+			Context = new OneContext(null);
 		}
 
 
@@ -65,7 +64,7 @@ namespace Leopard.API.Test.Smoke
 
 
 			// check membership
-			var membership = await Db.GetCollection<TopicMember>().AsQueryable()
+			var membership = await Context.TopicMembers
 				.Where(p => p.TopicId == XUtils.ParseId(topicId) && p.UserId == XUtils.ParseId(b.UserId))
 				.FirstOrDefaultAsync();
 

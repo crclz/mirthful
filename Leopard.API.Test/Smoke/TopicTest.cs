@@ -1,9 +1,7 @@
 ﻿using Leopard.Domain.TopicAG;
 using Leopard.Domain.TopicMemberAG;
 using Leopard.Infrastructure;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using Org.OpenAPITools.Api;
 using Org.OpenAPITools.Model;
 using System;
@@ -18,11 +16,11 @@ namespace Leopard.API.Test.Smoke
 {
 	public class TopicTest
 	{
-		public LeopardDatabase Db { get; }
+		public OneContext Context { get; }
 
 		public TopicTest()
 		{
-			Db = new LeopardDatabase();
+			Context = new OneContext(null);
 		}
 
 		[Fact]
@@ -45,8 +43,8 @@ namespace Leopard.API.Test.Smoke
 
 			// Check topic
 
-			var topic = await Db.GetCollection<Topic>().AsQueryable()
-				.Where(p => p.Id == ObjectId.Parse(topicId)).FirstOrDefaultAsync();
+			var topic = await Context.Topics
+				.Where(p => p.Id == Guid.Parse(topicId)).FirstOrDefaultAsync();
 
 			Assert.NotNull(topic);
 			Assert.Equal(model.IsGroup, topic.IsGroup);
@@ -60,8 +58,8 @@ namespace Leopard.API.Test.Smoke
 
 			// Check member
 
-			var members = await Db.GetCollection<TopicMember>().AsQueryable()
-				.Where(p => p.TopicId == ObjectId.Parse(topicId)).ToListAsync();
+			var members = await Context.TopicMembers
+				.Where(p => p.TopicId == Guid.Parse(topicId)).ToListAsync();
 
 			Assert.Single(members);
 
@@ -92,8 +90,8 @@ namespace Leopard.API.Test.Smoke
 			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId));
 
 			// Check member
-			var members = await Db.GetCollection<TopicMember>().AsQueryable()
-				.Where(p => p.TopicId == ObjectId.Parse(topicId)).ToListAsync();
+			var members = await Context.TopicMembers
+				.Where(p => p.TopicId == Guid.Parse(topicId)).ToListAsync();
 
 			Assert.Equal(2, members.Count);
 

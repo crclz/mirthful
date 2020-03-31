@@ -1,8 +1,5 @@
 ﻿using Leopard.Domain.AttitudeAG;
 using Leopard.Infrastructure;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Org.OpenAPITools.Api;
 using Org.OpenAPITools.Model;
 using System;
@@ -18,11 +15,11 @@ namespace Leopard.API.Test.Smoke
 	public class CommentTest
 	{
 		public static string Work01Id = "5e7ac5057108f920d4bd3c37";
-		public LeopardDatabase Db { get; }
+		public OneContext Context { get; }
 
 		public CommentTest()
 		{
-			Db = new LeopardDatabase();
+			Context = new OneContext(new Microsoft.EntityFrameworkCore.DbContextOptions<OneContext>());
 		}
 
 		[Fact]
