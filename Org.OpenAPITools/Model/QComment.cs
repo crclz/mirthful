@@ -45,7 +45,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="agreeCount">agreeCount.</param>
         /// <param name="disagreeCount">disagreeCount.</param>
         /// <param name="user">user.</param>
-        public QComment(string id = default(string), long createdAt = default(long), long updatedAt = default(long), string senderId = default(string), string workId = default(string), string title = default(string), string text = default(string), int rating = default(int), int agreeCount = default(int), int disagreeCount = default(int), QUser user = default(QUser))
+        public QComment(Guid id = default(Guid), long createdAt = default(long), long updatedAt = default(long), Guid senderId = default(Guid), Guid workId = default(Guid), string title = default(string), string text = default(string), int rating = default(int), int agreeCount = default(int), int disagreeCount = default(int), QUser user = default(QUser))
         {
             this.Id = id;
             this.CreatedAt = createdAt;
@@ -64,7 +64,7 @@ namespace Org.OpenAPITools.Model
         /// Gets or Sets Id
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt
@@ -82,13 +82,13 @@ namespace Org.OpenAPITools.Model
         /// Gets or Sets SenderId
         /// </summary>
         [DataMember(Name="senderId", EmitDefaultValue=false)]
-        public string SenderId { get; set; }
+        public Guid SenderId { get; set; }
 
         /// <summary>
         /// Gets or Sets WorkId
         /// </summary>
         [DataMember(Name="workId", EmitDefaultValue=false)]
-        public string WorkId { get; set; }
+        public Guid WorkId { get; set; }
 
         /// <summary>
         /// Gets or Sets Title

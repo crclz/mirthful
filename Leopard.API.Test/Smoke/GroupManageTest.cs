@@ -18,7 +18,7 @@ namespace Leopard.API.Test.Smoke
 		OneContext Context { get; }
 		public GroupManageTest()
 		{
-			Context = new OneContext(null);
+			Context = new OneContext(new DbContextOptions<OneContext>());
 		}
 
 
@@ -32,40 +32,40 @@ namespace Leopard.API.Test.Smoke
 			var topicId = (await a.Api<TopicApi>().CreateTopicAsync(new CreateTopicModel(true, "ssss", "DDDDD", null))).Id;
 
 			// b join group
-			await b.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId));
+			await b.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId.ToString()));
 
 			// b send request
-			var requestId = (await b.Api<GroupManageApi>().SendAdminRequestAsync(new SendAdminRequestModel(topicId, "hello!!!"))).Id;
+			var requestId = (await b.Api<GroupManageApi>().SendAdminRequestAsync(new SendAdminRequestModel(topicId.ToString(), "hello!!!"))).Id;
 
 			// check
-			var request = await a.Api<GroupManageApi>().GetRequestByIdAsync(requestId);
+			var request = await a.Api<GroupManageApi>().GetRequestByIdAsync(requestId.ToString());
 
 			Assert.Equal(requestId, request.Id);
 			Assert.Equal(b.UserId, request.SenderId);
 			Assert.Equal(topicId, request.TopicId);
 
-			var requests = await a.Api<GroupManageApi>().GetUnhandledRequestsAsync(topicId, 0, true);
+			var requests = await a.Api<GroupManageApi>().GetUnhandledRequestsAsync(topicId.ToString(), 0, true);
 			Assert.Single(requests);
 
 
 			// accept
-			await a.Api<GroupManageApi>().HandleRequestAsync(new HandleRequestModel(requestId, true));
+			await a.Api<GroupManageApi>().HandleRequestAsync(new HandleRequestModel(requestId.ToString(), true));
 
 
 			// check request in two ways
 
-			var q = await a.Api<GroupManageApi>().GetRequestByIdAsyncWithHttpInfo(requestId);
+			var q = await a.Api<GroupManageApi>().GetRequestByIdAsyncWithHttpInfo(requestId.ToString());
 
-			requests = await a.Api<GroupManageApi>().GetUnhandledRequestsAsync(topicId, 0, true);
+			requests = await a.Api<GroupManageApi>().GetUnhandledRequestsAsync(topicId.ToString(), 0, true);
 			Assert.Empty(requests);
 
-			request = await a.Api<GroupManageApi>().GetRequestByIdAsync(requestId);
+			request = await a.Api<GroupManageApi>().GetRequestByIdAsync(requestId.ToString());
 			Assert.Equal(RequestStatus.Accepted, request.Status);
 
 
 			// check membership
 			var membership = await Context.TopicMembers
-				.Where(p => p.TopicId == XUtils.ParseId(topicId) && p.UserId == XUtils.ParseId(b.UserId))
+				.Where(p => p.TopicId == XUtils.ParseId(topicId.ToString()) && p.UserId == XUtils.ParseId(b.UserId.ToString()))
 				.FirstOrDefaultAsync();
 
 			Assert.Equal(MemberRole.Admin, membership.Role);

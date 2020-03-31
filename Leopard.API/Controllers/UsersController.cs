@@ -33,6 +33,7 @@ namespace Leopard.API.Controllers
 
 			try
 			{
+				await Context.AddAsync(user);
 				await Context.GoAsync();
 				return Ok(new IdResponse(user.Id));
 			}

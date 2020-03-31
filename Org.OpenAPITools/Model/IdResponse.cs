@@ -35,7 +35,7 @@ namespace Org.OpenAPITools.Model
         /// Initializes a new instance of the <see cref="IdResponse" /> class.
         /// </summary>
         /// <param name="id">id.</param>
-        public IdResponse(string id = default(string))
+        public IdResponse(Guid id = default(Guid))
         {
             this.Id = id;
         }
@@ -44,7 +44,7 @@ namespace Org.OpenAPITools.Model
         /// Gets or Sets Id
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

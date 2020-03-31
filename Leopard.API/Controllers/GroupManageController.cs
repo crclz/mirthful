@@ -53,6 +53,8 @@ namespace Leopard.API.Controllers
 
 			// send request
 			var request = new AdminRequest(topicId.Value, AuthStore.UserId.Value, model.Text);
+
+			await Context.AddAsync(request);
 			await Context.GoAsync();
 			return Ok(new IdResponse(request.Id));
 		}

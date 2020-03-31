@@ -21,7 +21,7 @@ namespace Leopard.API.Test.Single
 			var usersApi = new UsersApi(TestConfig.BaseUrl);
 			var res = await usersApi.RegisterAsync(new RegisterModel(username, password, "x", ""));
 			Assert.NotNull(res);
-			Assert.NotNull(res.Id);
+			Assert.NotEqual(default, res.Id);
 
 			// login
 			var accessApi = new AccessApi(TestConfig.BaseUrl);

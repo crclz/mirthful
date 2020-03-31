@@ -14,7 +14,7 @@ namespace Leopard.API.Test.Smoke
 {
 	public class CommentTest
 	{
-		public static string Work01Id = "5e7ac5057108f920d4bd3c37";
+		public static string Work01Id = "0a180b32-2510-406f-b0fd-1e19b6bb2697";
 		public OneContext Context { get; }
 
 		public CommentTest()
@@ -49,10 +49,10 @@ namespace Leopard.API.Test.Smoke
 				new CreateCommentModel(Work01Id, title, text, rating));
 
 			Assert.NotNull(commentResponse);
-			Assert.NotNull(commentResponse.Id);
+			Assert.NotEqual(default, commentResponse.Id);
 
 			// Get by id
-			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentResponse.Id);
+			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentResponse.Id.ToString());
 			Assert.Equal(title, comment.Title);
 			Assert.Equal(text, comment.Text);
 			Assert.Equal(a.UserId, comment.SenderId);
@@ -82,22 +82,22 @@ namespace Leopard.API.Test.Smoke
 			var commentId = commentResponse.Id;
 
 			// Create attitude
-			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id, true);
+			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id.ToString(), true);
 
 			// Test attitude count
-			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentId);
+			var comment = await a.Api<CommentsApi>().GetByIdAsync(commentId.ToString());
 			Assert.Equal(1, comment.AgreeCount);
 			Assert.Equal(0, comment.DisagreeCount);
 
 			// Duplication attitude
-			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id, true);
-			comment = await a.Api<CommentsApi>().GetByIdAsync(commentId);
+			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id.ToString(), true);
+			comment = await a.Api<CommentsApi>().GetByIdAsync(commentId.ToString());
 			Assert.Equal(1, comment.AgreeCount);
 			Assert.Equal(0, comment.DisagreeCount);
 
 			// Change attitude
-			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id, false);
-			comment = await a.Api<CommentsApi>().GetByIdAsync(commentId);
+			await a.Api<CommentsApi>().ExpressAttitudeAsync(commentResponse.Id.ToString(), false);
+			comment = await a.Api<CommentsApi>().GetByIdAsync(commentId.ToString());
 			Assert.Equal(0, comment.AgreeCount);
 			Assert.Equal(1, comment.DisagreeCount);
 		}
@@ -134,11 +134,11 @@ namespace Leopard.API.Test.Smoke
 			// Report
 			string reportTitle = "shit", reportText = "helloooooooooooooooooooooooooooo";
 
-			await a.Api<CommentsApi>().ReportAsync(new ReportModel(commentId, reportTitle, reportText));
+			await a.Api<CommentsApi>().ReportAsync(new ReportModel(commentId.ToString(), reportTitle, reportText));
 
 			// Duplicate report
 			await Assert.ThrowsAnyAsync<Exception>(
-				() => a.Api<CommentsApi>().ReportAsync(new ReportModel(commentId, reportTitle, reportText)));
+				() => a.Api<CommentsApi>().ReportAsync(new ReportModel(commentId.ToString(), reportTitle, reportText)));
 		}
 	}
 }

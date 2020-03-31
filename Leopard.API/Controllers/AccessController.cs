@@ -94,7 +94,7 @@ namespace Leopard.API.Controllers
 
 	public class QUser
 	{
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 		public string Description { get; set; }
 		public string Nickname { get; set; }
 		public string Avatar { get; set; }
@@ -103,7 +103,7 @@ namespace Leopard.API.Controllers
 		{
 			return new QUser
 			{
-				Id = user.Id.ToString(),
+				Id = user.Id,
 				Description = user.Description,
 				Nickname = user.Nickname,
 				Avatar = user.Avatar,

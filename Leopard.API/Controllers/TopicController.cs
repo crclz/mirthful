@@ -52,6 +52,7 @@ namespace Leopard.API.Controllers
 			var topic = new Topic(model.IsGroup, model.Name, model.Description, workId, AuthStore.UserId.Value);
 			topic.SetMemberCount(1);
 
+			await Context.AddAsync(topic);
 			await Context.GoAsync();
 
 			return Ok(new IdResponse(topic.Id));
@@ -97,6 +98,8 @@ namespace Leopard.API.Controllers
 
 			// join topic
 			member = new TopicMember(topicId.Value, AuthStore.UserId.Value, MemberRole.Normal);
+
+			await Context.AddAsync(member);
 			await Context.GoAsync();
 
 			return Ok();
@@ -143,6 +146,8 @@ namespace Leopard.API.Controllers
 			}
 
 			var post = new Post(AuthStore.UserId.Value, topicId.Value, model.Text, model.Title, imageUrl);
+
+			await Context.AddAsync(post);
 			await Context.GoAsync();
 
 			return Ok(new IdResponse(post.Id));
@@ -270,6 +275,8 @@ namespace Leopard.API.Controllers
 
 			// send reply
 			var reply = new Reply(AuthStore.UserId.Value, post.Id, model.Text);
+
+			await Context.AddAsync(reply);
 			await Context.GoAsync();
 			return Ok(new IdResponse(reply.Id));
 		}
@@ -357,6 +364,7 @@ namespace Leopard.API.Controllers
 
 			if (model.Delete)
 				Context.Remove(post);
+
 			await Context.GoAsync();
 
 			return Ok();

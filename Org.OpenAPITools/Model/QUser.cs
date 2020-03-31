@@ -38,7 +38,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="description">description.</param>
         /// <param name="nickname">nickname.</param>
         /// <param name="avatar">avatar.</param>
-        public QUser(string id = default(string), string description = default(string), string nickname = default(string), string avatar = default(string))
+        public QUser(Guid id = default(Guid), string description = default(string), string nickname = default(string), string avatar = default(string))
         {
             this.Id = id;
             this.Description = description;
@@ -49,8 +49,8 @@ namespace Org.OpenAPITools.Model
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=true)]
-        public string Id { get; set; }
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Description

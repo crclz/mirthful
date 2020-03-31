@@ -19,7 +19,7 @@ namespace Leopard.API.Test.Single
 			var usersApi = new UsersApi(TestConfig.BaseUrl);
 			var res = await usersApi.RegisterAsync(new RegisterModel(username, "asda1dsas", "x", ""));
 			Assert.NotNull(res);
-			Assert.NotNull(res.Id);
+			Assert.NotEqual(default, res.Id);
 		}
 	}
 }

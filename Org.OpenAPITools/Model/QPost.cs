@@ -43,7 +43,8 @@ namespace Org.OpenAPITools.Model
         /// <param name="text">text.</param>
         /// <param name="isPinned">isPinned.</param>
         /// <param name="isEssense">isEssense.</param>
-        public QPost(string id = default(string), long createdAt = default(long), long updatedAt = default(long), string senderId = default(string), string image = default(string), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool))
+        /// <param name="user">user.</param>
+        public QPost(Guid id = default(Guid), long createdAt = default(long), long updatedAt = default(long), Guid senderId = default(Guid), string image = default(string), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool), QUser user = default(QUser))
         {
             this.Id = id;
             this.CreatedAt = createdAt;
@@ -54,13 +55,14 @@ namespace Org.OpenAPITools.Model
             this.Text = text;
             this.IsPinned = isPinned;
             this.IsEssense = isEssense;
+            this.User = user;
         }
         
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt
@@ -78,7 +80,7 @@ namespace Org.OpenAPITools.Model
         /// Gets or Sets SenderId
         /// </summary>
         [DataMember(Name="senderId", EmitDefaultValue=false)]
-        public string SenderId { get; set; }
+        public Guid SenderId { get; set; }
 
         /// <summary>
         /// Gets or Sets Image
@@ -111,6 +113,12 @@ namespace Org.OpenAPITools.Model
         public bool IsEssense { get; set; }
 
         /// <summary>
+        /// Gets or Sets User
+        /// </summary>
+        [DataMember(Name="user", EmitDefaultValue=false)]
+        public QUser User { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -127,6 +135,7 @@ namespace Org.OpenAPITools.Model
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("  IsPinned: ").Append(IsPinned).Append("\n");
             sb.Append("  IsEssense: ").Append(IsEssense).Append("\n");
+            sb.Append("  User: ").Append(User).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -201,6 +210,11 @@ namespace Org.OpenAPITools.Model
                 (
                     this.IsEssense == input.IsEssense ||
                     this.IsEssense.Equals(input.IsEssense)
+                ) && 
+                (
+                    this.User == input.User ||
+                    (this.User != null &&
+                    this.User.Equals(input.User))
                 );
         }
 
@@ -227,6 +241,8 @@ namespace Org.OpenAPITools.Model
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
                 hashCode = hashCode * 59 + this.IsPinned.GetHashCode();
                 hashCode = hashCode * 59 + this.IsEssense.GetHashCode();
+                if (this.User != null)
+                    hashCode = hashCode * 59 + this.User.GetHashCode();
                 return hashCode;
             }
         }

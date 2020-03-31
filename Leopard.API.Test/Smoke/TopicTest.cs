@@ -20,7 +20,7 @@ namespace Leopard.API.Test.Smoke
 
 		public TopicTest()
 		{
-			Context = new OneContext(null);
+			Context = new OneContext(new DbContextOptions<OneContext>());
 		}
 
 		[Fact]
@@ -44,7 +44,7 @@ namespace Leopard.API.Test.Smoke
 			// Check topic
 
 			var topic = await Context.Topics
-				.Where(p => p.Id == Guid.Parse(topicId)).FirstOrDefaultAsync();
+				.Where(p => p.Id == Guid.Parse(topicId.ToString())).FirstOrDefaultAsync();
 
 			Assert.NotNull(topic);
 			Assert.Equal(model.IsGroup, topic.IsGroup);
@@ -59,7 +59,7 @@ namespace Leopard.API.Test.Smoke
 			// Check member
 
 			var members = await Context.TopicMembers
-				.Where(p => p.TopicId == Guid.Parse(topicId)).ToListAsync();
+				.Where(p => p.TopicId == Guid.Parse(topicId.ToString())).ToListAsync();
 
 			Assert.Single(members);
 
@@ -84,44 +84,44 @@ namespace Leopard.API.Test.Smoke
 			var topicId = idRes.Id;
 
 			// a send post without join topic
-			await Assert.ThrowsAnyAsync<Exception>(() => a.Api<TopicApi>().SendPostAsync(topicId, "hello", "Hello everyone!"));
+			await Assert.ThrowsAnyAsync<Exception>(() => a.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello", "Hello everyone!"));
 
 			// a join topic
-			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId));
+			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId.ToString()));
 
 			// Check member
 			var members = await Context.TopicMembers
-				.Where(p => p.TopicId == Guid.Parse(topicId)).ToListAsync();
+				.Where(p => p.TopicId == Guid.Parse(topicId.ToString())).ToListAsync();
 
 			Assert.Equal(2, members.Count);
 
-			var member = members.Where(p => p.UserId.ToString() == a.UserId).FirstOrDefault();
+			var member = members.Where(p => p.UserId == a.UserId).FirstOrDefault();
 			Assert.NotNull(member);
 			Assert.Equal(MemberRole.Normal, member.Role);
 
 			// a send post 
-			idRes = await a.Api<TopicApi>().SendPostAsync(topicId, "hello1", "Hello everyone!");
-			var post = await a.Api<TopicApi>().GetByIdAsync(idRes.Id);
+			idRes = await a.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello1", "Hello everyone!");
+			var post = await a.Api<TopicApi>().GetByIdAsync(idRes.Id.ToString());
 			Assert.Equal("hello1", post.Title);
 
 			// b send post
-			idRes = await b.Api<TopicApi>().SendPostAsync(topicId, "hello2", "Hello everyone!");
-			post = await b.Api<TopicApi>().GetByIdAsync(idRes.Id);
+			idRes = await b.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello2", "Hello everyone!");
+			post = await b.Api<TopicApi>().GetByIdAsync(idRes.Id.ToString());
 			Assert.Equal("hello2", post.Title);
 
 			// get posts
-			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0, true);
+			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId.ToString(), 0, true);
 
 			Assert.Equal(2, posts.Count);
 
 
 			// Send reply
 			var postId = posts[0].Id;
-			idRes = await a.Api<TopicApi>().SendReplyAsync(new SendReplyModel(postId, "123123asd1dasd25字数asd12e12312asd"));
+			idRes = await a.Api<TopicApi>().SendReplyAsync(new SendReplyModel(postId.ToString(), "123123asd1dasd25字数asd12e12312asd"));
 			var replyId = idRes.Id;
 
 			// Check reply
-			var replies = await a.Api<TopicApi>().GetRepliesAsync(postId, 0);
+			var replies = await a.Api<TopicApi>().GetRepliesAsync(postId.ToString(), 0);
 			Assert.Single(replies);
 			Assert.Equal(replyId, replies[0].Id);
 		}
@@ -135,7 +135,7 @@ namespace Leopard.API.Test.Smoke
 			// Create topic (IsGroup=true)
 			var model = new CreateTopicModel(true, "pin-test-topic", "haha", null);
 			var idRes = await a.Api<TopicApi>().CreateTopicAsync(model);
-			var topicId = idRes.Id;
+			var topicId = idRes.Id.ToString();
 
 			// Send Posts
 
@@ -153,9 +153,9 @@ namespace Leopard.API.Test.Smoke
 			var essenseId = (await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25")).Id;
 
 			// do admin
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(pinnedId, true, false, false));
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(deleteId, false, false, true));
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId, false, true, false));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(pinnedId.ToString(), true, false, false));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(deleteId.ToString(), false, false, true));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId.ToString(), false, true, false));
 
 			// check
 			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0, true);

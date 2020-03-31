@@ -51,6 +51,7 @@ namespace Leopard.API.Controllers
 
 			comment = new Comment(AuthStore.UserId.Value, workId.Value, model.Title, model.Text, model.Rating);
 
+			await Context.AddAsync(comment);
 			await Context.GoAsync();
 
 			return Ok(new IdResponse(comment.Id));
@@ -157,6 +158,8 @@ namespace Leopard.API.Controllers
 					comment.SetAgreeCount(comment.AgreeCount + 1);
 				else
 					comment.SetDisagreeCount(comment.DisagreeCount + 1);
+
+				await Context.AddAsync(attitude);
 			}
 			else // Already exist attitude
 			{
@@ -246,6 +249,7 @@ namespace Leopard.API.Controllers
 			// send report
 			report = new Report((Guid)AuthStore.UserId, (Guid)commentId, model.Title, model.Text);
 
+			await Context.AddAsync(report);
 			await Context.GoAsync();
 
 			return Ok();

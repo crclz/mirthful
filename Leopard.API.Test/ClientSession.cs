@@ -15,9 +15,9 @@ namespace Leopard.API.Test
 	{
 		public AccessTokenAttacher AccessTokenAttacher { get; }
 
-		public string UserId { get; }
+		public Guid UserId { get; }
 
-		public ClientSesion(AccessTokenAttacher accessTokenAttacher, string userId)
+		public ClientSesion(AccessTokenAttacher accessTokenAttacher, Guid userId)
 		{
 			AccessTokenAttacher = accessTokenAttacher;
 			UserId = userId;
@@ -44,7 +44,7 @@ namespace Leopard.API.Test
 
 			// Test me and get id
 			var me = await accessApi.MeAsync();
-			Assert.NotNull(me.Id);
+			Assert.NotEqual(default, me.Id);
 
 			return new ClientSesion(attacher, me.Id);
 		}

@@ -38,37 +38,45 @@ namespace Org.OpenAPITools.Model
         /// <param name="senderId">senderId.</param>
         /// <param name="postId">postId.</param>
         /// <param name="text">text.</param>
-        public QReply(string id = default(string), string senderId = default(string), string postId = default(string), string text = default(string))
+        /// <param name="user">user.</param>
+        public QReply(Guid id = default(Guid), Guid senderId = default(Guid), Guid postId = default(Guid), string text = default(string), QUser user = default(QUser))
         {
             this.Id = id;
             this.SenderId = senderId;
             this.PostId = postId;
             this.Text = text;
+            this.User = user;
         }
         
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets SenderId
         /// </summary>
         [DataMember(Name="senderId", EmitDefaultValue=false)]
-        public string SenderId { get; set; }
+        public Guid SenderId { get; set; }
 
         /// <summary>
         /// Gets or Sets PostId
         /// </summary>
         [DataMember(Name="postId", EmitDefaultValue=false)]
-        public string PostId { get; set; }
+        public Guid PostId { get; set; }
 
         /// <summary>
         /// Gets or Sets Text
         /// </summary>
         [DataMember(Name="text", EmitDefaultValue=true)]
         public string Text { get; set; }
+
+        /// <summary>
+        /// Gets or Sets User
+        /// </summary>
+        [DataMember(Name="user", EmitDefaultValue=false)]
+        public QUser User { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -82,6 +90,7 @@ namespace Org.OpenAPITools.Model
             sb.Append("  SenderId: ").Append(SenderId).Append("\n");
             sb.Append("  PostId: ").Append(PostId).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
+            sb.Append("  User: ").Append(User).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -135,6 +144,11 @@ namespace Org.OpenAPITools.Model
                     this.Text == input.Text ||
                     (this.Text != null &&
                     this.Text.Equals(input.Text))
+                ) && 
+                (
+                    this.User == input.User ||
+                    (this.User != null &&
+                    this.User.Equals(input.User))
                 );
         }
 
@@ -155,6 +169,8 @@ namespace Org.OpenAPITools.Model
                     hashCode = hashCode * 59 + this.PostId.GetHashCode();
                 if (this.Text != null)
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
+                if (this.User != null)
+                    hashCode = hashCode * 59 + this.User.GetHashCode();
                 return hashCode;
             }
         }
