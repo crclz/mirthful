@@ -3,15 +3,17 @@ using System;
 using Leopard.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Leopard.Infrastructure.Shell.Migrations
 {
     [DbContext(typeof(OneContext))]
-    partial class OneContextModelSnapshot : ModelSnapshot
+    [Migration("20200331070145_add unique constraint to users-username")]
+    partial class adduniqueconstrainttousersusername
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

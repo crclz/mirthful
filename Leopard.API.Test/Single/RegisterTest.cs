@@ -21,5 +21,18 @@ namespace Leopard.API.Test.Single
 			Assert.NotNull(res);
 			Assert.NotEqual(default, res.Id);
 		}
+
+		[Fact]
+		async Task DuplicatedUsername()
+		{
+			var username = XUtils.GetRandomString(12);
+			var usersApi = new UsersApi(TestConfig.BaseUrl);
+			var res = await usersApi.RegisterAsync(new RegisterModel(username, "asda1dsas", "x", ""));
+			Assert.NotNull(res);
+			Assert.NotEqual(default, res.Id);
+
+			// register with the same username again
+			await Assert.ThrowsAnyAsync<Exception>(() => usersApi.RegisterAsync(new RegisterModel(username, "asda1dsas", "x", "")));
+		}
 	}
 }

@@ -77,6 +77,7 @@ namespace Leopard.Infrastructure
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyConfiguration(new DeduplicationTokenEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
 		}
 
 		public async Task<bool> GoAsync(
