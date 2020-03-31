@@ -27,7 +27,7 @@ namespace Leopard.Infrastructure
 		private readonly IMediator _mediator;
 
 		public DbSet<DeduplicationToken> DeduplicationTokens { get; private set; }
-		public DbSet<BaseNotification> Notifications { get; private set; }
+		//public DbSet<BaseNotification> Notifications { get; private set; }
 
 		public DbSet<AdminRequest> AdminRequests { get; private set; }
 		public DbSet<Attitude> Attitudes { get; private set; }
@@ -71,7 +71,7 @@ namespace Leopard.Infrastructure
 
 			var connestionString = connBuilder.ToString();
 
-			builder.UseNpgsql(connestionString);
+			builder.UseNpgsql(connestionString, b => b.MigrationsAssembly("Leopard.Infrastructure.Shell"));
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -82,15 +82,6 @@ namespace Leopard.Infrastructure
 		public async Task<bool> SaveEntitiesAsync(
 			DeduplicationToken deduplicationToken = null, CancellationToken cancellationToken = default)
 		{
-			//// Dispatch Domain Events collection. 
-			//// Choices:
-			//// A) Right BEFORE committing data (EF SaveChanges) into the DB will make a single transaction including  
-			//// side effects from the domain event handlers which are using the same DbContext with "InstancePerLifetimeScope" or "scoped" lifetime
-			//// B) Right AFTER committing data (EF SaveChanges) into the DB will make multiple transactions. 
-			//// You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
-			//await _mediator.DispatchDomainEventsAsync(this);
-
-
 			// STAGE 1
 
 
@@ -101,7 +92,7 @@ namespace Leopard.Infrastructure
 			var notifications = ChangeTracker.Entries<RootEntity>()
 				.SelectMany(p => p.Entity.PopAllDomainEventsRecursively())
 				.ToList();
-
+			/*
 			await Notifications.AddRangeAsync(notifications);
 
 			// STAGE 1 > Step 3: Save DeduplicationToken (if provided)
@@ -109,6 +100,7 @@ namespace Leopard.Infrastructure
 			{
 				await DeduplicationTokens.AddAsync(deduplicationToken, cancellationToken);
 			}
+			*/
 
 			// STAGE 1 > Commit
 			// Throws if conflict (DeduplicationToken Unique Index conflict / Optimistic concrrency conflict)
@@ -132,10 +124,12 @@ namespace Leopard.Infrastructure
 
 					// UPDATE SET notification.AllAck = true, and commit the change of notification
 
+					/*
 					notification.AllAcknowledged();
 					var rows = await SaveChangesAsync();
 					if (rows != 1)
 						throw new InvalidOperationException("Changes should only be: AllAck field of only one notification");
+					*/
 				}
 				catch
 				{

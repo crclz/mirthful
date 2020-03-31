@@ -8,7 +8,6 @@ namespace Leopard.Infrastructure.Shell
 	{
 		static void Main(string[] args)
 		{
-			var name = typeof(User).Assembly.GetTypes().Where(p => p.Name == "Post");
 			var context = new OneContext(new Microsoft.EntityFrameworkCore.DbContextOptions<OneContext>());
 		}
 	}
