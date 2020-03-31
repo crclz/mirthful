@@ -13,8 +13,8 @@ namespace Leopard.Domain.WorkAG
 		public string Author { get; private set; }
 		public string Description { get; private set; }
 
-
 		public NpgsqlTsVector Tsv { get; private set; }
+
 
 		private Work()
 		{
