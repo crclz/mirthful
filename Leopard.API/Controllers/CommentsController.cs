@@ -14,9 +14,7 @@ using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -25,22 +23,13 @@ namespace Leopard.API.Controllers
 	[ApiController]
 	public class CommentsController : ControllerBase
 	{
-		public Repository<Comment> CommentRepository { get; }
-		public Repository<Work> WorkRepository { get; }
 		public AuthStore AuthStore { get; }
-		public LeopardDatabase Db { get; }
-		public Repository<Attitude> AttitudeRepository { get; }
-		public Repository<Report> ReportRepository { get; }
+		public OneContext Context { get; }
 
-		public CommentsController(Repository<Comment> commentRepository, Repository<Work> workRepository, AuthStore authStore,
-			LeopardDatabase db, Repository<Attitude> attitudeRepository, Repository<Report> reportRepository)
+		public CommentsController(AuthStore authStore, OneContext context)
 		{
-			CommentRepository = commentRepository;
-			WorkRepository = workRepository;
 			AuthStore = authStore;
-			Db = db;
-			AttitudeRepository = attitudeRepository;
-			ReportRepository = reportRepository;
+			Context = context;
 		}
 
 
@@ -52,17 +41,17 @@ namespace Leopard.API.Controllers
 		public async Task<IActionResult> CreateComment([FromBody]CreateCommentModel model)
 		{
 			var workId = XUtils.ParseId(model.WorkId);
-			var work = await WorkRepository.FirstOrDefaultAsync(p => p.Id == workId);
+			var work = await Context.Works.FirstOrDefaultAsync(p => p.Id == workId);
 			if (work == null)
 				return new ApiError(MyErrorCode.IdNotFound, "不存在对应id的作品").Wrap();
 
-			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.WorkId == workId && p.SenderId == AuthStore.UserId);
+			var comment = await Context.Comments.FirstOrDefaultAsync(p => p.WorkId == workId && p.SenderId == AuthStore.UserId);
 			if (comment != null)
 				return new ApiError(MyErrorCode.UniqueConstraintConflict, "你已经评价过此作品").Wrap();
 
-			comment = new Comment((ObjectId)AuthStore.UserId, (ObjectId)workId, model.Title, model.Text, model.Rating);
+			comment = new Comment(AuthStore.UserId.Value, workId.Value, model.Title, model.Text, model.Rating);
 
-			await CommentRepository.PutAsync(comment);
+			await Context.GoAsync();
 
 			return Ok(new IdResponse(comment.Id));
 		}
@@ -94,8 +83,8 @@ namespace Leopard.API.Controllers
 			if (commentId == null)
 				return null;
 
-			var query = from p in Db.GetCollection<Comment>().AsQueryable().Where(r => r.Id == commentId)
-						join q in Db.GetCollection<User>().AsQueryable()
+			var query = from p in Context.Comments.Where(r => r.Id == commentId)
+						join q in Context.Users
 						on p.SenderId equals q.Id
 						select new { comment = p, user = q };
 
@@ -108,11 +97,11 @@ namespace Leopard.API.Controllers
 		}
 		public class QComment
 		{
-			public ObjectId Id { get; set; }
+			public Guid Id { get; set; }
 			public long CreatedAt { get; set; }
 			public long UpdatedAt { get; set; }
-			public ObjectId SenderId { get; set; }
-			public ObjectId WorkId { get; set; }
+			public Guid SenderId { get; set; }
+			public Guid WorkId { get; set; }
 			public string Title { get; set; }
 			public string Text { get; set; }
 			public int Rating { get; set; }
@@ -151,18 +140,18 @@ namespace Leopard.API.Controllers
 			if (cid == null)
 				return new ApiError(MyErrorCode.IdNotFound, "评论的id不存在（解析错误）").Wrap();
 
-			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == cid);
+			var comment = await Context.Comments.FirstOrDefaultAsync(p => p.Id == cid);
 			if (comment == null)
 				return new ApiError(MyErrorCode.IdNotFound, "评论的id不存在").Wrap();
 
-			var attitude = await AttitudeRepository
+			var attitude = await Context.Attitudes
 				.FirstOrDefaultAsync(p => p.SenderId == AuthStore.UserId && p.CommentId == cid);
 
 			// Modify or update attitude
 
 			if (attitude == null)
 			{
-				attitude = new Attitude((ObjectId)AuthStore.UserId, (ObjectId)cid, agree);
+				attitude = new Attitude((Guid)AuthStore.UserId, (Guid)cid, agree);
 
 				if (agree)
 					comment.SetAgreeCount(comment.AgreeCount + 1);
@@ -188,8 +177,7 @@ namespace Leopard.API.Controllers
 				}
 			}
 
-			await AttitudeRepository.PutAsync(attitude);
-			await CommentRepository.PutAsync(comment);
+			await Context.GoAsync();
 
 			return Ok();
 		}
@@ -211,9 +199,9 @@ namespace Leopard.API.Controllers
 			if (wid == null)
 				return new ApiError(MyErrorCode.ModelInvalid, "wordId parse error").Wrap();
 
-			var query = from p in Db.GetCollection<Comment>().AsQueryable()
+			var query = from p in Context.Comments
 						where p.WorkId == wid
-						join q in Db.GetCollection<User>().AsQueryable()
+						join q in Context.Users
 						on p.SenderId equals q.Id
 						select new { comment = p, user = q };
 
@@ -247,17 +235,18 @@ namespace Leopard.API.Controllers
 			if (commentId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "CommentId parse error").Wrap();
 
-			var report = await ReportRepository.FirstOrDefaultAsync(p => p.CommentId == commentId && p.SenderId == AuthStore.UserId);
+			var report = await Context.Reports.FirstOrDefaultAsync(p => p.CommentId == commentId && p.SenderId == AuthStore.UserId);
 			if (report != null)
 				return new ApiError(MyErrorCode.UniqueConstraintConflict, "你已经举报过了").Wrap();
 
-			var comment = await CommentRepository.FirstOrDefaultAsync(p => p.Id == commentId);
+			var comment = await Context.Comments.FirstOrDefaultAsync(p => p.Id == commentId);
 			if (comment == null)
 				return new ApiError(MyErrorCode.IdNotFound, "评论id不存在").Wrap();
 
 			// send report
-			report = new Report((ObjectId)AuthStore.UserId, (ObjectId)commentId, model.Title, model.Text);
-			await ReportRepository.PutAsync(report);
+			report = new Report((Guid)AuthStore.UserId, (Guid)commentId, model.Title, model.Text);
+
+			await Context.GoAsync();
 
 			return Ok();
 		}

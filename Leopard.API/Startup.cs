@@ -63,8 +63,7 @@ namespace Leopard.API
 			services.AddSwaggerGenNewtonsoftSupport();
 
 			services.AddMediatR(Assembly.GetExecutingAssembly());
-			services.AddSingleton(new LeopardDatabase());
-			services.AddTransient(typeof(Repository<>));
+			services.AddDbContext<OneContext>();
 			services.AddScoped<AuthStore>();
 
 			var blobStorePath = Environment.GetEnvironmentVariable("BLOB_STORE");

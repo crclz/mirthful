@@ -16,9 +16,7 @@ using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -27,25 +25,13 @@ namespace Leopard.API.Controllers
 	[ApiController]
 	public class TopicController : ControllerBase
 	{
-		public Repository<Topic> TopicRepository { get; }
-		public Repository<Work> WorkRepository { get; }
 		public AuthStore AuthStore { get; }
-		public Repository<TopicMember> MemberRepository { get; }
-		public Repository<Post> PostRepository { get; }
-		public LeopardDatabase Db { get; }
-		public Repository<Reply> ReplyRepository { get; }
+		public OneContext Context { get; }
 
-		public TopicController(Repository<Topic> topicRepository, Repository<Work> workRepository, AuthStore authStore,
-			Repository<TopicMember> memberRepository, Repository<Post> postRepository, LeopardDatabase db,
-			Repository<Reply> replyRepository)
+		public TopicController(AuthStore authStore, OneContext context)
 		{
-			TopicRepository = topicRepository;
-			WorkRepository = workRepository;
 			AuthStore = authStore;
-			MemberRepository = memberRepository;
-			PostRepository = postRepository;
-			Db = db;
-			ReplyRepository = replyRepository;
+			Context = context;
 		}
 
 
@@ -58,7 +44,7 @@ namespace Leopard.API.Controllers
 		{
 			// check related work
 			var workId = XUtils.ParseId(model.RelatedWork);
-			var work = await WorkRepository.FirstOrDefaultAsync(p => p.Id == workId);
+			var work = await Context.Works.FirstOrDefaultAsync(p => p.Id == workId);
 			if (work == null)
 				workId = null;
 
@@ -66,7 +52,7 @@ namespace Leopard.API.Controllers
 			var topic = new Topic(model.IsGroup, model.Name, model.Description, workId, AuthStore.UserId.Value);
 			topic.SetMemberCount(1);
 
-			await TopicRepository.PutAsync(topic);
+			await Context.GoAsync();
 
 			return Ok(new IdResponse(topic.Id));
 		}
@@ -98,12 +84,12 @@ namespace Leopard.API.Controllers
 				return new ApiError(MyErrorCode.IdNotFound, "Id parse error").Wrap();
 
 			// Check topic exist
-			var topic = await TopicRepository.FirstOrDefaultAsync(p => p.Id == topicId);
+			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == topicId);
 			if (topic == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Topic id not found").Wrap();
 
 			// Check if already in topic
-			var member = await MemberRepository
+			var member = await Context.TopicMembers
 				.FirstOrDefaultAsync(p => p.TopicId == topicId.Value && p.UserId == AuthStore.UserId.Value);
 
 			if (member != null)
@@ -111,7 +97,7 @@ namespace Leopard.API.Controllers
 
 			// join topic
 			member = new TopicMember(topicId.Value, AuthStore.UserId.Value, MemberRole.Normal);
-			await MemberRepository.PutAsync(member);
+			await Context.GoAsync();
 
 			return Ok();
 		}
@@ -137,7 +123,7 @@ namespace Leopard.API.Controllers
 			if (topicId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "TopicId parse error").Wrap();
 
-			var member = await MemberRepository.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId.Value);
+			var member = await Context.TopicMembers.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId.Value);
 
 			if (member == null)
 				return new ApiError(MyErrorCode.PermissionDenied, "你不是成员").Wrap();
@@ -157,7 +143,7 @@ namespace Leopard.API.Controllers
 			}
 
 			var post = new Post(AuthStore.UserId.Value, topicId.Value, model.Text, model.Title, imageUrl);
-			await PostRepository.PutAsync(post);
+			await Context.GoAsync();
 
 			return Ok(new IdResponse(post.Id));
 		}
@@ -186,9 +172,9 @@ namespace Leopard.API.Controllers
 			if (tid == null)
 				return new ApiError(MyErrorCode.IdNotFound, "topicId parse error").Wrap();
 
-			var query = from p in Db.GetCollection<Post>().AsQueryable()
+			var query = from p in Context.Posts
 						where p.TopicId == tid
-						join q in Db.GetCollection<User>().AsQueryable()
+						join q in Context.Users
 						on p.SenderId equals q.Id
 						select new { post = p, user = q };
 
@@ -209,11 +195,11 @@ namespace Leopard.API.Controllers
 		}
 		public class QPost
 		{
-			public ObjectId Id { get; set; }
+			public Guid Id { get; set; }
 			public long CreatedAt { get; set; }
 			public long UpdatedAt { get; set; }
 
-			public ObjectId SenderId { get; set; }
+			public Guid SenderId { get; set; }
 			public string Image { get; set; }
 			public string Title { get; set; }
 			public string Text { get; set; }
@@ -250,9 +236,9 @@ namespace Leopard.API.Controllers
 			if (postId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Id parse error").Wrap();
 
-			var query = from p in Db.GetCollection<Post>().AsQueryable()
+			var query = from p in Context.Posts
 						where p.Id == postId
-						join q in Db.GetCollection<User>().AsQueryable()
+						join q in Context.Users
 						on p.SenderId equals q.Id
 						select new { post = p, user = q }; ;
 
@@ -273,18 +259,18 @@ namespace Leopard.API.Controllers
 		{
 			// post exist
 			var postId = XUtils.ParseId(model.PostId);
-			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == postId);
+			var post = await Context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
 			if (post == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
 
 			// user is a member of post.topic
-			var member = await MemberRepository.FirstOrDefaultAsync(p => p.UserId == AuthStore.UserId && p.TopicId == post.TopicId);
+			var member = await Context.TopicMembers.FirstOrDefaultAsync(p => p.UserId == AuthStore.UserId && p.TopicId == post.TopicId);
 			if (member == null)
 				return new ApiError(MyErrorCode.NotAMember, "You are not a member of the topic").Wrap();
 
 			// send reply
 			var reply = new Reply(AuthStore.UserId.Value, post.Id, model.Text);
-			await ReplyRepository.PutAsync(reply);
+			await Context.GoAsync();
 			return Ok(new IdResponse(reply.Id));
 		}
 		public class SendReplyModel
@@ -307,13 +293,13 @@ namespace Leopard.API.Controllers
 
 			// post exist
 			var pid = XUtils.ParseId(postId);
-			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == pid);
+			var post = await Context.Posts.FirstOrDefaultAsync(p => p.Id == pid);
 			if (post == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
 
 			// get
-			var query = (from p in Db.GetCollection<Reply>().AsQueryable().Where(p => p.PostId == pid)
-						 join q in Db.GetCollection<User>().AsQueryable()
+			var query = (from p in Context.Replies.Where(p => p.PostId == pid)
+						 join q in Context.Users
 						 on p.SenderId equals q.Id
 						 select new { reply = p, user = q })
 						 .OrderBy(p => p.reply.CreatedAt);
@@ -326,9 +312,9 @@ namespace Leopard.API.Controllers
 		}
 		public class QReply
 		{
-			public ObjectId Id { get; set; }
-			public ObjectId SenderId { get; set; }
-			public ObjectId PostId { get; set; }
+			public Guid Id { get; set; }
+			public Guid SenderId { get; set; }
+			public Guid PostId { get; set; }
 			public string Text { get; set; }
 
 			public QUser User { get; set; }
@@ -356,11 +342,11 @@ namespace Leopard.API.Controllers
 		{
 			// post exist
 			var postId = XUtils.ParseId(model.PostId);
-			var post = await PostRepository.FirstOrDefaultAsync(p => p.Id == postId);
+			var post = await Context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
 			if (post == null) return new ApiError(MyErrorCode.IdNotFound, "Post id not found").Wrap();
 
 			// user >= post.Topic.Admin
-			var member = await MemberRepository.FirstOrDefaultAsync(p => p.TopicId == post.TopicId && p.UserId == AuthStore.UserId);
+			var member = await Context.TopicMembers.FirstOrDefaultAsync(p => p.TopicId == post.TopicId && p.UserId == AuthStore.UserId);
 			if (member == null) return new ApiError(MyErrorCode.NotAMember, "You are not a member").Wrap();
 			if ((int)member.Role < (int)MemberRole.Admin)
 				return new ApiError(MyErrorCode.PermissionDenied, "You should be at least admin").Wrap();
@@ -370,8 +356,8 @@ namespace Leopard.API.Controllers
 			post.SetEssence(model.IsEssence);
 
 			if (model.Delete)
-				post.MarkForDeletion();
-			await PostRepository.PutAsync(post);
+				Context.Remove(post);
+			await Context.GoAsync();
 
 			return Ok();
 		}

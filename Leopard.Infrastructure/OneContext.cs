@@ -79,7 +79,7 @@ namespace Leopard.Infrastructure
 			modelBuilder.ApplyConfiguration(new DeduplicationTokenEntityTypeConfiguration());
 		}
 
-		public async Task<bool> SaveEntitiesAsync(
+		public async Task<bool> GoAsync(
 			DeduplicationToken deduplicationToken = null, CancellationToken cancellationToken = default)
 		{
 			// STAGE 1

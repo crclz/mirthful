@@ -1,12 +1,13 @@
-﻿using MongoDB.Bson;
+﻿
+using System;
 
 namespace Leopard.API.Controllers
 {
 	public class IdResponse
 	{
-		public ObjectId Id { get; set; }
+		public Guid Id { get; set; }
 
-		public IdResponse(ObjectId id)
+		public IdResponse(Guid id)
 		{
 			Id = id;
 		}

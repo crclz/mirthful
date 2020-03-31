@@ -6,7 +6,6 @@ using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -18,13 +17,12 @@ namespace Leopard.API.Controllers
 	public class AccessController : ControllerBase
 	{
 		private readonly SecretStore secretStore;
-
-		public Repository<User> UserRepository { get; }
+		public OneContext Context { get; }
 		public AuthStore Store { get; }
 
-		public AccessController(Repository<User> userRepository, AuthStore store, SecretStore secretStore)
+		public AccessController(OneContext context, AuthStore store, SecretStore secretStore)
 		{
-			UserRepository = userRepository;
+			Context = context;
 			Store = store;
 			this.secretStore = secretStore;
 		}
@@ -54,8 +52,8 @@ namespace Leopard.API.Controllers
 		{
 			var username = data.Username;
 			var password = data.Password;
-
-			var user = await UserRepository.FirstOrDefaultAsync(p => p.Username == username);
+			
+			var user = await Context.Users.FirstOrDefaultAsync(p => p.Username == username);
 
 			if (user == null)
 				return new ApiError(MyErrorCode.UsernameNotFound, "用户名不存在").Wrap();

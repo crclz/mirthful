@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using MongoDB.Bson;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -16,14 +15,14 @@ namespace Leopard.API.Filters
 {
 	public class AuthenticationFilter : IAsyncActionFilter
 	{
-		public AuthenticationFilter(Repository<User> userRepository, AuthStore store, SecretStore secretStore)
+		public AuthenticationFilter(OneContext context, AuthStore store, SecretStore secretStore)
 		{
-			UserRepository = userRepository;
+			Context = context;
 			Store = store;
 			SecretStore = secretStore;
 		}
 
-		public Repository<User> UserRepository { get; }
+		public OneContext Context { get; }
 		public AuthStore Store { get; }
 		public SecretStore SecretStore { get; }
 
@@ -67,7 +66,7 @@ namespace Leopard.API.Filters
 			Store.UserId = userId;
 
 			// TODO: Not this filter's responsibility. Do this in another filter
-			Store.User = await UserRepository.FirstOrDefaultAsync(p => p.Id == userId);
+			Store.User = await Context.Users.FirstOrDefaultAsync(p => p.Id == userId);
 
 			// Important!
 			await next();

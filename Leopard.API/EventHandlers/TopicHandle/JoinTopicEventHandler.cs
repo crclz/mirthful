@@ -12,18 +12,18 @@ namespace Leopard.API.EventHandlers.TopicHandle
 {
 	public class JoinTopicEventHandler : INotificationHandler<JoinTopicEvent>
 	{
-		public JoinTopicEventHandler(Repository<Topic> topicRepository)
+		public JoinTopicEventHandler(OneContext context)
 		{
-			TopicRepository = topicRepository;
+			Context = context;
 		}
 
-		public Repository<Topic> TopicRepository { get; }
+		public OneContext Context { get; }
 
 		public async Task Handle(JoinTopicEvent e, CancellationToken cancellationToken)
 		{
-			var topic = await TopicRepository.FirstOrDefaultAsync(p => p.Id == e.TopicId);
+			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == e.TopicId);
 			topic.MemberIncr(1);
-			await TopicRepository.PutAsync(topic);
+			await Context.GoAsync();
 		}
 	}
 }

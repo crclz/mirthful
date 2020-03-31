@@ -12,12 +12,12 @@ namespace Leopard.API.EventHandlers.TopicMemberHandle
 {
 	public class TopicCreatedEventHandler : INotificationHandler<TopicCreatedEvent>
 	{
-		public TopicCreatedEventHandler(Repository<TopicMember> memberRepository)
+		public TopicCreatedEventHandler(OneContext context)
 		{
-			MemberRepository = memberRepository;
+			Context = context;
 		}
 
-		public Repository<TopicMember> MemberRepository { get; }
+		public OneContext Context { get; }
 
 		public async Task Handle(TopicCreatedEvent e, CancellationToken cancellationToken)
 		{
@@ -34,7 +34,9 @@ namespace Leopard.API.EventHandlers.TopicMemberHandle
 				member = new TopicMember(e.TopicId, e.CreatorId, MemberRole.Normal, true);
 			}
 
-			await MemberRepository.PutAsync(member);
+			await Context.TopicMembers.AddAsync(member);
+
+			await Context.GoAsync();
 		}
 	}
 }

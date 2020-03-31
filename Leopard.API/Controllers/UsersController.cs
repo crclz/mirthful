@@ -9,7 +9,7 @@ using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Leopard.API.ResponseConvension;
-using MongoDB.Driver;
+using Npgsql;
 
 namespace Leopard.API.Controllers
 {
@@ -17,12 +17,12 @@ namespace Leopard.API.Controllers
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
-		public Repository<User> UserRepository { get; }
-
-		public UsersController(Repository<User> userRepository)
+		public UsersController(OneContext context)
 		{
-			UserRepository = userRepository;
+			Context = context;
 		}
+
+		public OneContext Context { get; }
 
 		[HttpPost("register")]
 		[Consumes(MediaTypeNames.Application.Json)]
@@ -33,12 +33,12 @@ namespace Leopard.API.Controllers
 
 			try
 			{
-				await UserRepository.PutAsync(user);
+				await Context.GoAsync();
 				return Ok(new IdResponse(user.Id));
 			}
-			catch (MongoWriteException e)
+			catch (PostgresException e)
 			{
-				if (e.Message.Contains("E11000"))
+				if (e.SqlState == PostgresErrorCodes.UniqueViolation)
 					return new ApiError(MyErrorCode.UsernameExist, "用户名已经存在").Wrap();
 				else
 					throw;

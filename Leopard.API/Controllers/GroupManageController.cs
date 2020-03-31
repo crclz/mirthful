@@ -12,9 +12,7 @@ using Leopard.Domain.TopicMemberAG;
 using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Leopard.API.Controllers
@@ -24,20 +22,12 @@ namespace Leopard.API.Controllers
 	public class GroupManageController : ControllerBase
 	{
 		public AuthStore AuthStore { get; }
-		public Repository<Topic> TopicRepository { get; }
-		public Repository<TopicMember> MemberRepository { get; }
-		public Repository<AdminRequest> RequestRepository { get; }
-		public LeopardDatabase Db { get; }
+		public OneContext Context { get; }
 
-		public GroupManageController(AuthStore authStore, Repository<Topic> topicRepository,
-			Repository<TopicMember> memberRepository, Repository<AdminRequest> requestRepository,
-			LeopardDatabase db)
+		public GroupManageController(AuthStore authStore, OneContext context)
 		{
 			AuthStore = authStore;
-			TopicRepository = topicRepository;
-			MemberRepository = memberRepository;
-			RequestRepository = requestRepository;
-			Db = db;
+			Context = context;
 		}
 
 
@@ -51,19 +41,19 @@ namespace Leopard.API.Controllers
 			var topicId = XUtils.ParseId(model.TopicId);
 
 			// Topic is group topic
-			var topic = await TopicRepository.FirstOrDefaultAsync(p => p.Id == topicId);
+			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == topicId);
 			if (topic == null) return new ApiError(MyErrorCode.IdNotFound, "Topic id not found").Wrap();
 			if (topic.IsGroup == false)
 				return new ApiError(MyErrorCode.TypeMismatch, "This topic is not group").Wrap();
 
 			// should be normal member
-			var member = await MemberRepository.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId);
+			var member = await Context.TopicMembers.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId);
 			if (member?.Role != MemberRole.Normal)
 				return new ApiError(MyErrorCode.RoleMismatch, "You are not normal row of the topic").Wrap();
 
 			// send request
 			var request = new AdminRequest(topicId.Value, AuthStore.UserId.Value, model.Text);
-			await RequestRepository.PutAsync(request);
+			await Context.GoAsync();
 			return Ok(new IdResponse(request.Id));
 		}
 		public class SendAdminRequestModel
@@ -85,9 +75,9 @@ namespace Leopard.API.Controllers
 		{
 			var requestId = XUtils.ParseId(id);
 
-			var query = from p in Db.GetCollection<AdminRequest>().AsQueryable()
+			var query = from p in Context.AdminRequests
 						where p.Id == requestId
-						join q in Db.GetCollection<User>().AsQueryable()
+						join q in Context.Users
 						on p.SenderId equals q.Id
 						select new { request = p, user = q };
 
@@ -99,9 +89,9 @@ namespace Leopard.API.Controllers
 		}
 		public class QAdminRequest
 		{
-			public ObjectId Id { get; set; }
-			public ObjectId TopicId { get; set; }
-			public ObjectId SenderId { get; set; }
+			public Guid Id { get; set; }
+			public Guid TopicId { get; set; }
+			public Guid SenderId { get; set; }
 			public string Text { get; set; }
 			public RequestStatus Status { get; set; }
 
@@ -131,30 +121,31 @@ namespace Leopard.API.Controllers
 		{
 			// request should be unhandled
 			var requestId = XUtils.ParseId(model.RequestId);
-			var request = await RequestRepository.FirstOrDefaultAsync(p => p.Id == requestId);
+			var request = await Context.AdminRequests.FirstOrDefaultAsync(p => p.Id == requestId);
 			if (request == null)
 				return new ApiError(MyErrorCode.IdNotFound, "Request id not found").Wrap();
 			if (request.Status != RequestStatus.Unhandled)
 				return new ApiError(MyErrorCode.TypeMismatch, "Request is not unhandled").Wrap();
 
 			// should have super role
-			var member = await MemberRepository
+			var member = await Context.TopicMembers
 				.FirstOrDefaultAsync(p => p.UserId == AuthStore.UserId && p.TopicId == request.TopicId);
 			if (member.Role != MemberRole.Super)
 				return new ApiError(MyErrorCode.PermissionDenied, "You are not super administrator of the group").Wrap();
 
 			// handle
 			request.Handle(model.Accept);
-			await RequestRepository.PutAsync(request);
+
 
 			if (model.Accept)
 			{
-				var membership2 = await MemberRepository
+				var membership2 = await Context.TopicMembers
 					.FirstOrDefaultAsync(p => p.UserId == request.SenderId && p.TopicId == request.TopicId);
 
 				membership2.SetRole(MemberRole.Admin);
-				await MemberRepository.PutAsync(membership2);
 			}
+
+			await Context.GoAsync();
 
 			return Ok();
 
@@ -178,9 +169,9 @@ namespace Leopard.API.Controllers
 
 			var tid = XUtils.ParseId(topicId);
 
-			var query = from p in Db.GetCollection<AdminRequest>().AsQueryable()
+			var query = from p in Context.AdminRequests
 						where p.TopicId == tid && p.Status == RequestStatus.Unhandled
-						join q in Db.GetCollection<User>().AsQueryable()
+						join q in Context.Users
 						on p.SenderId equals q.Id
 						select new { request = p, user = q };
 
