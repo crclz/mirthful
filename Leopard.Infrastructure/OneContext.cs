@@ -1,4 +1,15 @@
 ﻿using Leopard.Domain;
+using Leopard.Domain.AdminRequestAG;
+using Leopard.Domain.AttitudeAG;
+using Leopard.Domain.CommentAG;
+using Leopard.Domain.PostAG;
+using Leopard.Domain.ReplyAG;
+using Leopard.Domain.ReportAG;
+using Leopard.Domain.TopicAG;
+using Leopard.Domain.TopicMemberAG;
+using Leopard.Domain.UserAG;
+using Leopard.Domain.WorkAG;
+using Leopard.Infrastructure.EntityConfigurations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -17,6 +28,17 @@ namespace Leopard.Infrastructure
 
 		public DbSet<DeduplicationToken> DeduplicationTokens { get; private set; }
 		public DbSet<BaseNotification> Notifications { get; private set; }
+
+		public DbSet<AdminRequest> AdminRequests { get; private set; }
+		public DbSet<Attitude> Attitudes { get; private set; }
+		public DbSet<Comment> Comments { get; private set; }
+		public DbSet<Post> Posts { get; private set; }
+		public DbSet<Reply> Replies { get; private set; }
+		public DbSet<Report> Reports { get; private set; }
+		public DbSet<Topic> Topics { get; private set; }
+		public DbSet<TopicMember> TopicMembers { get; private set; }
+		public DbSet<User> Users { get; private set; }
+		public DbSet<Work> Works { get; private set; }
 
 		public OneContext(DbContextOptions<OneContext> options) : base(options)
 		{
@@ -54,13 +76,7 @@ namespace Leopard.Infrastructure
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
-			//modelBuilder.ApplyConfiguration(new PaymentMethodEntityTypeConfiguration());
-			//modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-			//modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
-			//modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
-			//modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
-			//modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new DeduplicationTokenEntityTypeConfiguration());
 		}
 
 		public async Task<bool> SaveEntitiesAsync(
