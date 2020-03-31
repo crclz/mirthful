@@ -1,4 +1,5 @@
 ﻿using Dawn;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,9 @@ namespace Leopard.Domain.WorkAG
 		public string Name { get; private set; }
 		public string Author { get; private set; }
 		public string Description { get; private set; }
+
+
+		public NpgsqlTsVector Tsv { get; private set; }
 
 		private Work()
 		{
