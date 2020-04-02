@@ -31,7 +31,7 @@ namespace Leopard.API.Controllers
 		[HttpGet("me")]
 		[Produces(typeof(QUser))]
 		// TODO: Not Good
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public IActionResult Me()
 		{
 			var user = Store.User;

@@ -35,7 +35,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> SendAdminRequest([FromBody]SendAdminRequestModel model)
 		{
 			var topicId = XUtils.ParseId(model.TopicId);
@@ -118,7 +118,7 @@ namespace Leopard.API.Controllers
 		[HttpPost("handle-request")]
 		[Consumes(Application.Json)]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> HandleRequest([FromBody]HandleRequestModel model)
 		{
 			// request should be unhandled

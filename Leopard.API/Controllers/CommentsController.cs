@@ -37,7 +37,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> CreateComment([FromBody]CreateCommentModel model)
 		{
 			var workId = XUtils.ParseId(model.WorkId);
@@ -141,7 +141,7 @@ namespace Leopard.API.Controllers
 		[HttpPost("express-attitude")]
 		[Consumes(Application.Json)]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> ExpressAttitude(string commentId, bool? agree)
 		{
 			var cid = XUtils.ParseId(commentId);
@@ -270,7 +270,7 @@ namespace Leopard.API.Controllers
 		[HttpPost("report")]
 		[Consumes(Application.Json)]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> Report([FromBody]ReportModel model)
 		{
 			var commentId = XUtils.ParseId(model.CommentId);

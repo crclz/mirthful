@@ -1,4 +1,5 @@
 ﻿using Jose;
+using Leopard.API.Filters;
 using Leopard.Domain;
 using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
@@ -12,11 +13,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Leopard.API.Filters
+namespace Leopard.API
 {
-	public class AuthenticationFilter : IAsyncActionFilter
+	public class AuthenticationMiddleware : IMiddleware
 	{
-		public AuthenticationFilter(OneContext context, AuthStore store, SecretStore secretStore)
+		public AuthenticationMiddleware(OneContext context, AuthStore store, SecretStore secretStore)
 		{
 			Context = context;
 			Store = store;
@@ -27,18 +28,18 @@ namespace Leopard.API.Filters
 		public AuthStore Store { get; }
 		public SecretStore SecretStore { get; }
 
-		public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+		public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 		{
 			string token = null;
 
 			// If not provided AccessToken in header, go for cookie
 
-			if (context.HttpContext.Request.Headers.TryGetValue("AccessToken", out StringValues sv))
+			if (context.Request.Headers.TryGetValue("AccessToken", out StringValues sv))
 			{
 				token = sv.ToArray()?.FirstOrDefault();
 			}
 
-			token = token ?? context.HttpContext.Request.Cookies["AccessToken"];
+			token = token ?? context.Request.Cookies["AccessToken"];
 
 			if (token == null)
 				goto failure;
@@ -82,7 +83,7 @@ namespace Leopard.API.Filters
 						MaxAge = TimeSpan.FromDays(120),
 					};
 
-					context.HttpContext.Response.Cookies.Append("AccessToken", token, options);
+					context.Response.Cookies.Append("AccessToken", token, options);
 				}
 				else
 				{
@@ -98,13 +99,15 @@ namespace Leopard.API.Filters
 			Store.User = user ?? await Context.Users.FirstOrDefaultAsync(p => p.Id == userId);
 
 			// Important!
-			await next();
+			await next(context);
 			return;
 
 		failure:
 			// Let Store.UserId remain null and delete AccessToken in cookie
-			context.HttpContext.Response.Cookies.Delete("AccessToken");
-			context.Result = new UnauthorizedResult();
+			context.Response.Cookies.Delete("AccessToken");
+
+			await next(context);
 		}
+
 	}
 }

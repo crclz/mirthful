@@ -62,6 +62,8 @@ namespace Leopard.API
 			// There's no reason of switching to System.Text.Json
 			services.AddSwaggerGenNewtonsoftSupport();
 
+			services.AddScoped<AuthenticationMiddleware>();
+
 			services.AddMediatR(Assembly.GetExecutingAssembly());
 			services.AddDbContext<OneContext>();
 			services.AddScoped<AuthStore>();
@@ -101,6 +103,8 @@ namespace Leopard.API
 				RequestPath = "/blob",
 				ServeUnknownFileTypes = true
 			});
+
+			app.UseMiddleware<AuthenticationMiddleware>();
 
 
 			// Enable middleware to serve generated Swagger as a JSON endpoint.

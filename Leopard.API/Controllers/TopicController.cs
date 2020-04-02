@@ -39,7 +39,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> CreateTopic([FromBody]CreateTopicModel model)
 		{
 			// check related work
@@ -77,7 +77,7 @@ namespace Leopard.API.Controllers
 		[HttpPost("join-topic")]
 		[Consumes(Application.Json)]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> JoinTopic([FromBody]JoinTopicModel model)
 		{
 			var topicId = XUtils.ParseId(model.TopicId);
@@ -115,7 +115,7 @@ namespace Leopard.API.Controllers
 		[Consumes("multipart/form-data")]
 		[Produces(typeof(IdResponse))]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> SendPost([FromForm]SendPostModel model, [FromServices]IBlobBucket blobBucket)
 		{
 			// 不需要判断topic是否存在
@@ -259,7 +259,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> SendReply([FromBody]SendReplyModel model)
 		{
 			// post exist
@@ -344,7 +344,7 @@ namespace Leopard.API.Controllers
 		[HttpPost("do-admin")]
 		[Consumes(Application.Json)]
 
-		[ServiceFilter(typeof(AuthenticationFilter))]
+		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> DoAdmin([FromBody]DoAdminModel model)
 		{
 			// post exist
