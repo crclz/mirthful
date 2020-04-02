@@ -135,7 +135,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 
 		[ServiceFilter(typeof(AuthenticationFilter))]
-		public async Task<IActionResult> ExpressAttitude(string commentId, bool agree)
+		public async Task<IActionResult> ExpressAttitude(string commentId, bool? agree)
 		{
 			var cid = XUtils.ParseId(commentId);
 			if (cid == null)
@@ -150,35 +150,45 @@ namespace Leopard.API.Controllers
 
 			// Modify or update attitude
 
-			if (attitude == null)
+			if (attitude == null)// No attitude before
 			{
-				attitude = new Attitude((Guid)AuthStore.UserId, (Guid)cid, agree);
+				if (agree != null)// if agree==null do nothing
+				{
+					attitude = new Attitude((Guid)AuthStore.UserId, (Guid)cid, agree.Value);
 
-				if (agree)
-					comment.SetAgreeCount(comment.AgreeCount + 1);
-				else
-					comment.SetDisagreeCount(comment.DisagreeCount + 1);
+					if (agree == true)
+						comment.SetAgreeCount(comment.AgreeCount + 1);
+					else if (agree == false)
+						comment.SetDisagreeCount(comment.DisagreeCount + 1);
 
-				await Context.AddAsync(attitude);
+					await Context.AddAsync(attitude);
+				}
 			}
 			else // Already exist attitude
 			{
 				if (attitude.Agree == agree)
 					return Ok();// Unchanged
 
-				attitude.SetAgree(agree);
-
-				if (agree)
+				if (agree == true)
 				{
 					comment.SetAgreeCount(comment.AgreeCount + 1);
 					comment.SetDisagreeCount(comment.DisagreeCount - 1);
+					attitude.SetAgree(true);
 				}
-				else
+				else if (agree == false)
 				{
 					comment.SetAgreeCount(comment.AgreeCount - 1);
 					comment.SetDisagreeCount(comment.DisagreeCount + 1);
+					attitude.SetAgree(false);
+				}
+				else
+				{
+					// Remove attitude
+					Context.Remove(attitude);
 				}
 			}
+
+			Console.WriteLine($"AAAAA {comment.AgreeCount} {comment.DisagreeCount}");
 
 			await Context.GoAsync();
 

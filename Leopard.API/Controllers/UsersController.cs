@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Leopard.API.ResponseConvension;
 using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
 namespace Leopard.API.Controllers
 {
@@ -37,12 +38,10 @@ namespace Leopard.API.Controllers
 				await Context.GoAsync();
 				return Ok(new IdResponse(user.Id));
 			}
-			catch (PostgresException e)
+			catch (DbUpdateException e)
+			when (e.InnerException is PostgresException pe && pe.SqlState == PostgresErrorCodes.UniqueViolation)
 			{
-				if (e.SqlState == PostgresErrorCodes.UniqueViolation)
-					return new ApiError(MyErrorCode.UsernameExist, "用户名已经存在").Wrap();
-				else
-					throw;
+				return new ApiError(MyErrorCode.UsernameExist, "用户名已经存在").Wrap();
 			}
 		}
 		public class RegisterModel

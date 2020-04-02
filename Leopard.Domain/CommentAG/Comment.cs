@@ -45,7 +45,7 @@ namespace Leopard.Domain.CommentAG
 		public void SetDisagreeCount(int disagreeCount)
 		{
 			Guard.Argument(() => disagreeCount).Min(0);
-			DisagreeCount++;
+			DisagreeCount = disagreeCount;
 			UpdatedAtNow();
 		}
 	}
