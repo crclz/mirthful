@@ -85,14 +85,18 @@ namespace Leopard.API.Controllers
 				return null;
 
 			var query = from p in Context.Comments.Where(r => r.Id == commentId)
-						join q in Context.Users
-						on p.SenderId equals q.Id
-						select new { comment = p, user = q };
+						join q in Context.Users on p.SenderId equals q.Id
+						select new
+						{
+							comment = p,
+							user = q,
+							myAtt = Context.Attitudes.Where(o => o.CommentId == p.Id && o.SenderId == AuthStore.UserId).FirstOrDefault()
+						};
 
 			var data = await query.FirstOrDefaultAsync();
 
 			var user = QUser.NormalView(data.user);
-			var commentQ = QComment.NormalView(data.comment, user);
+			var commentQ = QComment.NormalView(data.comment, user, data.myAtt?.Agree);
 
 			return commentQ;
 		}
@@ -111,7 +115,9 @@ namespace Leopard.API.Controllers
 
 			public QUser User { get; set; }
 
-			public static QComment NormalView(Comment c, QUser user)
+			public bool? MyAttitude { get; set; }
+
+			public static QComment NormalView(Comment c, QUser user, bool? myAttitude)
 			{
 				return c == null ? null : new QComment
 				{
@@ -125,7 +131,8 @@ namespace Leopard.API.Controllers
 					Rating = c.Rating,
 					AgreeCount = c.AgreeCount,
 					DisagreeCount = c.DisagreeCount,
-					User = user
+					User = user,
+					MyAttitude = myAttitude
 				};
 			}
 		}
@@ -212,21 +219,43 @@ namespace Leopard.API.Controllers
 			if (wid == null)
 				return new ApiError(MyErrorCode.ModelInvalid, "wordId parse error").Wrap();
 
-			var query = from p in Context.Comments
-						where p.WorkId == wid
-						join q in Context.Users
-						on p.SenderId equals q.Id
-						select new { comment = p, user = q };
+			//var query = from p in Context.Comments
+			//			where p.WorkId == wid
+			//			join q in Context.Users on p.SenderId equals q.Id
+			//			join o in Context.Attitudes.Where(z => z.SenderId == AuthStore.UserId) on p.Id equals o.CommentId
+			//			into xx
+			//			from x in xx.DefaultIfEmpty()
+			//			select new
+			//			{
+			//				comment = p,
+			//				user = q,
+			//				myatt = x
+			//			};
+			var query = from p in Context.Comments.Where(z => z.WorkId == wid)
+							//where p.WorkId == wid
+						join q in Context.Users on p.SenderId equals q.Id
+						from r in Context.Attitudes.Where(o => o.CommentId == p.Id && o.SenderId == AuthStore.UserId)
+						select new
+						{
+							comment = p,
+							user = q,
+							myatt = r
+						};
+
 
 			if (order == OrderByType.Hottest)
 				query = query.OrderByDescending(p => p.comment.AgreeCount);
 			else
 				query = query.OrderByDescending(p => p.comment.CreatedAt);
 
+			var ll = await query.Take(10).ToListAsync();
+
+
 			query = query.Skip(page * pageSize).Take(pageSize);
 
 			var data = await query.ToListAsync();
-			var commentsQ = data.Select(p => QComment.NormalView(p.comment, QUser.NormalView(p.user))).ToList();
+
+			var commentsQ = data.Select(p => QComment.NormalView(p.comment, QUser.NormalView(p.user), p.myatt?.Agree)).ToList();
 
 			return Ok(commentsQ);
 		}
