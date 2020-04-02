@@ -2,6 +2,7 @@
 using Leopard.Domain;
 using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,20 +54,48 @@ namespace Leopard.API.Filters
 			if (claims.UserId == null || claims.Expire == null || claims.SecurityVersion == null)
 				goto failure;
 
-			// Test expire
-			if (claims.Expire < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
-				goto failure;
-
 			var userId = XUtils.ParseId(claims.UserId);
 			if (userId == null)
 				goto failure;
+
+			User user = null;
+
+			// Test expire
+			if (claims.Expire < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+			{
+				// Test security version
+				user = await Context.Users.FirstOrDefaultAsync(p => p.Id == userId);
+				if (user.SecurityVersion == claims.SecurityVersion)
+				{
+					// Issue a new token
+					var newClaims = new Claims
+					{
+						UserId = user.Id.ToString(),
+						SecurityVersion = user.SecurityVersion,
+						Expire = DateTimeOffset.UtcNow.AddMinutes(5).ToUnixTimeMilliseconds()
+					};
+
+					var newToken = JWT.Encode(claims, SecretStore.SecretKey, JwsAlgorithm.HS256);
+
+					var options = new CookieOptions
+					{
+						MaxAge = TimeSpan.FromDays(120),
+					};
+
+					context.HttpContext.Response.Cookies.Append("AccessToken", token, options);
+				}
+				else
+				{
+					goto failure;
+				}
+			}
 
 			// Success
 
 			Store.UserId = userId;
 
 			// TODO: Not this filter's responsibility. Do this in another filter
-			Store.User = await Context.Users.FirstOrDefaultAsync(p => p.Id == userId);
+			Store.User = user ?? await Context.Users.FirstOrDefaultAsync(p => p.Id == userId);
 
 			// Important!
 			await next();
