@@ -52,7 +52,7 @@ namespace Leopard.API.Controllers
 		{
 			var username = data.Username;
 			var password = data.Password;
-			
+
 			var user = await Context.Users.FirstOrDefaultAsync(p => p.Username == username);
 
 			if (user == null)
@@ -72,7 +72,12 @@ namespace Leopard.API.Controllers
 
 			string token = JWT.Encode(claims, secretStore.SecretKey, JwsAlgorithm.HS256);
 
-			Response.Cookies.Append("AccessToken", token);
+			var options = new CookieOptions
+			{
+				MaxAge = TimeSpan.FromDays(120),
+			};
+
+			Response.Cookies.Append("AccessToken", token, options);
 
 			return Ok(new LoginResponse { AccessToken = token });
 		}
