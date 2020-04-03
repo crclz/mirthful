@@ -219,29 +219,18 @@ namespace Leopard.API.Controllers
 			if (wid == null)
 				return new ApiError(MyErrorCode.ModelInvalid, "wordId parse error").Wrap();
 
-			//var query = from p in Context.Comments
-			//			where p.WorkId == wid
-			//			join q in Context.Users on p.SenderId equals q.Id
-			//			join o in Context.Attitudes.Where(z => z.SenderId == AuthStore.UserId) on p.Id equals o.CommentId
-			//			into xx
-			//			from x in xx.DefaultIfEmpty()
-			//			select new
-			//			{
-			//				comment = p,
-			//				user = q,
-			//				myatt = x
-			//			};
-			var query = from p in Context.Comments.Where(z => z.WorkId == wid)
-							//where p.WorkId == wid
+			var query = from p in Context.Comments
+						where p.WorkId == wid
 						join q in Context.Users on p.SenderId equals q.Id
-						from r in Context.Attitudes.Where(o => o.CommentId == p.Id && o.SenderId == AuthStore.UserId)
+						join o in Context.Attitudes.Where(z => z.SenderId == AuthStore.UserId) on p.Id equals o.CommentId
+						into xx
+						from x in xx.DefaultIfEmpty()
 						select new
 						{
 							comment = p,
 							user = q,
-							myatt = r
+							myatt = x
 						};
-
 
 			if (order == OrderByType.Hottest)
 				query = query.OrderByDescending(p => p.comment.AgreeCount);
