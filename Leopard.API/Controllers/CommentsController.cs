@@ -192,6 +192,10 @@ namespace Leopard.API.Controllers
 				{
 					// Remove attitude
 					Context.Remove(attitude);
+					if (attitude.Agree)
+						comment.SetAgreeCount(comment.AgreeCount - 1);
+					else
+						comment.SetDisagreeCount(comment.DisagreeCount - 1);
 				}
 			}
 
