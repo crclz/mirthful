@@ -26,31 +26,26 @@ using OpenAPIDateConverter = Org.OpenAPITools.Client.OpenAPIDateConverter;
 namespace Org.OpenAPITools.Model
 {
     /// <summary>
-    /// QWork
+    /// QTopic
     /// </summary>
     [DataContract]
-    public partial class QWork :  IEquatable<QWork>, IValidatableObject
+    public partial class QTopic :  IEquatable<QTopic>, IValidatableObject
     {
         /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [DataMember(Name="type", EmitDefaultValue=false)]
-        public WorkType? Type { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QWork" /> class.
+        /// Initializes a new instance of the <see cref="QTopic" /> class.
         /// </summary>
         /// <param name="id">id.</param>
         /// <param name="name">name.</param>
-        /// <param name="author">author.</param>
         /// <param name="description">description.</param>
-        /// <param name="type">type.</param>
-        public QWork(Guid id = default(Guid), string name = default(string), string author = default(string), string description = default(string), WorkType type = default(WorkType))
+        /// <param name="relatedWork">relatedWork.</param>
+        /// <param name="memberCount">memberCount.</param>
+        public QTopic(Guid id = default(Guid), string name = default(string), string description = default(string), Guid? relatedWork = default(Guid?), int memberCount = default(int))
         {
             this.Id = id;
             this.Name = name;
-            this.Author = author;
             this.Description = description;
-            this.Type = type;
+            this.RelatedWork = relatedWork;
+            this.MemberCount = memberCount;
         }
         
         /// <summary>
@@ -66,16 +61,22 @@ namespace Org.OpenAPITools.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or Sets Author
-        /// </summary>
-        [DataMember(Name="author", EmitDefaultValue=true)]
-        public string Author { get; set; }
-
-        /// <summary>
         /// Gets or Sets Description
         /// </summary>
         [DataMember(Name="description", EmitDefaultValue=true)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or Sets RelatedWork
+        /// </summary>
+        [DataMember(Name="relatedWork", EmitDefaultValue=true)]
+        public Guid? RelatedWork { get; set; }
+
+        /// <summary>
+        /// Gets or Sets MemberCount
+        /// </summary>
+        [DataMember(Name="memberCount", EmitDefaultValue=false)]
+        public int MemberCount { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -84,12 +85,12 @@ namespace Org.OpenAPITools.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QWork {\n");
+            sb.Append("class QTopic {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Author: ").Append(Author).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  RelatedWork: ").Append(RelatedWork).Append("\n");
+            sb.Append("  MemberCount: ").Append(MemberCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -110,15 +111,15 @@ namespace Org.OpenAPITools.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as QWork);
+            return this.Equals(input as QTopic);
         }
 
         /// <summary>
-        /// Returns true if QWork instances are equal
+        /// Returns true if QTopic instances are equal
         /// </summary>
-        /// <param name="input">Instance of QWork to be compared</param>
+        /// <param name="input">Instance of QTopic to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(QWork input)
+        public bool Equals(QTopic input)
         {
             if (input == null)
                 return false;
@@ -135,18 +136,18 @@ namespace Org.OpenAPITools.Model
                     this.Name.Equals(input.Name))
                 ) && 
                 (
-                    this.Author == input.Author ||
-                    (this.Author != null &&
-                    this.Author.Equals(input.Author))
-                ) && 
-                (
                     this.Description == input.Description ||
                     (this.Description != null &&
                     this.Description.Equals(input.Description))
                 ) && 
                 (
-                    this.Type == input.Type ||
-                    this.Type.Equals(input.Type)
+                    this.RelatedWork == input.RelatedWork ||
+                    (this.RelatedWork != null &&
+                    this.RelatedWork.Equals(input.RelatedWork))
+                ) && 
+                (
+                    this.MemberCount == input.MemberCount ||
+                    this.MemberCount.Equals(input.MemberCount)
                 );
         }
 
@@ -163,11 +164,11 @@ namespace Org.OpenAPITools.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.Author != null)
-                    hashCode = hashCode * 59 + this.Author.GetHashCode();
                 if (this.Description != null)
                     hashCode = hashCode * 59 + this.Description.GetHashCode();
-                hashCode = hashCode * 59 + this.Type.GetHashCode();
+                if (this.RelatedWork != null)
+                    hashCode = hashCode * 59 + this.RelatedWork.GetHashCode();
+                hashCode = hashCode * 59 + this.MemberCount.GetHashCode();
                 return hashCode;
             }
         }

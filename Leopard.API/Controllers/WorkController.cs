@@ -76,6 +76,7 @@ namespace Leopard.API.Controllers
 			public string Name { get; set; }
 			public string Author { get; set; }
 			public string Description { get; set; }
+			public WorkType Type { get; set; }
 
 			public static QWork NormalView(Work p)
 			{
@@ -84,7 +85,8 @@ namespace Leopard.API.Controllers
 					Id = p.Id,
 					Name = p.Name,
 					Author = p.Author,
-					Description = p.Description
+					Description = p.Description,
+					Type = p.Type
 				};
 			}
 		}

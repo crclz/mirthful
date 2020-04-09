@@ -166,6 +166,67 @@ namespace Leopard.API.Controllers
 
 
 		[NotCommand]
+		[HttpGet("get-topic-profile")]
+		[Produces(typeof(QTopic))]
+		public async Task<IActionResult> GetTopicProfile(string topicId)
+		{
+			var id = XUtils.ParseId(topicId);
+			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == id);
+			var qtopic = QTopic.NormalView(topic);
+			return Ok(qtopic);
+		}
+		public class QTopic
+		{
+			public Guid Id { get; set; }
+			public string Name { get; set; }
+			public string Description { get; set; }
+			public Guid? RelatedWork { get; set; }
+			public int MemberCount { get; set; }
+
+			public static QTopic NormalView(Topic p)
+			{
+				return p == null ? null : new QTopic
+				{
+					Id = p.Id,
+					Name = p.Name,
+					Description = p.Description,
+					RelatedWork = p.RelatedWork,
+					MemberCount = p.MemberCount
+				};
+			}
+		}
+
+
+		[NotCommand]
+		[HttpGet("get-membership")]
+		[Produces(typeof(QTopicMember))]
+
+		[ServiceFilter(typeof(RequireLoginFilter))]
+		public async Task<IActionResult> GetMembership(Guid topicId)
+		{
+			var membership = await Context.TopicMembers.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId);
+			var qmember = QTopicMember.NormalView(membership);
+			return Ok(qmember);
+		}
+		public class QTopicMember
+		{
+			public Guid TopicId { get; set; }
+			public Guid UserId { get; set; }
+			public MemberRole Role { get; set; }
+
+			public static QTopicMember NormalView(TopicMember p)
+			{
+				return p == null ? null : new QTopicMember
+				{
+					TopicId = p.TopicId,
+					UserId = p.UserId,
+					Role = p.Role
+				};
+			}
+		}
+
+
+		[NotCommand]
 		[HttpGet("get-posts")]
 		[Produces(typeof(QPost[]))]
 		public async Task<IActionResult> GetPosts(string topicId, int page, bool newest)
@@ -233,9 +294,9 @@ namespace Leopard.API.Controllers
 		}
 
 		[NotCommand]
-		[HttpGet("by-id")]
+		[HttpGet("get-post-by-id")]
 		[Produces(typeof(QPost))]
-		public async Task<IActionResult> GetById(string id)
+		public async Task<IActionResult> GetPostById(string id)
 		{
 			var postId = XUtils.ParseId(id);
 			if (postId == null)

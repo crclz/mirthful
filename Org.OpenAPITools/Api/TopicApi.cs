@@ -76,9 +76,30 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>QTopicMember</returns>
+        QTopicMember GetMembership (Guid? topicId = default(Guid?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>ApiResponse of QTopicMember</returns>
+        ApiResponse<QTopicMember> GetMembershipWithHttpInfo (Guid? topicId = default(Guid?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>QPost</returns>
-        QPost GetById (string id = default(string));
+        QPost GetPostById (string id = default(string));
 
         /// <summary>
         /// 
@@ -89,7 +110,7 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>ApiResponse of QPost</returns>
-        ApiResponse<QPost> GetByIdWithHttpInfo (string id = default(string));
+        ApiResponse<QPost> GetPostByIdWithHttpInfo (string id = default(string));
         /// <summary>
         /// 
         /// </summary>
@@ -138,6 +159,27 @@ namespace Org.OpenAPITools.Api
         /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QReply&gt;</returns>
         ApiResponse<List<QReply>> GetRepliesWithHttpInfo (string postId = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>QTopic</returns>
+        QTopic GetTopicProfile (string topicId = default(string));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>ApiResponse of QTopic</returns>
+        ApiResponse<QTopic> GetTopicProfileWithHttpInfo (string topicId = default(string));
         /// <summary>
         /// 
         /// </summary>
@@ -265,9 +307,30 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of QTopicMember</returns>
+        System.Threading.Tasks.Task<QTopicMember> GetMembershipAsync (Guid? topicId = default(Guid?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of ApiResponse (QTopicMember)</returns>
+        System.Threading.Tasks.Task<ApiResponse<QTopicMember>> GetMembershipAsyncWithHttpInfo (Guid? topicId = default(Guid?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>Task of QPost</returns>
-        System.Threading.Tasks.Task<QPost> GetByIdAsync (string id = default(string));
+        System.Threading.Tasks.Task<QPost> GetPostByIdAsync (string id = default(string));
 
         /// <summary>
         /// 
@@ -278,7 +341,7 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>Task of ApiResponse (QPost)</returns>
-        System.Threading.Tasks.Task<ApiResponse<QPost>> GetByIdAsyncWithHttpInfo (string id = default(string));
+        System.Threading.Tasks.Task<ApiResponse<QPost>> GetPostByIdAsyncWithHttpInfo (string id = default(string));
         /// <summary>
         /// 
         /// </summary>
@@ -327,6 +390,27 @@ namespace Org.OpenAPITools.Api
         /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QReply&gt;)</returns>
         System.Threading.Tasks.Task<ApiResponse<List<QReply>>> GetRepliesAsyncWithHttpInfo (string postId = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of QTopic</returns>
+        System.Threading.Tasks.Task<QTopic> GetTopicProfileAsync (string topicId = default(string));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of ApiResponse (QTopic)</returns>
+        System.Threading.Tasks.Task<ApiResponse<QTopic>> GetTopicProfileAsyncWithHttpInfo (string topicId = default(string));
         /// <summary>
         /// 
         /// </summary>
@@ -734,11 +818,126 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>QTopicMember</returns>
+        public QTopicMember GetMembership (Guid? topicId = default(Guid?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<QTopicMember> localVarResponse = GetMembershipWithHttpInfo(topicId);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>ApiResponse of QTopicMember</returns>
+        public Org.OpenAPITools.Client.ApiResponse< QTopicMember > GetMembershipWithHttpInfo (Guid? topicId = default(Guid?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< QTopicMember >("/api/topic/get-membership", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetMembership", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of QTopicMember</returns>
+        public async System.Threading.Tasks.Task<QTopicMember> GetMembershipAsync (Guid? topicId = default(Guid?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<QTopicMember> localVarResponse = await GetMembershipAsyncWithHttpInfo(topicId);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of ApiResponse (QTopicMember)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<QTopicMember>> GetMembershipAsyncWithHttpInfo (Guid? topicId = default(Guid?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<QTopicMember>("/api/topic/get-membership", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetMembership", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>QPost</returns>
-        public QPost GetById (string id = default(string))
+        public QPost GetPostById (string id = default(string))
         {
-             Org.OpenAPITools.Client.ApiResponse<QPost> localVarResponse = GetByIdWithHttpInfo(id);
+             Org.OpenAPITools.Client.ApiResponse<QPost> localVarResponse = GetPostByIdWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -748,7 +947,7 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>ApiResponse of QPost</returns>
-        public Org.OpenAPITools.Client.ApiResponse< QPost > GetByIdWithHttpInfo (string id = default(string))
+        public Org.OpenAPITools.Client.ApiResponse< QPost > GetPostByIdWithHttpInfo (string id = default(string))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -775,11 +974,11 @@ namespace Org.OpenAPITools.Api
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get< QPost >("/api/topic/by-id", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Get< QPost >("/api/topic/get-post-by-id", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetById", localVarResponse);
+                Exception _exception = this.ExceptionFactory("GetPostById", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -792,9 +991,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>Task of QPost</returns>
-        public async System.Threading.Tasks.Task<QPost> GetByIdAsync (string id = default(string))
+        public async System.Threading.Tasks.Task<QPost> GetPostByIdAsync (string id = default(string))
         {
-             Org.OpenAPITools.Client.ApiResponse<QPost> localVarResponse = await GetByIdAsyncWithHttpInfo(id);
+             Org.OpenAPITools.Client.ApiResponse<QPost> localVarResponse = await GetPostByIdAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -805,7 +1004,7 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"> (optional)</param>
         /// <returns>Task of ApiResponse (QPost)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<QPost>> GetByIdAsyncWithHttpInfo (string id = default(string))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<QPost>> GetPostByIdAsyncWithHttpInfo (string id = default(string))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -834,11 +1033,11 @@ namespace Org.OpenAPITools.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<QPost>("/api/topic/by-id", localVarRequestOptions, this.Configuration);
+            var localVarResponse = await this.AsynchronousClient.GetAsync<QPost>("/api/topic/get-post-by-id", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetById", localVarResponse);
+                Exception _exception = this.ExceptionFactory("GetPostById", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -1105,6 +1304,121 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetReplies", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>QTopic</returns>
+        public QTopic GetTopicProfile (string topicId = default(string))
+        {
+             Org.OpenAPITools.Client.ApiResponse<QTopic> localVarResponse = GetTopicProfileWithHttpInfo(topicId);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>ApiResponse of QTopic</returns>
+        public Org.OpenAPITools.Client.ApiResponse< QTopic > GetTopicProfileWithHttpInfo (string topicId = default(string))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< QTopic >("/api/topic/get-topic-profile", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetTopicProfile", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of QTopic</returns>
+        public async System.Threading.Tasks.Task<QTopic> GetTopicProfileAsync (string topicId = default(string))
+        {
+             Org.OpenAPITools.Client.ApiResponse<QTopic> localVarResponse = await GetTopicProfileAsyncWithHttpInfo(topicId);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <returns>Task of ApiResponse (QTopic)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<QTopic>> GetTopicProfileAsyncWithHttpInfo (string topicId = default(string))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<QTopic>("/api/topic/get-topic-profile", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetTopicProfile", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
