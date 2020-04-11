@@ -153,9 +153,9 @@ namespace Leopard.API.Test.Smoke
 			var essenseId = (await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25")).Id;
 
 			// do admin
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(pinnedId.ToString(), true, false, false));
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(deleteId.ToString(), false, false, true));
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId.ToString(), false, true, false));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(pinnedId.ToString(), AdminAction.IsPinned, true));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(deleteId.ToString(), AdminAction.Remove, true));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId.ToString(), AdminAction.IsEssence,true));
 
 			// check
 			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0);

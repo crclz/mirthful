@@ -25,7 +25,7 @@ namespace Leopard.Domain.ReplyAG
 
 		public void SetText(string text)
 		{
-			Guard.Argument(() => text).NotNull().MinLength(25);
+			Guard.Argument(() => text).NotNull().MinLength(3);
 			Text = text;
 			UpdatedAtNow();
 		}

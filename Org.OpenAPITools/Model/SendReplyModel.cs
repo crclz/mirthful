@@ -142,9 +142,9 @@ namespace Org.OpenAPITools.Model
         IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             // Text (string) minLength
-            if(this.Text != null && this.Text.Length < 25)
+            if(this.Text != null && this.Text.Length < 3)
             {
-                yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for Text, length must be greater than 25.", new [] { "Text" });
+                yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for Text, length must be greater than 3.", new [] { "Text" });
             }
 
             yield break;

@@ -391,7 +391,7 @@ namespace Leopard.API.Controllers
 			public string PostId { get; set; }
 
 			[Required]
-			[MinLength(25)]
+			[MinLength(3)]
 			public string Text { get; set; }
 		}
 
@@ -464,11 +464,17 @@ namespace Leopard.API.Controllers
 				return new ApiError(MyErrorCode.PermissionDenied, "You should be at least admin").Wrap();
 
 			// ok
-			post.SetPinned(model.IsPinned);
-			post.SetEssence(model.IsEssence);
+			if (model.Action == AdminAction.IsPinned)
+				post.SetPinned(model.Status);
 
-			if (model.Delete)
-				Context.Remove(post);
+			if (model.Action == AdminAction.IsEssence)
+				post.SetEssence(model.Status);
+
+			if (model.Action == AdminAction.Remove)
+			{
+				if (model.Status)
+					Context.Remove(post);
+			}
 
 			await Context.GoAsync();
 
@@ -477,9 +483,13 @@ namespace Leopard.API.Controllers
 		public class DoAdminModel
 		{
 			public string PostId { get; set; }
-			public bool IsPinned { get; set; }
-			public bool IsEssence { get; set; }
-			public bool Delete { get; set; }
+			public AdminAction Action { get; set; }
+			public bool Status { get; set; }
+		}
+
+		public enum AdminAction
+		{
+			IsPinned, IsEssence, Remove
 		}
 	}
 }

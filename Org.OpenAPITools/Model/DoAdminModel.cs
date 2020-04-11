@@ -32,18 +32,21 @@ namespace Org.OpenAPITools.Model
     public partial class DoAdminModel :  IEquatable<DoAdminModel>, IValidatableObject
     {
         /// <summary>
+        /// Gets or Sets Action
+        /// </summary>
+        [DataMember(Name="action", EmitDefaultValue=false)]
+        public AdminAction? Action { get; set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="DoAdminModel" /> class.
         /// </summary>
         /// <param name="postId">postId.</param>
-        /// <param name="isPinned">isPinned.</param>
-        /// <param name="isEssence">isEssence.</param>
-        /// <param name="delete">delete.</param>
-        public DoAdminModel(string postId = default(string), bool isPinned = default(bool), bool isEssence = default(bool), bool delete = default(bool))
+        /// <param name="action">action.</param>
+        /// <param name="status">status.</param>
+        public DoAdminModel(string postId = default(string), AdminAction action = default(AdminAction), bool status = default(bool))
         {
             this.PostId = postId;
-            this.IsPinned = isPinned;
-            this.IsEssence = isEssence;
-            this.Delete = delete;
+            this.Action = action;
+            this.Status = status;
         }
         
         /// <summary>
@@ -53,22 +56,10 @@ namespace Org.OpenAPITools.Model
         public string PostId { get; set; }
 
         /// <summary>
-        /// Gets or Sets IsPinned
+        /// Gets or Sets Status
         /// </summary>
-        [DataMember(Name="isPinned", EmitDefaultValue=false)]
-        public bool IsPinned { get; set; }
-
-        /// <summary>
-        /// Gets or Sets IsEssence
-        /// </summary>
-        [DataMember(Name="isEssence", EmitDefaultValue=false)]
-        public bool IsEssence { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Delete
-        /// </summary>
-        [DataMember(Name="delete", EmitDefaultValue=false)]
-        public bool Delete { get; set; }
+        [DataMember(Name="status", EmitDefaultValue=false)]
+        public bool Status { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -79,9 +70,8 @@ namespace Org.OpenAPITools.Model
             var sb = new StringBuilder();
             sb.Append("class DoAdminModel {\n");
             sb.Append("  PostId: ").Append(PostId).Append("\n");
-            sb.Append("  IsPinned: ").Append(IsPinned).Append("\n");
-            sb.Append("  IsEssence: ").Append(IsEssence).Append("\n");
-            sb.Append("  Delete: ").Append(Delete).Append("\n");
+            sb.Append("  Action: ").Append(Action).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -122,16 +112,12 @@ namespace Org.OpenAPITools.Model
                     this.PostId.Equals(input.PostId))
                 ) && 
                 (
-                    this.IsPinned == input.IsPinned ||
-                    this.IsPinned.Equals(input.IsPinned)
+                    this.Action == input.Action ||
+                    this.Action.Equals(input.Action)
                 ) && 
                 (
-                    this.IsEssence == input.IsEssence ||
-                    this.IsEssence.Equals(input.IsEssence)
-                ) && 
-                (
-                    this.Delete == input.Delete ||
-                    this.Delete.Equals(input.Delete)
+                    this.Status == input.Status ||
+                    this.Status.Equals(input.Status)
                 );
         }
 
@@ -146,9 +132,8 @@ namespace Org.OpenAPITools.Model
                 int hashCode = 41;
                 if (this.PostId != null)
                     hashCode = hashCode * 59 + this.PostId.GetHashCode();
-                hashCode = hashCode * 59 + this.IsPinned.GetHashCode();
-                hashCode = hashCode * 59 + this.IsEssence.GetHashCode();
-                hashCode = hashCode * 59 + this.Delete.GetHashCode();
+                hashCode = hashCode * 59 + this.Action.GetHashCode();
+                hashCode = hashCode * 59 + this.Status.GetHashCode();
                 return hashCode;
             }
         }
