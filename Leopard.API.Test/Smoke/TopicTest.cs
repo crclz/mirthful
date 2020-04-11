@@ -66,9 +66,9 @@ namespace Leopard.API.Test.Smoke
 			var member = members[0];
 
 			if (model.IsGroup == true)
-				Assert.Equal(MemberRole.Super, member.Role);
+				Assert.Equal(Domain.TopicMemberAG.MemberRole.Super, member.Role);
 			else
-				Assert.Equal(MemberRole.Normal, member.Role);
+				Assert.Equal(Domain.TopicMemberAG.MemberRole.Normal, member.Role);
 		}
 
 
@@ -97,7 +97,7 @@ namespace Leopard.API.Test.Smoke
 
 			var member = members.Where(p => p.UserId == a.UserId).FirstOrDefault();
 			Assert.NotNull(member);
-			Assert.Equal(MemberRole.Normal, member.Role);
+			Assert.Equal(Domain.TopicMemberAG.MemberRole.Normal, member.Role);
 
 			// a send post 
 			idRes = await a.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello1", "Hello everyone!");

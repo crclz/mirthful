@@ -1,5 +1,4 @@
 ﻿using Leopard.Domain;
-using Leopard.Domain.TopicMemberAG;
 using Leopard.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Org.OpenAPITools.Api;
@@ -68,7 +67,7 @@ namespace Leopard.API.Test.Smoke
 				.Where(p => p.TopicId == XUtils.ParseId(topicId.ToString()) && p.UserId == XUtils.ParseId(b.UserId.ToString()))
 				.FirstOrDefaultAsync();
 
-			Assert.Equal(MemberRole.Admin, membership.Role);
+			Assert.Equal(Leopard.Domain.TopicMemberAG.MemberRole.Normal, membership.Role);
 
 
 		}
