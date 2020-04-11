@@ -178,6 +178,7 @@ namespace Leopard.API.Controllers
 		public class QTopic
 		{
 			public Guid Id { get; set; }
+			public bool IsGroup { get; set; }
 			public string Name { get; set; }
 			public string Description { get; set; }
 			public Guid? RelatedWork { get; set; }
@@ -188,6 +189,7 @@ namespace Leopard.API.Controllers
 				return p == null ? null : new QTopic
 				{
 					Id = p.Id,
+					IsGroup = p.IsGroup,
 					Name = p.Name,
 					Description = p.Description,
 					RelatedWork = p.RelatedWork,

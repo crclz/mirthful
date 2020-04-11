@@ -35,13 +35,15 @@ namespace Org.OpenAPITools.Model
         /// Initializes a new instance of the <see cref="QTopic" /> class.
         /// </summary>
         /// <param name="id">id.</param>
+        /// <param name="isGroup">isGroup.</param>
         /// <param name="name">name.</param>
         /// <param name="description">description.</param>
         /// <param name="relatedWork">relatedWork.</param>
         /// <param name="memberCount">memberCount.</param>
-        public QTopic(Guid id = default(Guid), string name = default(string), string description = default(string), Guid? relatedWork = default(Guid?), int memberCount = default(int))
+        public QTopic(Guid id = default(Guid), bool isGroup = default(bool), string name = default(string), string description = default(string), Guid? relatedWork = default(Guid?), int memberCount = default(int))
         {
             this.Id = id;
+            this.IsGroup = isGroup;
             this.Name = name;
             this.Description = description;
             this.RelatedWork = relatedWork;
@@ -53,6 +55,12 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets IsGroup
+        /// </summary>
+        [DataMember(Name="isGroup", EmitDefaultValue=false)]
+        public bool IsGroup { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -87,6 +95,7 @@ namespace Org.OpenAPITools.Model
             var sb = new StringBuilder();
             sb.Append("class QTopic {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  IsGroup: ").Append(IsGroup).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  RelatedWork: ").Append(RelatedWork).Append("\n");
@@ -131,6 +140,10 @@ namespace Org.OpenAPITools.Model
                     this.Id.Equals(input.Id))
                 ) && 
                 (
+                    this.IsGroup == input.IsGroup ||
+                    this.IsGroup.Equals(input.IsGroup)
+                ) && 
+                (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
@@ -162,6 +175,7 @@ namespace Org.OpenAPITools.Model
                 int hashCode = 41;
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
+                hashCode = hashCode * 59 + this.IsGroup.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Description != null)
