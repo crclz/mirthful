@@ -120,9 +120,8 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>List&lt;QPost&gt;</returns>
-        List<QPost> GetPosts (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+        List<QPost> GetPosts (string topicId = default(string), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -133,9 +132,8 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QPost&gt;</returns>
-        ApiResponse<List<QPost>> GetPostsWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+        ApiResponse<List<QPost>> GetPostsWithHttpInfo (string topicId = default(string), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -351,9 +349,8 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>Task of List&lt;QPost&gt;</returns>
-        System.Threading.Tasks.Task<List<QPost>> GetPostsAsync (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+        System.Threading.Tasks.Task<List<QPost>> GetPostsAsync (string topicId = default(string), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -364,9 +361,8 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QPost&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<QPost>>> GetPostsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?));
+        System.Threading.Tasks.Task<ApiResponse<List<QPost>>> GetPostsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -1050,11 +1046,10 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>List&lt;QPost&gt;</returns>
-        public List<QPost> GetPosts (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        public List<QPost> GetPosts (string topicId = default(string), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QPost>> localVarResponse = GetPostsWithHttpInfo(topicId, page, newest);
+             Org.OpenAPITools.Client.ApiResponse<List<QPost>> localVarResponse = GetPostsWithHttpInfo(topicId, page);
              return localVarResponse.Data;
         }
 
@@ -1064,9 +1059,8 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QPost&gt;</returns>
-        public Org.OpenAPITools.Client.ApiResponse< List<QPost> > GetPostsWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        public Org.OpenAPITools.Client.ApiResponse< List<QPost> > GetPostsWithHttpInfo (string topicId = default(string), int? page = default(int?))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -1094,10 +1088,6 @@ namespace Org.OpenAPITools.Api
             {
                 localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
             }
-            if (newest != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest));
-            }
 
 
             // make the HTTP request
@@ -1118,11 +1108,10 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>Task of List&lt;QPost&gt;</returns>
-        public async System.Threading.Tasks.Task<List<QPost>> GetPostsAsync (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        public async System.Threading.Tasks.Task<List<QPost>> GetPostsAsync (string topicId = default(string), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QPost>> localVarResponse = await GetPostsAsyncWithHttpInfo(topicId, page, newest);
+             Org.OpenAPITools.Client.ApiResponse<List<QPost>> localVarResponse = await GetPostsAsyncWithHttpInfo(topicId, page);
              return localVarResponse.Data;
 
         }
@@ -1133,9 +1122,8 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
         /// <param name="page"> (optional)</param>
-        /// <param name="newest"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QPost&gt;)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QPost>>> GetPostsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?), bool? newest = default(bool?))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QPost>>> GetPostsAsyncWithHttpInfo (string topicId = default(string), int? page = default(int?))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -1163,10 +1151,6 @@ namespace Org.OpenAPITools.Api
             if (page != null)
             {
                 localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (newest != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "newest", newest));
             }
 
 

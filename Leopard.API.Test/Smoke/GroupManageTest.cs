@@ -67,7 +67,7 @@ namespace Leopard.API.Test.Smoke
 				.Where(p => p.TopicId == XUtils.ParseId(topicId.ToString()) && p.UserId == XUtils.ParseId(b.UserId.ToString()))
 				.FirstOrDefaultAsync();
 
-			Assert.Equal(Leopard.Domain.TopicMemberAG.MemberRole.Normal, membership.Role);
+			Assert.Equal(Leopard.Domain.TopicMemberAG.MemberRole.Admin, membership.Role);
 
 
 		}

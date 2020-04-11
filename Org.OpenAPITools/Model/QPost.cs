@@ -44,7 +44,9 @@ namespace Org.OpenAPITools.Model
         /// <param name="isPinned">isPinned.</param>
         /// <param name="isEssense">isEssense.</param>
         /// <param name="user">user.</param>
-        public QPost(Guid id = default(Guid), long createdAt = default(long), long updatedAt = default(long), Guid senderId = default(Guid), string image = default(string), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool), QUser user = default(QUser))
+        /// <param name="replyCount">replyCount.</param>
+        /// <param name="lastReply">lastReply.</param>
+        public QPost(Guid id = default(Guid), long createdAt = default(long), long updatedAt = default(long), Guid senderId = default(Guid), string image = default(string), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool), QUser user = default(QUser), int replyCount = default(int), long lastReply = default(long))
         {
             this.Id = id;
             this.CreatedAt = createdAt;
@@ -56,6 +58,8 @@ namespace Org.OpenAPITools.Model
             this.IsPinned = isPinned;
             this.IsEssense = isEssense;
             this.User = user;
+            this.ReplyCount = replyCount;
+            this.LastReply = lastReply;
         }
         
         /// <summary>
@@ -119,6 +123,18 @@ namespace Org.OpenAPITools.Model
         public QUser User { get; set; }
 
         /// <summary>
+        /// Gets or Sets ReplyCount
+        /// </summary>
+        [DataMember(Name="replyCount", EmitDefaultValue=false)]
+        public int ReplyCount { get; set; }
+
+        /// <summary>
+        /// Gets or Sets LastReply
+        /// </summary>
+        [DataMember(Name="lastReply", EmitDefaultValue=false)]
+        public long LastReply { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -136,6 +152,8 @@ namespace Org.OpenAPITools.Model
             sb.Append("  IsPinned: ").Append(IsPinned).Append("\n");
             sb.Append("  IsEssense: ").Append(IsEssense).Append("\n");
             sb.Append("  User: ").Append(User).Append("\n");
+            sb.Append("  ReplyCount: ").Append(ReplyCount).Append("\n");
+            sb.Append("  LastReply: ").Append(LastReply).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -215,6 +233,14 @@ namespace Org.OpenAPITools.Model
                     this.User == input.User ||
                     (this.User != null &&
                     this.User.Equals(input.User))
+                ) && 
+                (
+                    this.ReplyCount == input.ReplyCount ||
+                    this.ReplyCount.Equals(input.ReplyCount)
+                ) && 
+                (
+                    this.LastReply == input.LastReply ||
+                    this.LastReply.Equals(input.LastReply)
                 );
         }
 
@@ -243,6 +269,8 @@ namespace Org.OpenAPITools.Model
                 hashCode = hashCode * 59 + this.IsEssense.GetHashCode();
                 if (this.User != null)
                     hashCode = hashCode * 59 + this.User.GetHashCode();
+                hashCode = hashCode * 59 + this.ReplyCount.GetHashCode();
+                hashCode = hashCode * 59 + this.LastReply.GetHashCode();
                 return hashCode;
             }
         }

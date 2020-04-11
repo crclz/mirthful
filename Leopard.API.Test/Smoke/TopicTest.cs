@@ -110,7 +110,7 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal("hello2", post.Title);
 
 			// get posts
-			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId.ToString(), 0, true);
+			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId.ToString(), 0);
 
 			Assert.Equal(2, posts.Count);
 
@@ -158,7 +158,7 @@ namespace Leopard.API.Test.Smoke
 			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId.ToString(), false, true, false));
 
 			// check
-			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0, true);
+			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0);
 			Assert.Equal(5, posts.Count);
 			Assert.Equal(pinnedId, posts[0].Id);
 			Assert.DoesNotContain(posts, p => p.Id == deleteId);
