@@ -51,6 +51,12 @@ namespace Leopard.API.Controllers
 			if (member?.Role != MemberRole.Normal)
 				return new ApiError(MyErrorCode.RoleMismatch, "You are not normal row of the topic").Wrap();
 
+			// unhandled request exist?
+			var previous = await Context.AdminRequests.FirstOrDefaultAsync(
+				p => p.TopicId == topicId && p.SenderId == AuthStore.UserId && p.Status == RequestStatus.Unhandled);
+			if (previous != null)
+				return new ApiError(MyErrorCode.ExistUnhandledReuqest, "你已经发送过请求，但未被处理").Wrap();
+
 			// send request
 			var request = new AdminRequest(topicId.Value, AuthStore.UserId.Value, model.Text);
 
