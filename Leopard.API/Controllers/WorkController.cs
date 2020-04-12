@@ -37,8 +37,9 @@ namespace Leopard.API.Controllers
 		[NotCommand]
 		[HttpGet("by-keyword")]
 		[Produces(typeof(QWork[]))]
-		public async Task<IActionResult> GetWorkByKeyword(WorkType type, string keyword)
+		public async Task<IActionResult> GetWorkByKeyword(WorkType type, string keyword, int page)
 		{
+			page = Math.Max(0, page);
 			const int pageSize = 20;
 
 			if (keyword == null)
@@ -63,7 +64,7 @@ namespace Leopard.API.Controllers
 						orderby p.rank descending
 						select p.work;
 
-			var works = await query.Take(pageSize).ToListAsync();
+			var works = await query.Skip(page * pageSize).Take(pageSize).ToListAsync();
 
 			var qworks = works.Select(p => QWork.NormalView(p)).ToList();
 

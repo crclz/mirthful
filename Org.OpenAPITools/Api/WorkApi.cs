@@ -57,8 +57,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QWork&gt;</returns>
-        List<QWork> GetWorkByKeyword (WorkType type = default(WorkType), string keyword = default(string));
+        List<QWork> GetWorkByKeyword (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -69,8 +70,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QWork&gt;</returns>
-        ApiResponse<List<QWork>> GetWorkByKeywordWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string));
+        ApiResponse<List<QWork>> GetWorkByKeywordWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?));
         #endregion Synchronous Operations
     }
 
@@ -110,8 +112,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of List&lt;QWork&gt;</returns>
-        System.Threading.Tasks.Task<List<QWork>> GetWorkByKeywordAsync (WorkType type = default(WorkType), string keyword = default(string));
+        System.Threading.Tasks.Task<List<QWork>> GetWorkByKeywordAsync (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -122,8 +125,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QWork&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<QWork>>> GetWorkByKeywordAsyncWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string));
+        System.Threading.Tasks.Task<ApiResponse<List<QWork>>> GetWorkByKeywordAsyncWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?));
         #endregion Asynchronous Operations
     }
 
@@ -365,10 +369,11 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QWork&gt;</returns>
-        public List<QWork> GetWorkByKeyword (WorkType type = default(WorkType), string keyword = default(string))
+        public List<QWork> GetWorkByKeyword (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QWork>> localVarResponse = GetWorkByKeywordWithHttpInfo(type, keyword);
+             Org.OpenAPITools.Client.ApiResponse<List<QWork>> localVarResponse = GetWorkByKeywordWithHttpInfo(type, keyword, page);
              return localVarResponse.Data;
         }
 
@@ -378,8 +383,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QWork&gt;</returns>
-        public Org.OpenAPITools.Client.ApiResponse< List<QWork> > GetWorkByKeywordWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string))
+        public Org.OpenAPITools.Client.ApiResponse< List<QWork> > GetWorkByKeywordWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -407,6 +413,10 @@ namespace Org.OpenAPITools.Api
             {
                 localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "keyword", keyword));
             }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
 
 
             // make the HTTP request
@@ -427,10 +437,11 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of List&lt;QWork&gt;</returns>
-        public async System.Threading.Tasks.Task<List<QWork>> GetWorkByKeywordAsync (WorkType type = default(WorkType), string keyword = default(string))
+        public async System.Threading.Tasks.Task<List<QWork>> GetWorkByKeywordAsync (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QWork>> localVarResponse = await GetWorkByKeywordAsyncWithHttpInfo(type, keyword);
+             Org.OpenAPITools.Client.ApiResponse<List<QWork>> localVarResponse = await GetWorkByKeywordAsyncWithHttpInfo(type, keyword, page);
              return localVarResponse.Data;
 
         }
@@ -441,8 +452,9 @@ namespace Org.OpenAPITools.Api
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="type"> (optional)</param>
         /// <param name="keyword"> (optional)</param>
+        /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QWork&gt;)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QWork>>> GetWorkByKeywordAsyncWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QWork>>> GetWorkByKeywordAsyncWithHttpInfo (WorkType type = default(WorkType), string keyword = default(string), int? page = default(int?))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -470,6 +482,10 @@ namespace Org.OpenAPITools.Api
             if (keyword != null)
             {
                 localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "keyword", keyword));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
             }
 
 
