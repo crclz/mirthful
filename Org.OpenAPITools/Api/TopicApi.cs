@@ -229,6 +229,29 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QDiscussion&gt;</returns>
+        List<QDiscussion> SearchDiscussions (string word = default(string), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QDiscussion&gt;</returns>
+        ApiResponse<List<QDiscussion>> SearchDiscussionsWithHttpInfo (string word = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>IdResponse</returns>
         IdResponse SendDiscussion (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel));
@@ -510,6 +533,29 @@ namespace Org.OpenAPITools.Api
         /// <param name="joinTopicModel"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
         System.Threading.Tasks.Task<ApiResponse<Object>> JoinTopicAsyncWithHttpInfo (JoinTopicModel joinTopicModel = default(JoinTopicModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QDiscussion&gt;</returns>
+        System.Threading.Tasks.Task<List<QDiscussion>> SearchDiscussionsAsync (string word = default(string), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QDiscussion&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QDiscussion>>> SearchDiscussionsAsyncWithHttpInfo (string word = default(string), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -1751,6 +1797,133 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("JoinTopic", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QDiscussion&gt;</returns>
+        public List<QDiscussion> SearchDiscussions (string word = default(string), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QDiscussion>> localVarResponse = SearchDiscussionsWithHttpInfo(word, page);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QDiscussion&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QDiscussion> > SearchDiscussionsWithHttpInfo (string word = default(string), int? page = default(int?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (word != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "word", word));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<QDiscussion> >("/api/topic/search-discussions", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SearchDiscussions", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QDiscussion&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QDiscussion>> SearchDiscussionsAsync (string word = default(string), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QDiscussion>> localVarResponse = await SearchDiscussionsAsyncWithHttpInfo(word, page);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QDiscussion&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QDiscussion>>> SearchDiscussionsAsyncWithHttpInfo (string word = default(string), int? page = default(int?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (word != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "word", word));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<QDiscussion>>("/api/topic/search-discussions", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SearchDiscussions", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

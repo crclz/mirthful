@@ -240,6 +240,28 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[HttpGet("search-discussions")]
+		[Produces(typeof(QDiscussion[]))]
+		public async Task<IActionResult> SearchDiscussions(string word, int page)
+		{
+			page = Math.Max(0, page);
+			int pageSize = 20;
+
+			var query = from p in Context.Discussions.AsNoTracking()
+						where p.TextTsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						join q in Context.Users
+						on p.SenderId equals q.Id
+						orderby p.TextTsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						select new { Discussion = p, Sender = q };
+
+			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
+
+			var qdiscuss = data.Select(p => QDiscussion.NormalView(p.Discussion, p.Sender)).ToList();
+
+			return Ok(qdiscuss);
+		}
+
+
 		[HttpPost("upload-file")]
 		[Consumes("multipart/form-data")]
 		[Produces(typeof(UploadFileResponse))]
