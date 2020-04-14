@@ -117,7 +117,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> SendPost([FromForm]SendPostModel model, [FromServices]IBlobBucket blobBucket)
+		public async Task<IActionResult> SendPost([FromBody]SendPostModel model)
 		{
 			var topicId = XUtils.ParseId(model.TopicId);
 			if (topicId == null)

@@ -79,12 +79,13 @@ namespace Leopard.API.Test.Smoke
 			var b = await ClientSesion.RandomInstance();
 
 			// b create topic
-			var model = new CreateTopicModel(false, "some-topic", "haha", null);
+			var model = new CreateTopicModel(true, "some-topic", "haha", null);
 			var idRes = await b.Api<TopicApi>().CreateTopicAsync(model);
 			var topicId = idRes.Id;
 
 			// a send post without join topic
-			await Assert.ThrowsAnyAsync<Exception>(() => a.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello", "Hello everyone!"));
+			await Assert.ThrowsAnyAsync<Exception>(
+				() => a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId.ToString(), "hello", "Hello everyone!")));
 
 			// a join topic
 			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId.ToString()));
@@ -100,12 +101,12 @@ namespace Leopard.API.Test.Smoke
 			Assert.Equal(Domain.TopicMemberAG.MemberRole.Normal, member.Role);
 
 			// a send post 
-			idRes = await a.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello1", "Hello everyone!");
+			idRes = await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId.ToString(), "hello1", "Hello everyone!"));
 			var post = await a.Api<TopicApi>().GetPostByIdAsync(idRes.Id.ToString());
 			Assert.Equal("hello1", post.Title);
 
 			// b send post
-			idRes = await b.Api<TopicApi>().SendPostAsync(topicId.ToString(), "hello2", "Hello everyone!");
+			idRes = await b.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId.ToString(), "hello2", "Hello everyone!"));
 			post = await b.Api<TopicApi>().GetPostByIdAsync(idRes.Id.ToString());
 			Assert.Equal("hello2", post.Title);
 
@@ -139,23 +140,23 @@ namespace Leopard.API.Test.Smoke
 
 			// Send Posts
 
-			await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+			await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId, "123", "123123asd1dasd25"));
 
-			await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+			await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId, "123", "123123asd1dasd25"));
 
-			idRes = await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+			idRes = await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId, "123", "123123asd1dasd25"));
 			var pinnedId = idRes.Id;
 
-			await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25");
+			await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId, "123", "123123asd1dasd25"));
 
-			var deleteId = (await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25")).Id;
+			var deleteId = (await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId, "123", "123123asd1dasd25"))).Id;
 
-			var essenseId = (await a.Api<TopicApi>().SendPostAsync(topicId, "123", "123123asd1dasd25")).Id;
+			var essenseId = (await a.Api<TopicApi>().SendPostAsync(new SendPostModel(topicId, "123", "123123asd1dasd25"))).Id;
 
 			// do admin
 			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(pinnedId.ToString(), AdminAction.IsPinned, true));
 			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(deleteId.ToString(), AdminAction.Remove, true));
-			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId.ToString(), AdminAction.IsEssence,true));
+			await a.Api<TopicApi>().DoAdminAsync(new DoAdminModel(essenseId.ToString(), AdminAction.IsEssence, true));
 
 			// check
 			var posts = await a.Api<TopicApi>().GetPostsAsync(topicId, 0);

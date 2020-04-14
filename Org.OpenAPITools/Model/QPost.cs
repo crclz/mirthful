@@ -38,7 +38,6 @@ namespace Org.OpenAPITools.Model
         /// <param name="createdAt">createdAt.</param>
         /// <param name="updatedAt">updatedAt.</param>
         /// <param name="senderId">senderId.</param>
-        /// <param name="image">image.</param>
         /// <param name="title">title.</param>
         /// <param name="text">text.</param>
         /// <param name="isPinned">isPinned.</param>
@@ -46,13 +45,12 @@ namespace Org.OpenAPITools.Model
         /// <param name="user">user.</param>
         /// <param name="replyCount">replyCount.</param>
         /// <param name="lastReply">lastReply.</param>
-        public QPost(Guid id = default(Guid), long createdAt = default(long), long updatedAt = default(long), Guid senderId = default(Guid), string image = default(string), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool), QUser user = default(QUser), int replyCount = default(int), long lastReply = default(long))
+        public QPost(Guid id = default(Guid), long createdAt = default(long), long updatedAt = default(long), Guid senderId = default(Guid), string title = default(string), string text = default(string), bool isPinned = default(bool), bool isEssense = default(bool), QUser user = default(QUser), int replyCount = default(int), long lastReply = default(long))
         {
             this.Id = id;
             this.CreatedAt = createdAt;
             this.UpdatedAt = updatedAt;
             this.SenderId = senderId;
-            this.Image = image;
             this.Title = title;
             this.Text = text;
             this.IsPinned = isPinned;
@@ -85,12 +83,6 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         [DataMember(Name="senderId", EmitDefaultValue=false)]
         public Guid SenderId { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Image
-        /// </summary>
-        [DataMember(Name="image", EmitDefaultValue=true)]
-        public string Image { get; set; }
 
         /// <summary>
         /// Gets or Sets Title
@@ -146,7 +138,6 @@ namespace Org.OpenAPITools.Model
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
             sb.Append("  SenderId: ").Append(SenderId).Append("\n");
-            sb.Append("  Image: ").Append(Image).Append("\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("  IsPinned: ").Append(IsPinned).Append("\n");
@@ -207,11 +198,6 @@ namespace Org.OpenAPITools.Model
                     this.SenderId.Equals(input.SenderId))
                 ) && 
                 (
-                    this.Image == input.Image ||
-                    (this.Image != null &&
-                    this.Image.Equals(input.Image))
-                ) && 
-                (
                     this.Title == input.Title ||
                     (this.Title != null &&
                     this.Title.Equals(input.Title))
@@ -259,8 +245,6 @@ namespace Org.OpenAPITools.Model
                 hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
                 if (this.SenderId != null)
                     hashCode = hashCode * 59 + this.SenderId.GetHashCode();
-                if (this.Image != null)
-                    hashCode = hashCode * 59 + this.Image.GetHashCode();
                 if (this.Title != null)
                     hashCode = hashCode * 59 + this.Title.GetHashCode();
                 if (this.Text != null)

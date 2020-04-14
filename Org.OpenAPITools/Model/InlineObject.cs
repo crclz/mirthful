@@ -34,47 +34,57 @@ namespace Org.OpenAPITools.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="InlineObject" /> class.
         /// </summary>
-        [JsonConstructorAttribute]
-        protected InlineObject() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InlineObject" /> class.
-        /// </summary>
-        /// <param name="topicId">topicId (required).</param>
-        /// <param name="title">title.</param>
-        /// <param name="text">text.</param>
-        /// <param name="image">image.</param>
-        public InlineObject(string topicId = default(string), string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream))
+        /// <param name="contentType">contentType.</param>
+        /// <param name="contentDisposition">contentDisposition.</param>
+        /// <param name="headers">headers.</param>
+        /// <param name="length">length.</param>
+        /// <param name="name">name.</param>
+        /// <param name="fileName">fileName.</param>
+        public InlineObject(string contentType = default(string), string contentDisposition = default(string), Dictionary<string, List<string>> headers = default(Dictionary<string, List<string>>), long length = default(long), string name = default(string), string fileName = default(string))
         {
-            // to ensure "topicId" is required (not null)
-            this.TopicId = topicId ?? throw new ArgumentNullException("topicId is a required property for InlineObject and cannot be null");;
-            this.Title = title;
-            this.Text = text;
-            this.Image = image;
+            this.ContentType = contentType;
+            this.ContentDisposition = contentDisposition;
+            this.Headers = headers;
+            this.Length = length;
+            this.Name = name;
+            this.FileName = fileName;
         }
         
         /// <summary>
-        /// Gets or Sets TopicId
+        /// Gets or Sets ContentType
         /// </summary>
-        [DataMember(Name="TopicId", EmitDefaultValue=false)]
-        public string TopicId { get; set; }
+        [DataMember(Name="ContentType", EmitDefaultValue=true)]
+        public string ContentType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Title
+        /// Gets or Sets ContentDisposition
         /// </summary>
-        [DataMember(Name="Title", EmitDefaultValue=true)]
-        public string Title { get; set; }
+        [DataMember(Name="ContentDisposition", EmitDefaultValue=true)]
+        public string ContentDisposition { get; set; }
 
         /// <summary>
-        /// Gets or Sets Text
+        /// Gets or Sets Headers
         /// </summary>
-        [DataMember(Name="Text", EmitDefaultValue=true)]
-        public string Text { get; set; }
+        [DataMember(Name="Headers", EmitDefaultValue=true)]
+        public Dictionary<string, List<string>> Headers { get; set; }
 
         /// <summary>
-        /// Gets or Sets Image
+        /// Gets or Sets Length
         /// </summary>
-        [DataMember(Name="Image", EmitDefaultValue=true)]
-        public System.IO.Stream Image { get; set; }
+        [DataMember(Name="Length", EmitDefaultValue=false)]
+        public long Length { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Name
+        /// </summary>
+        [DataMember(Name="Name", EmitDefaultValue=true)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or Sets FileName
+        /// </summary>
+        [DataMember(Name="FileName", EmitDefaultValue=true)]
+        public string FileName { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -84,10 +94,12 @@ namespace Org.OpenAPITools.Model
         {
             var sb = new StringBuilder();
             sb.Append("class InlineObject {\n");
-            sb.Append("  TopicId: ").Append(TopicId).Append("\n");
-            sb.Append("  Title: ").Append(Title).Append("\n");
-            sb.Append("  Text: ").Append(Text).Append("\n");
-            sb.Append("  Image: ").Append(Image).Append("\n");
+            sb.Append("  ContentType: ").Append(ContentType).Append("\n");
+            sb.Append("  ContentDisposition: ").Append(ContentDisposition).Append("\n");
+            sb.Append("  Headers: ").Append(Headers).Append("\n");
+            sb.Append("  Length: ").Append(Length).Append("\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  FileName: ").Append(FileName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -123,24 +135,34 @@ namespace Org.OpenAPITools.Model
 
             return 
                 (
-                    this.TopicId == input.TopicId ||
-                    (this.TopicId != null &&
-                    this.TopicId.Equals(input.TopicId))
+                    this.ContentType == input.ContentType ||
+                    (this.ContentType != null &&
+                    this.ContentType.Equals(input.ContentType))
                 ) && 
                 (
-                    this.Title == input.Title ||
-                    (this.Title != null &&
-                    this.Title.Equals(input.Title))
+                    this.ContentDisposition == input.ContentDisposition ||
+                    (this.ContentDisposition != null &&
+                    this.ContentDisposition.Equals(input.ContentDisposition))
                 ) && 
                 (
-                    this.Text == input.Text ||
-                    (this.Text != null &&
-                    this.Text.Equals(input.Text))
+                    this.Headers == input.Headers ||
+                    this.Headers != null &&
+                    input.Headers != null &&
+                    this.Headers.SequenceEqual(input.Headers)
                 ) && 
                 (
-                    this.Image == input.Image ||
-                    (this.Image != null &&
-                    this.Image.Equals(input.Image))
+                    this.Length == input.Length ||
+                    this.Length.Equals(input.Length)
+                ) && 
+                (
+                    this.Name == input.Name ||
+                    (this.Name != null &&
+                    this.Name.Equals(input.Name))
+                ) && 
+                (
+                    this.FileName == input.FileName ||
+                    (this.FileName != null &&
+                    this.FileName.Equals(input.FileName))
                 );
         }
 
@@ -153,14 +175,17 @@ namespace Org.OpenAPITools.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.TopicId != null)
-                    hashCode = hashCode * 59 + this.TopicId.GetHashCode();
-                if (this.Title != null)
-                    hashCode = hashCode * 59 + this.Title.GetHashCode();
-                if (this.Text != null)
-                    hashCode = hashCode * 59 + this.Text.GetHashCode();
-                if (this.Image != null)
-                    hashCode = hashCode * 59 + this.Image.GetHashCode();
+                if (this.ContentType != null)
+                    hashCode = hashCode * 59 + this.ContentType.GetHashCode();
+                if (this.ContentDisposition != null)
+                    hashCode = hashCode * 59 + this.ContentDisposition.GetHashCode();
+                if (this.Headers != null)
+                    hashCode = hashCode * 59 + this.Headers.GetHashCode();
+                hashCode = hashCode * 59 + this.Length.GetHashCode();
+                if (this.Name != null)
+                    hashCode = hashCode * 59 + this.Name.GetHashCode();
+                if (this.FileName != null)
+                    hashCode = hashCode * 59 + this.FileName.GetHashCode();
                 return hashCode;
             }
         }

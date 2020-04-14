@@ -77,6 +77,29 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QDiscussion&gt;</returns>
+        List<QDiscussion> GetDiscussions (Guid? topicId = default(Guid?), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QDiscussion&gt;</returns>
+        ApiResponse<List<QDiscussion>> GetDiscussionsWithHttpInfo (Guid? topicId = default(Guid?), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
         /// <returns>QTopicMember</returns>
         QTopicMember GetMembership (Guid? topicId = default(Guid?));
 
@@ -206,12 +229,9 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>IdResponse</returns>
-        IdResponse SendPost (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream));
+        IdResponse SendDiscussion (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel));
 
         /// <summary>
         /// 
@@ -220,12 +240,30 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>ApiResponse of IdResponse</returns>
-        ApiResponse<IdResponse> SendPostWithHttpInfo (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream));
+        ApiResponse<IdResponse> SendDiscussionWithHttpInfo (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendPostModel"> (optional)</param>
+        /// <returns>IdResponse</returns>
+        IdResponse SendPost (SendPostModel sendPostModel = default(SendPostModel));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendPostModel"> (optional)</param>
+        /// <returns>ApiResponse of IdResponse</returns>
+        ApiResponse<IdResponse> SendPostWithHttpInfo (SendPostModel sendPostModel = default(SendPostModel));
         /// <summary>
         /// 
         /// </summary>
@@ -247,6 +285,35 @@ namespace Org.OpenAPITools.Api
         /// <param name="sendReplyModel"> (optional)</param>
         /// <returns>ApiResponse of IdResponse</returns>
         ApiResponse<IdResponse> SendReplyWithHttpInfo (SendReplyModel sendReplyModel = default(SendReplyModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>UploadFileResponse</returns>
+        UploadFileResponse UploadFile (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>ApiResponse of UploadFileResponse</returns>
+        ApiResponse<UploadFileResponse> UploadFileWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
         #endregion Synchronous Operations
     }
 
@@ -298,6 +365,29 @@ namespace Org.OpenAPITools.Api
         /// <param name="doAdminModel"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
         System.Threading.Tasks.Task<ApiResponse<Object>> DoAdminAsyncWithHttpInfo (DoAdminModel doAdminModel = default(DoAdminModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QDiscussion&gt;</returns>
+        System.Threading.Tasks.Task<List<QDiscussion>> GetDiscussionsAsync (Guid? topicId = default(Guid?), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QDiscussion&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QDiscussion>>> GetDiscussionsAsyncWithHttpInfo (Guid? topicId = default(Guid?), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -435,12 +525,9 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>Task of IdResponse</returns>
-        System.Threading.Tasks.Task<IdResponse> SendPostAsync (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream));
+        System.Threading.Tasks.Task<IdResponse> SendDiscussionAsync (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel));
 
         /// <summary>
         /// 
@@ -449,12 +536,30 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>Task of ApiResponse (IdResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IdResponse>> SendPostAsyncWithHttpInfo (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream));
+        System.Threading.Tasks.Task<ApiResponse<IdResponse>> SendDiscussionAsyncWithHttpInfo (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendPostModel"> (optional)</param>
+        /// <returns>Task of IdResponse</returns>
+        System.Threading.Tasks.Task<IdResponse> SendPostAsync (SendPostModel sendPostModel = default(SendPostModel));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendPostModel"> (optional)</param>
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IdResponse>> SendPostAsyncWithHttpInfo (SendPostModel sendPostModel = default(SendPostModel));
         /// <summary>
         /// 
         /// </summary>
@@ -476,6 +581,35 @@ namespace Org.OpenAPITools.Api
         /// <param name="sendReplyModel"> (optional)</param>
         /// <returns>Task of ApiResponse (IdResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<IdResponse>> SendReplyAsyncWithHttpInfo (SendReplyModel sendReplyModel = default(SendReplyModel));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>Task of UploadFileResponse</returns>
+        System.Threading.Tasks.Task<UploadFileResponse> UploadFileAsync (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>Task of ApiResponse (UploadFileResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<UploadFileResponse>> UploadFileAsyncWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
         #endregion Asynchronous Operations
     }
 
@@ -804,6 +938,133 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("DoAdmin", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QDiscussion&gt;</returns>
+        public List<QDiscussion> GetDiscussions (Guid? topicId = default(Guid?), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QDiscussion>> localVarResponse = GetDiscussionsWithHttpInfo(topicId, page);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QDiscussion&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QDiscussion> > GetDiscussionsWithHttpInfo (Guid? topicId = default(Guid?), int? page = default(int?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<QDiscussion> >("/api/topic/get-discussions", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetDiscussions", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QDiscussion&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QDiscussion>> GetDiscussionsAsync (Guid? topicId = default(Guid?), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QDiscussion>> localVarResponse = await GetDiscussionsAsyncWithHttpInfo(topicId, page);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="topicId"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QDiscussion&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QDiscussion>>> GetDiscussionsAsyncWithHttpInfo (Guid? topicId = default(Guid?), int? page = default(int?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (topicId != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "topicId", topicId));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<QDiscussion>>("/api/topic/get-discussions", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetDiscussions", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -1516,14 +1777,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>IdResponse</returns>
-        public IdResponse SendPost (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream))
+        public IdResponse SendDiscussion (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel))
         {
-             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = SendPostWithHttpInfo(topicId, title, text, image);
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = SendDiscussionWithHttpInfo(sendDiscussionModel);
              return localVarResponse.Data;
         }
 
@@ -1531,21 +1789,14 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendDiscussionModel"> (optional)</param>
         /// <returns>ApiResponse of IdResponse</returns>
-        public Org.OpenAPITools.Client.ApiResponse< IdResponse > SendPostWithHttpInfo (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream))
+        public Org.OpenAPITools.Client.ApiResponse< IdResponse > SendDiscussionWithHttpInfo (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel))
         {
-            // verify the required parameter 'topicId' is set
-            if (topicId == null)
-                throw new Org.OpenAPITools.Client.ApiException(400, "Missing required parameter 'topicId' when calling TopicApi->SendPost");
-
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
-                "multipart/form-data"
+                "application/json"
             };
 
             // to determine the Accept header
@@ -1561,22 +1812,118 @@ namespace Org.OpenAPITools.Api
             var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            if (topicId != null)
+            localVarRequestOptions.Data = sendDiscussionModel;
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post< IdResponse >("/api/topic/send-discussion", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
             {
-                localVarRequestOptions.FormParameters.Add("TopicId", Org.OpenAPITools.Client.ClientUtils.ParameterToString(topicId)); // form parameter
+                Exception _exception = this.ExceptionFactory("SendDiscussion", localVarResponse);
+                if (_exception != null) throw _exception;
             }
-            if (title != null)
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendDiscussionModel"> (optional)</param>
+        /// <returns>Task of IdResponse</returns>
+        public async System.Threading.Tasks.Task<IdResponse> SendDiscussionAsync (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel))
+        {
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = await SendDiscussionAsyncWithHttpInfo(sendDiscussionModel);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendDiscussionModel"> (optional)</param>
+        /// <returns>Task of ApiResponse (IdResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<IdResponse>> SendDiscussionAsyncWithHttpInfo (SendDiscussionModel sendDiscussionModel = default(SendDiscussionModel))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            localVarRequestOptions.Data = sendDiscussionModel;
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<IdResponse>("/api/topic/send-discussion", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
             {
-                localVarRequestOptions.FormParameters.Add("Title", Org.OpenAPITools.Client.ClientUtils.ParameterToString(title)); // form parameter
+                Exception _exception = this.ExceptionFactory("SendDiscussion", localVarResponse);
+                if (_exception != null) throw _exception;
             }
-            if (text != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Text", Org.OpenAPITools.Client.ClientUtils.ParameterToString(text)); // form parameter
-            }
-            if (image != null)
-            {
-                localVarRequestOptions.FileParameters.Add("Image", image);
-            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendPostModel"> (optional)</param>
+        /// <returns>IdResponse</returns>
+        public IdResponse SendPost (SendPostModel sendPostModel = default(SendPostModel))
+        {
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = SendPostWithHttpInfo(sendPostModel);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="sendPostModel"> (optional)</param>
+        /// <returns>ApiResponse of IdResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse< IdResponse > SendPostWithHttpInfo (SendPostModel sendPostModel = default(SendPostModel))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = sendPostModel;
 
 
             // make the HTTP request
@@ -1595,14 +1942,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendPostModel"> (optional)</param>
         /// <returns>Task of IdResponse</returns>
-        public async System.Threading.Tasks.Task<IdResponse> SendPostAsync (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream))
+        public async System.Threading.Tasks.Task<IdResponse> SendPostAsync (SendPostModel sendPostModel = default(SendPostModel))
         {
-             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = await SendPostAsyncWithHttpInfo(topicId, title, text, image);
+             Org.OpenAPITools.Client.ApiResponse<IdResponse> localVarResponse = await SendPostAsyncWithHttpInfo(sendPostModel);
              return localVarResponse.Data;
 
         }
@@ -1611,22 +1955,15 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="topicId"></param>
-        /// <param name="title"> (optional)</param>
-        /// <param name="text"> (optional)</param>
-        /// <param name="image"> (optional)</param>
+        /// <param name="sendPostModel"> (optional)</param>
         /// <returns>Task of ApiResponse (IdResponse)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<IdResponse>> SendPostAsyncWithHttpInfo (string topicId, string title = default(string), string text = default(string), System.IO.Stream image = default(System.IO.Stream))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<IdResponse>> SendPostAsyncWithHttpInfo (SendPostModel sendPostModel = default(SendPostModel))
         {
-            // verify the required parameter 'topicId' is set
-            if (topicId == null)
-                throw new Org.OpenAPITools.Client.ApiException(400, "Missing required parameter 'topicId' when calling TopicApi->SendPost");
-
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
-                "multipart/form-data"
+                "application/json"
             };
 
             // to determine the Accept header
@@ -1642,22 +1979,7 @@ namespace Org.OpenAPITools.Api
             foreach (var _accept in _accepts)
                 localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
             
-            if (topicId != null)
-            {
-                localVarRequestOptions.FormParameters.Add("TopicId", Org.OpenAPITools.Client.ClientUtils.ParameterToString(topicId)); // form parameter
-            }
-            if (title != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Title", Org.OpenAPITools.Client.ClientUtils.ParameterToString(title)); // form parameter
-            }
-            if (text != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Text", Org.OpenAPITools.Client.ClientUtils.ParameterToString(text)); // form parameter
-            }
-            if (image != null)
-            {
-                localVarRequestOptions.FileParameters.Add("Image", image);
-            }
+            localVarRequestOptions.Data = sendPostModel;
 
 
             // make the HTTP request
@@ -1778,6 +2100,171 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("SendReply", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>UploadFileResponse</returns>
+        public UploadFileResponse UploadFile (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        {
+             Org.OpenAPITools.Client.ApiResponse<UploadFileResponse> localVarResponse = UploadFileWithHttpInfo(contentType, contentDisposition, length, name, fileName);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>ApiResponse of UploadFileResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse< UploadFileResponse > UploadFileWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "multipart/form-data"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (contentType != null)
+            {
+                localVarRequestOptions.FormParameters.Add("ContentType", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentType)); // form parameter
+            }
+            if (contentDisposition != null)
+            {
+                localVarRequestOptions.FormParameters.Add("ContentDisposition", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentDisposition)); // form parameter
+            }
+            if (length != null)
+            {
+                localVarRequestOptions.FormParameters.Add("Length", Org.OpenAPITools.Client.ClientUtils.ParameterToString(length)); // form parameter
+            }
+            if (name != null)
+            {
+                localVarRequestOptions.FormParameters.Add("Name", Org.OpenAPITools.Client.ClientUtils.ParameterToString(name)); // form parameter
+            }
+            if (fileName != null)
+            {
+                localVarRequestOptions.FormParameters.Add("FileName", Org.OpenAPITools.Client.ClientUtils.ParameterToString(fileName)); // form parameter
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post< UploadFileResponse >("/api/topic/upload-file", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("UploadFile", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>Task of UploadFileResponse</returns>
+        public async System.Threading.Tasks.Task<UploadFileResponse> UploadFileAsync (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        {
+             Org.OpenAPITools.Client.ApiResponse<UploadFileResponse> localVarResponse = await UploadFileAsyncWithHttpInfo(contentType, contentDisposition, length, name, fileName);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="contentType"> (optional)</param>
+        /// <param name="contentDisposition"> (optional)</param>
+        /// <param name="length"> (optional)</param>
+        /// <param name="name"> (optional)</param>
+        /// <param name="fileName"> (optional)</param>
+        /// <returns>Task of ApiResponse (UploadFileResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<UploadFileResponse>> UploadFileAsyncWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "multipart/form-data"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (contentType != null)
+            {
+                localVarRequestOptions.FormParameters.Add("ContentType", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentType)); // form parameter
+            }
+            if (contentDisposition != null)
+            {
+                localVarRequestOptions.FormParameters.Add("ContentDisposition", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentDisposition)); // form parameter
+            }
+            if (length != null)
+            {
+                localVarRequestOptions.FormParameters.Add("Length", Org.OpenAPITools.Client.ClientUtils.ParameterToString(length)); // form parameter
+            }
+            if (name != null)
+            {
+                localVarRequestOptions.FormParameters.Add("Name", Org.OpenAPITools.Client.ClientUtils.ParameterToString(name)); // form parameter
+            }
+            if (fileName != null)
+            {
+                localVarRequestOptions.FormParameters.Add("FileName", Org.OpenAPITools.Client.ClientUtils.ParameterToString(fileName)); // form parameter
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UploadFileResponse>("/api/topic/upload-file", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("UploadFile", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
