@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Leopard.API.Filters;
 using Leopard.API.ResponseConvension;
 using Leopard.Domain;
+using Leopard.Domain.DiscussionAG;
 using Leopard.Domain.PostAG;
 using Leopard.Domain.ReplyAG;
 using Leopard.Domain.TopicAG;
@@ -118,7 +119,6 @@ namespace Leopard.API.Controllers
 		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> SendPost([FromForm]SendPostModel model, [FromServices]IBlobBucket blobBucket)
 		{
-
 			var topicId = XUtils.ParseId(model.TopicId);
 			if (topicId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "TopicId parse error").Wrap();
@@ -153,6 +153,51 @@ namespace Leopard.API.Controllers
 
 			public string Text { get; set; }
 		}
+
+
+
+		[HttpPost("send-discussion")]
+		[Consumes(Application.Json)]
+		[Produces(typeof(IdResponse))]
+
+		[ServiceFilter(typeof(RequireLoginFilter))]
+		public async Task<IActionResult> SendDiscussion([FromBody]SendDiscussionModel model)
+		{
+			var topicId = model.TopicId;
+			if (topicId == null)
+				return new ApiError(MyErrorCode.IdNotFound, "TopicId parse error").Wrap();
+
+			// Topic exist and is not group
+			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == topicId);
+
+			if (topic?.IsGroup != false)
+				return new ApiError(MyErrorCode.TypeMismatch, "Topic not exist or is group").Wrap();
+
+			// should be a member of the topic
+			var member = await Context.TopicMembers.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId.Value);
+
+			if (member == null)
+				return new ApiError(MyErrorCode.PermissionDenied, "你不是成员").Wrap();
+
+			// Send discussion
+			var discussion = new Discussion(topicId, AuthStore.UserId.Value, model.Text, model.ImageUrl);
+
+			await Context.AddAsync(discussion);
+			await Context.GoAsync();
+
+			return Ok(new IdResponse(discussion.Id));
+		}
+		public class SendDiscussionModel
+		{
+			public Guid TopicId { get; set; }
+
+			[MaxLength(800)]
+			public string Text { get; set; }
+
+			[MaxLength(100)]
+			public string ImageUrl { get; set; }
+		}
+
 
 
 		[HttpPost("upload-file")]
