@@ -112,20 +112,24 @@ namespace Leopard.API.Controllers
 
 
 		[HttpPost("send-post")]
-		[Consumes("multipart/form-data")]
+		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
 		public async Task<IActionResult> SendPost([FromForm]SendPostModel model, [FromServices]IBlobBucket blobBucket)
 		{
-			// 不需要判断topic是否存在
-
-			// should be a member of the topic
 
 			var topicId = XUtils.ParseId(model.TopicId);
 			if (topicId == null)
 				return new ApiError(MyErrorCode.IdNotFound, "TopicId parse error").Wrap();
 
+			// Topic exist and is group
+			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == topicId);
+
+			if (topic?.IsGroup != true)
+				return new ApiError(MyErrorCode.TypeMismatch, "Topic not exist or is not group").Wrap();
+
+			// should be a member of the topic
 			var member = await Context.TopicMembers.FirstOrDefaultAsync(p => p.TopicId == topicId && p.UserId == AuthStore.UserId.Value);
 
 			if (member == null)
@@ -133,19 +137,7 @@ namespace Leopard.API.Controllers
 
 			// send post
 
-			//	 put image
-			string imageUrl = null;
-			if (model.Image != null)
-			{
-				if (model.Image.Length > 1024 * 1024 * 5)//5mb
-					return new ApiError(MyErrorCode.FileTooLarge, "图片太大，不能超过5MB").Wrap();
-				using (var stream = model.Image.OpenReadStream())
-				{
-					imageUrl = await blobBucket.PutBlobAsync(stream, Path.GetRandomFileName());
-				}
-			}
-
-			var post = new Post(AuthStore.UserId.Value, topicId.Value, model.Text, model.Title, imageUrl);
+			var post = new Post(AuthStore.UserId.Value, topicId.Value, model.Text, model.Title);
 
 			await Context.AddAsync(post);
 			await Context.GoAsync();
@@ -160,9 +152,8 @@ namespace Leopard.API.Controllers
 			public string Title { get; set; }
 
 			public string Text { get; set; }
-
-			public IFormFile Image { get; set; }
 		}
+
 
 
 		[NotCommand]
@@ -296,7 +287,6 @@ namespace Leopard.API.Controllers
 			public long UpdatedAt { get; set; }
 
 			public Guid SenderId { get; set; }
-			public string Image { get; set; }
 			public string Title { get; set; }
 			public string Text { get; set; }
 			public bool IsPinned { get; set; }
@@ -315,7 +305,6 @@ namespace Leopard.API.Controllers
 					CreatedAt = p.CreatedAt,
 					UpdatedAt = p.UpdatedAt,
 					SenderId = p.SenderId,
-					Image = p.Image,
 					Title = p.Title,
 					Text = p.Text,
 					IsPinned = p.IsPinned,
