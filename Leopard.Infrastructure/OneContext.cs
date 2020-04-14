@@ -81,6 +81,7 @@ namespace Leopard.Infrastructure
 			modelBuilder.ApplyConfiguration(new DeduplicationTokenEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new WorkEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new DiscussionEntityTypeConfiguration());
 		}
 
 		public async Task<bool> GoAsync(
