@@ -3,6 +3,7 @@ using System;
 using Leopard.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -10,9 +11,10 @@ using NpgsqlTypes;
 namespace Leopard.Infrastructure.Shell.Migrations
 {
     [DbContext(typeof(OneContext))]
-    partial class OneContextModelSnapshot : ModelSnapshot
+    [Migration("20200414121125_tsv-for-topic")]
+    partial class tsvfortopic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

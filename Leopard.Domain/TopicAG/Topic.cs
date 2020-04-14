@@ -1,4 +1,5 @@
 ﻿using Dawn;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,8 @@ namespace Leopard.Domain.TopicAG
 		public string Description { get; private set; }
 		public Guid? RelatedWork { get; private set; }
 		public int MemberCount { get; private set; }
+
+		public NpgsqlTsVector Tsv { get; private set; }
 
 		private Topic()
 		{
