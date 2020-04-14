@@ -155,6 +155,35 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[HttpPost("upload-file")]
+		[Consumes("multipart/form-data")]
+		[Produces(typeof(UploadFileResponse))]
+
+		[ServiceFilter(typeof(RequireLoginFilter))]
+		public async Task<IActionResult> UploadFile([FromForm]IFormFile file, [FromServices]IBlobBucket blobBucket)
+		{
+			if (file == null)
+			{
+				return new ApiError(MyErrorCode.ModelInvalid, "File is null").Wrap();
+			}
+
+			if (file.Length > 1024 * 1024 * 5)//5mb
+				return new ApiError(MyErrorCode.FileTooLarge, "图片太大，不能超过5MB").Wrap();
+
+
+			string blobUrl;
+			using (var stream = file.OpenReadStream())
+			{
+				blobUrl = await blobBucket.PutBlobAsync(stream, XUtils.GetRandomString(32));
+			}
+
+			return Ok(new UploadFileResponse { Url = blobUrl });
+		}
+		public class UploadFileResponse
+		{
+			public string Url { get; set; }
+		}
+
 
 		[NotCommand]
 		[HttpGet("get-topic-profile")]
