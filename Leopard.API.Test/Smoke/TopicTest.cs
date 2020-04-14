@@ -165,5 +165,46 @@ namespace Leopard.API.Test.Smoke
 			Assert.DoesNotContain(posts, p => p.Id == deleteId);
 			Assert.Contains(posts, p => p.Id == essenseId && p.IsEssense);
 		}
+
+
+		[Fact]
+		async Task JoinTopicAndSendDiscussionAndGet()
+		{
+			var a = await ClientSesion.RandomInstance();
+			var b = await ClientSesion.RandomInstance();
+
+			// b create topic (not group)
+			var model = new CreateTopicModel(false, "some-topic-not-group", "aaaa", null);
+			var idRes = await b.Api<TopicApi>().CreateTopicAsync(model);
+			var topicId = idRes.Id;
+
+			// a send discussion without joining topic
+			await Assert.ThrowsAnyAsync<Exception>(
+				() => a.Api<TopicApi>().SendDiscussionAsync(new SendDiscussionModel(topicId, "aasd", null)));
+
+			// a join topic
+			await a.Api<TopicApi>().JoinTopicAsync(new JoinTopicModel(topicId.ToString()));
+
+			// Check member
+			var members = await Context.TopicMembers
+				.Where(p => p.TopicId == Guid.Parse(topicId.ToString())).ToListAsync();
+
+			Assert.Equal(2, members.Count);
+
+			var member = members.Where(p => p.UserId == a.UserId).FirstOrDefault();
+			Assert.NotNull(member);
+			Assert.Equal(Domain.TopicMemberAG.MemberRole.Normal, member.Role);
+
+			// a send discussion 
+			idRes = await a.Api<TopicApi>().SendDiscussionAsync(new SendDiscussionModel(topicId, "hello1"));
+
+			// b send discussion
+			idRes = await b.Api<TopicApi>().SendDiscussionAsync(new SendDiscussionModel(topicId, "hello2"));
+
+			// get posts
+			var posts = await a.Api<TopicApi>().GetDiscussionsAsync(topicId, 0);
+
+			Assert.Equal(2, posts.Count);
+		}
 	}
 }
