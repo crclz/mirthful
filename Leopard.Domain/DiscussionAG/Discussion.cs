@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,8 @@ namespace Leopard.Domain.DiscussionAG
 		public Guid SenderId { get; private set; }
 		public string Text { get; private set; }
 		public string Image { get; private set; }
+
+		public NpgsqlTsVector TextTsv { get; private set; }
 
 		private Discussion()
 		{
