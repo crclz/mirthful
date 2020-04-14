@@ -34,57 +34,23 @@ namespace Org.OpenAPITools.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="InlineObject" /> class.
         /// </summary>
-        /// <param name="contentType">contentType.</param>
-        /// <param name="contentDisposition">contentDisposition.</param>
-        /// <param name="headers">headers.</param>
-        /// <param name="length">length.</param>
-        /// <param name="name">name.</param>
-        /// <param name="fileName">fileName.</param>
-        public InlineObject(string contentType = default(string), string contentDisposition = default(string), Dictionary<string, List<string>> headers = default(Dictionary<string, List<string>>), long length = default(long), string name = default(string), string fileName = default(string))
+        [JsonConstructorAttribute]
+        protected InlineObject() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InlineObject" /> class.
+        /// </summary>
+        /// <param name="file">file (required).</param>
+        public InlineObject(System.IO.Stream file = default(System.IO.Stream))
         {
-            this.ContentType = contentType;
-            this.ContentDisposition = contentDisposition;
-            this.Headers = headers;
-            this.Length = length;
-            this.Name = name;
-            this.FileName = fileName;
+            // to ensure "file" is required (not null)
+            this.File = file ?? throw new ArgumentNullException("file is a required property for InlineObject and cannot be null");;
         }
         
         /// <summary>
-        /// Gets or Sets ContentType
+        /// Gets or Sets File
         /// </summary>
-        [DataMember(Name="ContentType", EmitDefaultValue=true)]
-        public string ContentType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets ContentDisposition
-        /// </summary>
-        [DataMember(Name="ContentDisposition", EmitDefaultValue=true)]
-        public string ContentDisposition { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Headers
-        /// </summary>
-        [DataMember(Name="Headers", EmitDefaultValue=true)]
-        public Dictionary<string, List<string>> Headers { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Length
-        /// </summary>
-        [DataMember(Name="Length", EmitDefaultValue=false)]
-        public long Length { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Name
-        /// </summary>
-        [DataMember(Name="Name", EmitDefaultValue=true)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or Sets FileName
-        /// </summary>
-        [DataMember(Name="FileName", EmitDefaultValue=true)]
-        public string FileName { get; set; }
+        [DataMember(Name="File", EmitDefaultValue=false)]
+        public System.IO.Stream File { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -94,12 +60,7 @@ namespace Org.OpenAPITools.Model
         {
             var sb = new StringBuilder();
             sb.Append("class InlineObject {\n");
-            sb.Append("  ContentType: ").Append(ContentType).Append("\n");
-            sb.Append("  ContentDisposition: ").Append(ContentDisposition).Append("\n");
-            sb.Append("  Headers: ").Append(Headers).Append("\n");
-            sb.Append("  Length: ").Append(Length).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  FileName: ").Append(FileName).Append("\n");
+            sb.Append("  File: ").Append(File).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -135,34 +96,9 @@ namespace Org.OpenAPITools.Model
 
             return 
                 (
-                    this.ContentType == input.ContentType ||
-                    (this.ContentType != null &&
-                    this.ContentType.Equals(input.ContentType))
-                ) && 
-                (
-                    this.ContentDisposition == input.ContentDisposition ||
-                    (this.ContentDisposition != null &&
-                    this.ContentDisposition.Equals(input.ContentDisposition))
-                ) && 
-                (
-                    this.Headers == input.Headers ||
-                    this.Headers != null &&
-                    input.Headers != null &&
-                    this.Headers.SequenceEqual(input.Headers)
-                ) && 
-                (
-                    this.Length == input.Length ||
-                    this.Length.Equals(input.Length)
-                ) && 
-                (
-                    this.Name == input.Name ||
-                    (this.Name != null &&
-                    this.Name.Equals(input.Name))
-                ) && 
-                (
-                    this.FileName == input.FileName ||
-                    (this.FileName != null &&
-                    this.FileName.Equals(input.FileName))
+                    this.File == input.File ||
+                    (this.File != null &&
+                    this.File.Equals(input.File))
                 );
         }
 
@@ -175,17 +111,8 @@ namespace Org.OpenAPITools.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.ContentType != null)
-                    hashCode = hashCode * 59 + this.ContentType.GetHashCode();
-                if (this.ContentDisposition != null)
-                    hashCode = hashCode * 59 + this.ContentDisposition.GetHashCode();
-                if (this.Headers != null)
-                    hashCode = hashCode * 59 + this.Headers.GetHashCode();
-                hashCode = hashCode * 59 + this.Length.GetHashCode();
-                if (this.Name != null)
-                    hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.FileName != null)
-                    hashCode = hashCode * 59 + this.FileName.GetHashCode();
+                if (this.File != null)
+                    hashCode = hashCode * 59 + this.File.GetHashCode();
                 return hashCode;
             }
         }

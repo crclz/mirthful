@@ -292,13 +292,9 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>UploadFileResponse</returns>
-        UploadFileResponse UploadFile (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
+        UploadFileResponse UploadFile (System.IO.Stream file);
 
         /// <summary>
         /// 
@@ -307,13 +303,9 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>ApiResponse of UploadFileResponse</returns>
-        ApiResponse<UploadFileResponse> UploadFileWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
+        ApiResponse<UploadFileResponse> UploadFileWithHttpInfo (System.IO.Stream file);
         #endregion Synchronous Operations
     }
 
@@ -588,13 +580,9 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>Task of UploadFileResponse</returns>
-        System.Threading.Tasks.Task<UploadFileResponse> UploadFileAsync (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
+        System.Threading.Tasks.Task<UploadFileResponse> UploadFileAsync (System.IO.Stream file);
 
         /// <summary>
         /// 
@@ -603,13 +591,9 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>Task of ApiResponse (UploadFileResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<UploadFileResponse>> UploadFileAsyncWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string));
+        System.Threading.Tasks.Task<ApiResponse<UploadFileResponse>> UploadFileAsyncWithHttpInfo (System.IO.Stream file);
         #endregion Asynchronous Operations
     }
 
@@ -2110,15 +2094,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>UploadFileResponse</returns>
-        public UploadFileResponse UploadFile (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        public UploadFileResponse UploadFile (System.IO.Stream file)
         {
-             Org.OpenAPITools.Client.ApiResponse<UploadFileResponse> localVarResponse = UploadFileWithHttpInfo(contentType, contentDisposition, length, name, fileName);
+             Org.OpenAPITools.Client.ApiResponse<UploadFileResponse> localVarResponse = UploadFileWithHttpInfo(file);
              return localVarResponse.Data;
         }
 
@@ -2126,14 +2106,14 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>ApiResponse of UploadFileResponse</returns>
-        public Org.OpenAPITools.Client.ApiResponse< UploadFileResponse > UploadFileWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        public Org.OpenAPITools.Client.ApiResponse< UploadFileResponse > UploadFileWithHttpInfo (System.IO.Stream file)
         {
+            // verify the required parameter 'file' is set
+            if (file == null)
+                throw new Org.OpenAPITools.Client.ApiException(400, "Missing required parameter 'file' when calling TopicApi->UploadFile");
+
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
@@ -2153,25 +2133,9 @@ namespace Org.OpenAPITools.Api
             var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            if (contentType != null)
+            if (file != null)
             {
-                localVarRequestOptions.FormParameters.Add("ContentType", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentType)); // form parameter
-            }
-            if (contentDisposition != null)
-            {
-                localVarRequestOptions.FormParameters.Add("ContentDisposition", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentDisposition)); // form parameter
-            }
-            if (length != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Length", Org.OpenAPITools.Client.ClientUtils.ParameterToString(length)); // form parameter
-            }
-            if (name != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Name", Org.OpenAPITools.Client.ClientUtils.ParameterToString(name)); // form parameter
-            }
-            if (fileName != null)
-            {
-                localVarRequestOptions.FormParameters.Add("FileName", Org.OpenAPITools.Client.ClientUtils.ParameterToString(fileName)); // form parameter
+                localVarRequestOptions.FileParameters.Add("File", file);
             }
 
 
@@ -2191,15 +2155,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>Task of UploadFileResponse</returns>
-        public async System.Threading.Tasks.Task<UploadFileResponse> UploadFileAsync (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        public async System.Threading.Tasks.Task<UploadFileResponse> UploadFileAsync (System.IO.Stream file)
         {
-             Org.OpenAPITools.Client.ApiResponse<UploadFileResponse> localVarResponse = await UploadFileAsyncWithHttpInfo(contentType, contentDisposition, length, name, fileName);
+             Org.OpenAPITools.Client.ApiResponse<UploadFileResponse> localVarResponse = await UploadFileAsyncWithHttpInfo(file);
              return localVarResponse.Data;
 
         }
@@ -2208,14 +2168,14 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="file"></param>
         /// <returns>Task of ApiResponse (UploadFileResponse)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<UploadFileResponse>> UploadFileAsyncWithHttpInfo (string contentType = default(string), string contentDisposition = default(string), long? length = default(long?), string name = default(string), string fileName = default(string))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<UploadFileResponse>> UploadFileAsyncWithHttpInfo (System.IO.Stream file)
         {
+            // verify the required parameter 'file' is set
+            if (file == null)
+                throw new Org.OpenAPITools.Client.ApiException(400, "Missing required parameter 'file' when calling TopicApi->UploadFile");
+
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2236,25 +2196,9 @@ namespace Org.OpenAPITools.Api
             foreach (var _accept in _accepts)
                 localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
             
-            if (contentType != null)
+            if (file != null)
             {
-                localVarRequestOptions.FormParameters.Add("ContentType", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentType)); // form parameter
-            }
-            if (contentDisposition != null)
-            {
-                localVarRequestOptions.FormParameters.Add("ContentDisposition", Org.OpenAPITools.Client.ClientUtils.ParameterToString(contentDisposition)); // form parameter
-            }
-            if (length != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Length", Org.OpenAPITools.Client.ClientUtils.ParameterToString(length)); // form parameter
-            }
-            if (name != null)
-            {
-                localVarRequestOptions.FormParameters.Add("Name", Org.OpenAPITools.Client.ClientUtils.ParameterToString(name)); // form parameter
-            }
-            if (fileName != null)
-            {
-                localVarRequestOptions.FormParameters.Add("FileName", Org.OpenAPITools.Client.ClientUtils.ParameterToString(fileName)); // form parameter
+                localVarRequestOptions.FileParameters.Add("File", file);
             }
 
 

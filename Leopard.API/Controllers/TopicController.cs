@@ -245,8 +245,10 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(UploadFileResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> UploadFile([FromForm]IFormFile file, [FromServices]IBlobBucket blobBucket)
+		public async Task<IActionResult> UploadFile([FromForm]UploadFileModel model, [FromServices]IBlobBucket blobBucket)
 		{
+			var file = model.File;
+
 			if (file == null)
 			{
 				return new ApiError(MyErrorCode.ModelInvalid, "File is null").Wrap();
@@ -263,6 +265,11 @@ namespace Leopard.API.Controllers
 			}
 
 			return Ok(new UploadFileResponse { Url = blobUrl });
+		}
+		public class UploadFileModel
+		{
+			[Required]
+			public IFormFile File { get; set; }
 		}
 		public class UploadFileResponse
 		{
