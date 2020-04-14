@@ -198,6 +198,46 @@ namespace Leopard.API.Controllers
 			public string ImageUrl { get; set; }
 		}
 
+		[HttpGet("get-discussions")]
+		[Produces(typeof(QDiscussion[]))]
+		public async Task<IActionResult> GetDiscussions(Guid topicId, int page)
+		{
+			const int pageSize = 20;
+
+			var query = from p in Context.Discussions.Where(p => p.TopicId == topicId)
+						join q in Context.Users
+						on p.SenderId equals q.Id
+						orderby p.CreatedAt descending
+						select new { Discussion = p, Sender = q };
+
+			var data = await query.ToListAsync();
+
+			var qdiscussions = data.Select(p => QDiscussion.NormalView(p.Discussion, p.Sender)).ToList();
+
+			return Ok(qdiscussions);
+		}
+		public class QDiscussion
+		{
+			public Guid TopicId { get; set; }
+			public Guid SenderId { get; set; }
+			public string Text { get; set; }
+			public string ImageUrl { get; set; }
+
+			public QUser User { get; set; }
+
+			public static QDiscussion NormalView(Discussion p, User user)
+			{
+				return p == null ? null : new QDiscussion
+				{
+					TopicId = p.TopicId,
+					SenderId = p.SenderId,
+					Text = p.Text,
+					ImageUrl = p.Image,
+
+					User = QUser.NormalView(user)
+				};
+			}
+		}
 
 
 		[HttpPost("upload-file")]

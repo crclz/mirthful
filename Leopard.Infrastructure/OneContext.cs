@@ -2,6 +2,7 @@
 using Leopard.Domain.AdminRequestAG;
 using Leopard.Domain.AttitudeAG;
 using Leopard.Domain.CommentAG;
+using Leopard.Domain.DiscussionAG;
 using Leopard.Domain.PostAG;
 using Leopard.Domain.ReplyAG;
 using Leopard.Domain.ReportAG;
@@ -34,6 +35,7 @@ namespace Leopard.Infrastructure
 		public DbSet<Comment> Comments { get; private set; }
 		public DbSet<Post> Posts { get; private set; }
 		public DbSet<Reply> Replies { get; private set; }
+		public DbSet<Discussion> Discussions { get; private set; }
 		public DbSet<Report> Reports { get; private set; }
 		public DbSet<Topic> Topics { get; private set; }
 		public DbSet<TopicMember> TopicMembers { get; private set; }
