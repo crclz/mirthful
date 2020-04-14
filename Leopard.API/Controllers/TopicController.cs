@@ -261,7 +261,7 @@ namespace Leopard.API.Controllers
 			string blobUrl;
 			using (var stream = file.OpenReadStream())
 			{
-				blobUrl = await blobBucket.PutBlobAsync(stream, XUtils.GetRandomString(32));
+				blobUrl = await blobBucket.PutBlobAsync(stream, Path.GetRandomFileName());
 			}
 
 			return Ok(new UploadFileResponse { Url = blobUrl });
