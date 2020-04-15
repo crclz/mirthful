@@ -1,4 +1,5 @@
 ﻿using Dawn;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Leopard.Domain.PostAG
 		public string Text { get; private set; }
 		public bool IsPinned { get; private set; }
 		public bool IsEssence { get; private set; }
+
+		public NpgsqlTsVector Tsv { get; private set; }
 
 		private Post()
 		{
