@@ -374,54 +374,30 @@ namespace Leopard.API.Controllers
 			if (tid == null)
 				return new ApiError(MyErrorCode.IdNotFound, "topicId parse error").Wrap();
 
-			var topic = await Context.Topics.FirstOrDefaultAsync(p => p.Id == tid);
-			if (topic == null)
-				return new ApiError(MyErrorCode.IdNotFound, "topic id not found").Wrap();
+			var query = from p in Context.Posts
+						where p.TopicId == tid
+						join q in Context.Users
+						on p.SenderId equals q.Id
+						select new
+						{
+							post = p,
+							user = q,
+							replyCount = Context.Replies.Count(z => z.PostId == p.Id),
+							lastReply = Context.Replies.Where(z => z.PostId == p.Id)
+								.DefaultIfEmpty().Max(p => p == null ? -2 : p.CreatedAt)
+						};
 
-			if (!topic.IsGroup)
-			{
-				var query = from p in Context.Posts
-							where p.TopicId == tid
-							join q in Context.Users
-							on p.SenderId equals q.Id
-							orderby p.CreatedAt
-							select new { post = p, user = q };
+			query = query.OrderByDescending(p => p.post.IsPinned)
+				.ThenByDescending(p => p.lastReply)
+				.Skip(page * pageSize)
+				.Take(pageSize);
 
-				query = query.Skip(page * pageSize).Take(pageSize);
+			var data = await query.ToListAsync();
 
-				var posts = await query.ToListAsync();
+			var qposts = data.Select(
+				p => QPost.NormalView(p.post, QUser.NormalView(p.user), p.replyCount, p.lastReply)).ToList();
 
-				var data = posts.Select(p => QPost.NormalView(p.post, QUser.NormalView(p.user), -1, -1)).ToList();
-
-				return Ok(data);
-			}
-			else
-			{
-				// posts of group. like a forum
-				var query = from p in Context.Posts
-							where p.TopicId == tid
-							join q in Context.Users
-							on p.SenderId equals q.Id
-							select new
-							{
-								post = p,
-								user = q,
-								replyCount = Context.Replies.Count(z => z.PostId == p.Id),
-								lastReply = Context.Replies.Where(z => z.PostId == p.Id)
-									.DefaultIfEmpty().Max(p => p == null ? -2 : p.CreatedAt)
-							};
-
-				query = query.OrderByDescending(p => p.post.IsPinned)
-					.ThenByDescending(p => p.lastReply)
-					.Skip(page * pageSize)
-					.Take(pageSize);
-
-				var data = await query.ToListAsync();
-
-				var qposts = data.Select(p => QPost.NormalView(p.post, QUser.NormalView(p.user), p.replyCount, p.lastReply)).ToList();// TODO
-
-				return Ok(qposts);
-			}
+			return Ok(qposts);
 		}
 		public class QPost
 		{
@@ -461,7 +437,38 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[HttpGet("search-posts")]
+		[Produces(typeof(QPost[]))]
+		public async Task<IActionResult> SearchPosts(string word, int page)
+		{
+			word ??= "";
+			page = Math.Max(0, page);
+			const int pageSize = 20;
 
+			var query = from p in Context.Posts
+						where p.Tsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						join q in Context.Users
+						on p.SenderId equals q.Id
+						select new
+						{
+							post = p,
+							user = q,
+							replyCount = Context.Replies.Count(z => z.PostId == p.Id),
+							lastReply = Context.Replies.Where(z => z.PostId == p.Id)
+								.DefaultIfEmpty().Max(p => p == null ? -2 : p.CreatedAt)
+						};
+
+			query = query
+				.OrderByDescending(p => p.post.Tsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word)))
+				.Skip(pageSize * page).Take(pageSize);
+
+			var data = await query.ToListAsync();
+
+			var qposts = data.Select(
+				p => QPost.NormalView(p.post, QUser.NormalView(p.user), p.replyCount, p.lastReply)).ToList();
+
+			return Ok(qposts);
+		}
 
 
 		[NotCommand]
@@ -647,5 +654,6 @@ namespace Leopard.API.Controllers
 
 			return Ok(qtopics);
 		}
+
 	}
 }
