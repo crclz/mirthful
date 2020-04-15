@@ -253,9 +253,10 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QTopic&gt;</returns>
-        List<QTopic> SearchTopics (string word = default(string), int? page = default(int?));
+        List<QTopic> SearchTopics (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -265,9 +266,10 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QTopic&gt;</returns>
-        ApiResponse<List<QTopic>> SearchTopicsWithHttpInfo (string word = default(string), int? page = default(int?));
+        ApiResponse<List<QTopic>> SearchTopicsWithHttpInfo (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -587,9 +589,10 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>Task of List&lt;QTopic&gt;</returns>
-        System.Threading.Tasks.Task<List<QTopic>> SearchTopicsAsync (string word = default(string), int? page = default(int?));
+        System.Threading.Tasks.Task<List<QTopic>> SearchTopicsAsync (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?));
 
         /// <summary>
         /// 
@@ -599,9 +602,10 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QTopic&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<QTopic>>> SearchTopicsAsyncWithHttpInfo (string word = default(string), int? page = default(int?));
+        System.Threading.Tasks.Task<ApiResponse<List<QTopic>>> SearchTopicsAsyncWithHttpInfo (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -1981,11 +1985,12 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QTopic&gt;</returns>
-        public List<QTopic> SearchTopics (string word = default(string), int? page = default(int?))
+        public List<QTopic> SearchTopics (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QTopic>> localVarResponse = SearchTopicsWithHttpInfo(word, page);
+             Org.OpenAPITools.Client.ApiResponse<List<QTopic>> localVarResponse = SearchTopicsWithHttpInfo(word, isGroup, page);
              return localVarResponse.Data;
         }
 
@@ -1994,9 +1999,10 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>ApiResponse of List&lt;QTopic&gt;</returns>
-        public Org.OpenAPITools.Client.ApiResponse< List<QTopic> > SearchTopicsWithHttpInfo (string word = default(string), int? page = default(int?))
+        public Org.OpenAPITools.Client.ApiResponse< List<QTopic> > SearchTopicsWithHttpInfo (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?))
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2019,6 +2025,10 @@ namespace Org.OpenAPITools.Api
             if (word != null)
             {
                 localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "word", word));
+            }
+            if (isGroup != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "isGroup", isGroup));
             }
             if (page != null)
             {
@@ -2043,11 +2053,12 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>Task of List&lt;QTopic&gt;</returns>
-        public async System.Threading.Tasks.Task<List<QTopic>> SearchTopicsAsync (string word = default(string), int? page = default(int?))
+        public async System.Threading.Tasks.Task<List<QTopic>> SearchTopicsAsync (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?))
         {
-             Org.OpenAPITools.Client.ApiResponse<List<QTopic>> localVarResponse = await SearchTopicsAsyncWithHttpInfo(word, page);
+             Org.OpenAPITools.Client.ApiResponse<List<QTopic>> localVarResponse = await SearchTopicsAsyncWithHttpInfo(word, isGroup, page);
              return localVarResponse.Data;
 
         }
@@ -2057,9 +2068,10 @@ namespace Org.OpenAPITools.Api
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QTopic&gt;)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QTopic>>> SearchTopicsAsyncWithHttpInfo (string word = default(string), int? page = default(int?))
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QTopic>>> SearchTopicsAsyncWithHttpInfo (string word = default(string), bool? isGroup = default(bool?), int? page = default(int?))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2083,6 +2095,10 @@ namespace Org.OpenAPITools.Api
             if (word != null)
             {
                 localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "word", word));
+            }
+            if (isGroup != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "isGroup", isGroup));
             }
             if (page != null)
             {

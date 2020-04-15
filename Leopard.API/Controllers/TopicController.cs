@@ -630,14 +630,14 @@ namespace Leopard.API.Controllers
 
 		[HttpGet("search-topics")]
 		[Produces(typeof(QTopic[]))]
-		public async Task<IActionResult> SearchTopics(string word, int page)
+		public async Task<IActionResult> SearchTopics(string word, bool isGroup, int page)
 		{
 			word ??= "";
 			page = Math.Max(0, page);
 			const int pageSize = 20;
 
 			var query = from p in Context.Topics
-						where p.Tsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						where p.IsGroup == isGroup && p.Tsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
 						orderby p.Tsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
 						select p;
 
