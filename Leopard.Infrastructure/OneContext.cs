@@ -84,6 +84,7 @@ namespace Leopard.Infrastructure
 			modelBuilder.ApplyConfiguration(new DiscussionEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new TopicEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new PostEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new ReplyEntityTypeConfiguration());
 		}
 
 		public async Task<bool> GoAsync(

@@ -20,6 +20,8 @@
     <Compile Remove="Migrations\20200331132203_tsv_for_work.Designer.cs" />
     <Compile Remove="Migrations\20200331132516_tsv_for_work.cs" />
     <Compile Remove="Migrations\20200331132516_tsv_for_work.Designer.cs" />
+    <Compile Remove="Migrations\20200415092246_tsv_for_reply.cs" />
+    <Compile Remove="Migrations\20200415092246_tsv_for_reply.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
