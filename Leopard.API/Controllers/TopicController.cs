@@ -251,7 +251,7 @@ namespace Leopard.API.Controllers
 						where p.TextTsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
 						join q in Context.Users
 						on p.SenderId equals q.Id
-						orderby p.TextTsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						orderby p.TextTsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word)) descending
 						select new { Discussion = p, Sender = q };
 
 			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
@@ -587,6 +587,28 @@ namespace Leopard.API.Controllers
 		}
 
 
+		[HttpGet("search-replies")]
+		[Produces(typeof(QReply[]))]
+		public async Task<IActionResult> SearchReplies(string word, int page)
+		{
+			word ??= "";
+			page = Math.Max(0, page);
+			const int pageSize = 20;
+
+			var query = from p in Context.Replies
+						where p.TextTsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						join q in Context.Users on p.SenderId equals q.Id
+						orderby p.TextTsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word)) descending
+						select new { reply = p, user = q };
+
+			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
+
+			var repliesV = data.Select(p => QReply.NormalView(p.reply, p.user));
+
+			return Ok(repliesV);
+		}
+
+
 		[HttpPost("do-admin")]
 		[Consumes(Application.Json)]
 
@@ -645,7 +667,7 @@ namespace Leopard.API.Controllers
 
 			var query = from p in Context.Topics
 						where p.IsGroup == isGroup && p.Tsv.Matches(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
-						orderby p.Tsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word))
+						orderby p.Tsv.RankCoverDensity(EF.Functions.WebSearchToTsQuery("testzhcfg", word)) descending
 						select p;
 
 			var data = await query.Skip(page * pageSize).Take(pageSize).ToListAsync();

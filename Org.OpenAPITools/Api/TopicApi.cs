@@ -276,6 +276,29 @@ namespace Org.OpenAPITools.Api
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QReply&gt;</returns>
+        List<QReply> SearchReplies (string word = default(string), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QReply&gt;</returns>
+        ApiResponse<List<QReply>> SearchRepliesWithHttpInfo (string word = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
         /// <param name="isGroup"> (optional)</param>
         /// <param name="page"> (optional)</param>
         /// <returns>List&lt;QTopic&gt;</returns>
@@ -627,6 +650,29 @@ namespace Org.OpenAPITools.Api
         /// <param name="page"> (optional)</param>
         /// <returns>Task of ApiResponse (List&lt;QPost&gt;)</returns>
         System.Threading.Tasks.Task<ApiResponse<List<QPost>>> SearchPostsAsyncWithHttpInfo (string word = default(string), int? page = default(int?));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QReply&gt;</returns>
+        System.Threading.Tasks.Task<List<QReply>> SearchRepliesAsync (string word = default(string), int? page = default(int?));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QReply&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<QReply>>> SearchRepliesAsyncWithHttpInfo (string word = default(string), int? page = default(int?));
         /// <summary>
         /// 
         /// </summary>
@@ -2147,6 +2193,133 @@ namespace Org.OpenAPITools.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("SearchPosts", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>List&lt;QReply&gt;</returns>
+        public List<QReply> SearchReplies (string word = default(string), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QReply>> localVarResponse = SearchRepliesWithHttpInfo(word, page);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>ApiResponse of List&lt;QReply&gt;</returns>
+        public Org.OpenAPITools.Client.ApiResponse< List<QReply> > SearchRepliesWithHttpInfo (string word = default(string), int? page = default(int?))
+        {
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Org.OpenAPITools.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Org.OpenAPITools.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (word != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "word", word));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<QReply> >("/api/topic/search-replies", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SearchReplies", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of List&lt;QReply&gt;</returns>
+        public async System.Threading.Tasks.Task<List<QReply>> SearchRepliesAsync (string word = default(string), int? page = default(int?))
+        {
+             Org.OpenAPITools.Client.ApiResponse<List<QReply>> localVarResponse = await SearchRepliesAsyncWithHttpInfo(word, page);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="word"> (optional)</param>
+        /// <param name="page"> (optional)</param>
+        /// <returns>Task of ApiResponse (List&lt;QReply&gt;)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<List<QReply>>> SearchRepliesAsyncWithHttpInfo (string word = default(string), int? page = default(int?))
+        {
+
+            Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            if (word != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "word", word));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Org.OpenAPITools.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<QReply>>("/api/topic/search-replies", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SearchReplies", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
