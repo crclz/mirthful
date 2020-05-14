@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Restore Packages') { 
             steps {
-                sh 'dotnet restore Leopard.API'
+                sh 'dotnet restore'
             }
         }
         stage('Build') {
@@ -23,13 +23,12 @@ pipeline {
         // }
         stage('ApiTest') {
             environment {
-                MONGO_HOST = 'mongo_test'
+                PostgresHost = "PostgresHost"
                 BLOB_STORE = '/var/blob-store'
-                MONGO_PASS = credentials('MONGO_TEST_PASS')
+                PostgresPassword = credentials('POSTGRES_PASSWORD')
                 ApiTestBaseUrl = 'http://localhost:5000'
             }
-            steps {
-                // Prerequisite: Mongo test db already running.'
+            steps { 
                 sh 'mkdir /var/blob-store'
 
                 sh 'dotnet run --project Leopard.API > server-output.txt &'
