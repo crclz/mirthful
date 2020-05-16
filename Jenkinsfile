@@ -41,5 +41,12 @@ pipeline {
                 //sh './check-server-output.sh'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker rmi -f mirthful:latest || true' // quiet
+                sh 'docker build -f Leopard.API/Dockerfile -t mirthful:latest . '
+            }
+        }
     }
 }
