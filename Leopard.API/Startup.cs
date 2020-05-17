@@ -56,6 +56,8 @@ namespace Leopard.API
 
 				// Without this, client cannot send correct data
 				c.DescribeAllEnumsAsStrings();
+				var filePath = Path.Combine(System.AppContext.BaseDirectory, "Leopard.API.xml");
+				c.IncludeXmlComments(filePath);
 			});
 
 			// The c# world has get used to the behavior of Newtonsoft.Json.
@@ -86,7 +88,7 @@ namespace Leopard.API
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			if (env.IsDevelopment())
+			//if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}

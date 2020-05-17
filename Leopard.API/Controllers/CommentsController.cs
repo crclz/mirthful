@@ -33,6 +33,11 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 对作品发送评论
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("create")]
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -58,23 +63,39 @@ namespace Leopard.API.Controllers
 		}
 		public class CreateCommentModel
 		{
+			/// <summary>
+			/// 作品Id
+			/// </summary>
 			[Required]
 			public string WorkId { get; set; }
 
+			/// <summary>
+			/// 评论的标题
+			/// </summary>
 			[Required]
 			[MinLength(1)]
 			public string Title { get; set; }
 
+			/// <summary>
+			/// 评论的正文
+			/// </summary>
 			[Required]
 			[MinLength(25)]
 			public string Text { get; set; }
 
+			/// <summary>
+			/// 打分
+			/// </summary>
 			[Required]
 			[Range(1, 5)]
 			public int Rating { get; set; }
 		}
 
-
+		/// <summary>
+		/// 查询评论
+		/// </summary>
+		/// <param name="id">评论Id</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-by-id")]
 		[Produces(typeof(QComment))]
@@ -105,8 +126,19 @@ namespace Leopard.API.Controllers
 			public Guid Id { get; set; }
 			public long CreatedAt { get; set; }
 			public long UpdatedAt { get; set; }
+			/// <summary>
+			/// 评论发送者id
+			/// </summary>
 			public Guid SenderId { get; set; }
+
+			/// <summary>
+			/// 作品id
+			/// </summary>
 			public Guid WorkId { get; set; }
+
+			/// <summary>
+			/// 评论标题
+			/// </summary>
 			public string Title { get; set; }
 			public string Text { get; set; }
 			public int Rating { get; set; }

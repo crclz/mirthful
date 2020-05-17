@@ -27,22 +27,31 @@ namespace Leopard.API.Controllers
 			this.secretStore = secretStore;
 		}
 
+		/// <summary>
+		/// 获取当前登录的用户信息
+		/// </summary>
+		/// <response code="200">返回当前登录的用户信息，如果未登录，则返回null。</response>
+		/// 
 		[NotCommand]
 		[HttpGet("me")]
 		[Produces(typeof(QUser))]
 		// TODO: Not Good
-		[ServiceFilter(typeof(RequireLoginFilter))]
 		public IActionResult Me()
 		{
 			var user = Store.User;
 
+			// TODO: OK(NULL)
 			if (user == null)
-				return Ok(null);
+				return new JsonResult(null);
 			else
 				return Ok(QUser.NormalView(user));
 		}
 
-
+		/// <summary>
+		/// 登录
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpPost("login")]
 		[Consumes(System.Net.Mime.MediaTypeNames.Application.Json)]
@@ -100,8 +109,17 @@ namespace Leopard.API.Controllers
 	public class QUser
 	{
 		public Guid Id { get; set; }
+		/// <summary>
+		/// 简介
+		/// </summary>
 		public string Description { get; set; }
+		/// <summary>
+		/// 昵称
+		/// </summary>
 		public string Nickname { get; set; }
+		/// <summary>
+		/// 头像图片url
+		/// </summary>
 		public string Avatar { get; set; }
 
 		public static QUser NormalView(User user)

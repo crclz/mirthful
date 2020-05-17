@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Leopard.API</name>
+    </assembly>
+    <members>
+        <member name="M:Leopard.API.Controllers.AccessController.Me">
+            <summary>
+            获取当前登录的用户信息
+            </summary>
+            <response code="200">返回当前登录的用户信息，如果未登录，则返回null。</response>
+            
+        </member>
+        <member name="M:Leopard.API.Controllers.AccessController.Login(Leopard.API.Controllers.AccessController.LoginModel)">
+            <summary>
+            登录
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.QUser.Description">
+            <summary>
+            简介
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.QUser.Nickname">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.QUser.Avatar">
+            <summary>
+            头像图片url
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.CommentsController.CreateComment(Leopard.API.Controllers.CommentsController.CreateCommentModel)">
+            <summary>
+            对作品发送评论
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.CreateCommentModel.WorkId">
+            <summary>
+            作品Id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.CreateCommentModel.Title">
+            <summary>
+            评论的标题
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.CreateCommentModel.Text">
+            <summary>
+            评论的正文
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.CreateCommentModel.Rating">
+            <summary>
+            打分
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.CommentsController.GetById(System.String)">
+            <summary>
+            查询评论
+            </summary>
+            <param name="id">评论Id</param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.SenderId">
+            <summary>
+            评论发送者id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.WorkId">
+            <summary>
+            作品id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.Title">
+            <summary>
+            评论标题
+            </summary>
+        </member>
+    </members>
+</doc>
