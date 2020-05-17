@@ -2,7 +2,6 @@
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 VOLUME /root/.nuget /root/.nuget
-RUN ls /root/.nuget
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
