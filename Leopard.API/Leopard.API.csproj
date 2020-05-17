@@ -43,4 +43,10 @@
     <ProjectReference Include="..\Leopard.Infrastructure\Leopard.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Leopard.API.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
