@@ -31,6 +31,11 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 发送请求，希望成为管理员。注意，只有小组有管理员。
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("send-admin-request")]
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -66,6 +71,9 @@ namespace Leopard.API.Controllers
 		}
 		public class SendAdminRequestModel
 		{
+			/// <summary>
+			/// 小组id
+			/// </summary>
 			[Required]
 			public string TopicId { get; set; }
 
@@ -75,6 +83,11 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 根据某一个管理员请求。
+		/// </summary>
+		/// <param name="id">请求id</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-request")]
 		[Consumes(Application.Json)]
@@ -98,11 +111,30 @@ namespace Leopard.API.Controllers
 		public class QAdminRequest
 		{
 			public Guid Id { get; set; }
+
+			/// <summary>
+			/// 小组id
+			/// </summary>
 			public Guid TopicId { get; set; }
+
+			/// <summary>
+			/// 发送者id
+			/// </summary>
 			public Guid SenderId { get; set; }
+
+			/// <summary>
+			/// 原因
+			/// </summary>
 			public string Text { get; set; }
+
+			/// <summary>
+			/// 请求状态
+			/// </summary>
 			public RequestStatus Status { get; set; }
 
+			/// <summary>
+			/// 请求发送者
+			/// </summary>
 			public QUser User { get; set; }
 
 			public static QAdminRequest NormalView(AdminRequest p, QUser user)
@@ -121,6 +153,11 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// （超级管理员）处理请求
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("handle-request")]
 		[Consumes(Application.Json)]
 
@@ -160,14 +197,27 @@ namespace Leopard.API.Controllers
 		}
 		public class HandleRequestModel
 		{
+			/// <summary>
+			/// 请求id
+			/// </summary>
 			[Required]
 			public string RequestId { get; set; }
 
+			/// <summary>
+			/// 是否接受
+			/// </summary>
 			[Required]
 			public bool Accept { get; set; }
 		}
 
 
+		/// <summary>
+		/// 获取某小组未处理的请求
+		/// </summary>
+		/// <param name="topicId">小组id</param>
+		/// <param name="page">页码，从0开始。</param>
+		/// <param name="newest">true：最新（时间倒序）；false：最旧（时间正序）</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("unhandled-requests")]
 		[Produces(typeof(QAdminRequest[]))]

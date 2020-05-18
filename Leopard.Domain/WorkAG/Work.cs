@@ -33,7 +33,14 @@ namespace Leopard.Domain.WorkAG
 
 	public enum WorkType
 	{
+		/// <summary>
+		/// 书籍
+		/// </summary>
 		Book = 0,
+
+		/// <summary>
+		/// 电影
+		/// </summary>
 		Film = 1,
 	}
 }

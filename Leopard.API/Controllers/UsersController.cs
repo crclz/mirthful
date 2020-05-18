@@ -25,6 +25,11 @@ namespace Leopard.API.Controllers
 
 		public OneContext Context { get; }
 
+		/// <summary>
+		/// 注册用户
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("register")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -46,21 +51,33 @@ namespace Leopard.API.Controllers
 		}
 		public class RegisterModel
 		{
+			/// <summary>
+			/// 用户名。仅仅用于登录
+			/// </summary>
 			[Required]
 			[MinLength(3)]
 			[MaxLength(12)]
 			public string Username { get; set; }
 
+			/// <summary>
+			/// 密码
+			/// </summary>
 			[Required]
 			[MinLength(6)]
 			[MaxLength(32)]
 			public string Password { get; set; }
 
+			/// <summary>
+			/// 昵称，用于展示。
+			/// </summary>
 			[Required]
 			[MinLength(1)]
 			[MaxLength(16)]
 			public string Nickname { get; set; }
 
+			/// <summary>
+			/// 简介
+			/// </summary>
 			[Required(AllowEmptyStrings = true)]
 			[MaxLength(32)]
 			public string Description { get; set; }

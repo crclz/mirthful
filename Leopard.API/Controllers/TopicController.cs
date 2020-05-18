@@ -35,7 +35,11 @@ namespace Leopard.API.Controllers
 			Context = context;
 		}
 
-
+		/// <summary>
+		/// 创建话题/小组。
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("create")]
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -60,21 +64,38 @@ namespace Leopard.API.Controllers
 		}
 		public class CreateTopicModel
 		{
+			/// <summary>
+			/// true：小组；false：话题
+			/// </summary>
 			[Required]
 			public bool IsGroup { get; set; }
 
+			/// <summary>
+			/// 名称
+			/// </summary>
 			[Required]
 			[MinLength(1)]
 			public string Name { get; set; }
 
+			/// <summary>
+			/// 简介
+			/// </summary>
 			[Required]
 			[MinLength(3)]
 			public string Description { get; set; }
 
+			/// <summary>
+			/// 关联的作品。如果无关联的作品，则为null。
+			/// </summary>
 			public string RelatedWork { get; set; }
 		}
 
 
+		/// <summary>
+		/// 加入话题/小组。
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("join-topic")]
 		[Consumes(Application.Json)]
 
@@ -112,6 +133,11 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 在小组内发送帖子
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("send-post")]
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -146,16 +172,29 @@ namespace Leopard.API.Controllers
 		}
 		public class SendPostModel
 		{
+			/// <summary>
+			/// 小组id
+			/// </summary>
 			[Required]
 			public string TopicId { get; set; }
 
+			/// <summary>
+			/// 标题
+			/// </summary>
 			public string Title { get; set; }
 
+			/// <summary>
+			/// 正文
+			/// </summary>
 			public string Text { get; set; }
 		}
 
 
-
+		/// <summary>
+		/// 在话题内发送讨论
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("send-discussion")]
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -189,15 +228,30 @@ namespace Leopard.API.Controllers
 		}
 		public class SendDiscussionModel
 		{
+			/// <summary>
+			/// 话题id
+			/// </summary>
 			public Guid TopicId { get; set; }
 
+			/// <summary>
+			/// 文字
+			/// </summary>
 			[MaxLength(800)]
 			public string Text { get; set; }
 
+			/// <summary>
+			/// 图片url。这个怎么使用呢？首先用单独的一个请求上传图片，获取id，然后再在这里附带id。
+			/// </summary>
 			[MaxLength(100)]
 			public string ImageUrl { get; set; }
 		}
 
+		/// <summary>
+		/// 获取话题的讨论
+		/// </summary>
+		/// <param name="topicId">话题id</param>
+		/// <param name="page">页码。start from 0</param>
+		/// <returns></returns>
 		[HttpGet("get-discussions")]
 		[Produces(typeof(QDiscussion[]))]
 		public async Task<IActionResult> GetDiscussions(Guid topicId, int page)
@@ -223,6 +277,9 @@ namespace Leopard.API.Controllers
 			public string Text { get; set; }
 			public string ImageUrl { get; set; }
 
+			/// <summary>
+			/// 发送者
+			/// </summary>
 			public QUser User { get; set; }
 
 			public static QDiscussion NormalView(Discussion p, User user)
@@ -239,7 +296,12 @@ namespace Leopard.API.Controllers
 			}
 		}
 
-
+		/// <summary>
+		/// 搜索话题中的讨论
+		/// </summary>
+		/// <param name="word">关键词</param>
+		/// <param name="page">页码。start from 0</param>
+		/// <returns></returns>
 		[HttpGet("search-discussions")]
 		[Produces(typeof(QDiscussion[]))]
 		public async Task<IActionResult> SearchDiscussions(string word, int page)
@@ -261,7 +323,14 @@ namespace Leopard.API.Controllers
 			return Ok(qdiscuss);
 		}
 
-
+		/// <summary>
+		/// 上传文件。
+		/// 这是一个通用的上传文件的接口。
+		/// 限制大小：5mb。
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="blobBucket"></param>
+		/// <returns></returns>
 		[HttpPost("upload-file")]
 		[Consumes("multipart/form-data")]
 		[Produces(typeof(UploadFileResponse))]
@@ -298,7 +367,11 @@ namespace Leopard.API.Controllers
 			public string Url { get; set; }
 		}
 
-
+		/// <summary>
+		/// 获取话题/小组的基本信息
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-topic-profile")]
 		[Produces(typeof(QTopic))]
@@ -316,6 +389,10 @@ namespace Leopard.API.Controllers
 			public string Name { get; set; }
 			public string Description { get; set; }
 			public Guid? RelatedWork { get; set; }
+			
+			/// <summary>
+			/// 成员数量
+			/// </summary>
 			public int MemberCount { get; set; }
 
 			public static QTopic NormalView(Topic p)
@@ -332,7 +409,13 @@ namespace Leopard.API.Controllers
 			}
 		}
 
-
+		/// <summary>
+		/// 获取当前登录用户和话题/小组的成员关系实体。
+		/// 不是成员：返回null。
+		/// 如果是话题成员，那么请忽略Role，因为Role只对小组有用。
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-membership")]
 		[Produces(typeof(QTopicMember))]
@@ -348,6 +431,10 @@ namespace Leopard.API.Controllers
 		{
 			public Guid TopicId { get; set; }
 			public Guid UserId { get; set; }
+
+			/// <summary>
+			/// 成员角色。只在目标是小组时有效。
+			/// </summary>
 			public MemberRole Role { get; set; }
 
 			public static QTopicMember NormalView(TopicMember p)
@@ -361,7 +448,12 @@ namespace Leopard.API.Controllers
 			}
 		}
 
-
+		/// <summary>
+		/// 获取小组的帖子
+		/// </summary>
+		/// <param name="topicId">小组id</param>
+		/// <param name="page">页码。从0开始。</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-posts")]
 		[Produces(typeof(QPost[]))]
@@ -408,12 +500,30 @@ namespace Leopard.API.Controllers
 			public Guid SenderId { get; set; }
 			public string Title { get; set; }
 			public string Text { get; set; }
+
+			/// <summary>
+			/// 是否是置顶帖
+			/// </summary>
 			public bool IsPinned { get; set; }
+
+			/// <summary>
+			/// 是否是精华帖
+			/// </summary>
 			public bool IsEssense { get; set; }
 
+			/// <summary>
+			/// 发送者
+			/// </summary>
 			public QUser User { get; set; }
 
+			/// <summary>
+			/// 回帖数量
+			/// </summary>
 			public int ReplyCount { get; set; }
+
+			/// <summary>
+			/// 最新回帖时间
+			/// </summary>
 			public long LastReply { get; set; }
 
 			public static QPost NormalView(Post p, QUser user, int replyCount, long lastReply)
@@ -437,6 +547,12 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 搜索帖子
+		/// </summary>
+		/// <param name="word">关键词</param>
+		/// <param name="page">页码。从0开始。</param>
+		/// <returns></returns>
 		[HttpGet("search-posts")]
 		[Produces(typeof(QPost[]))]
 		public async Task<IActionResult> SearchPosts(string word, int page)
@@ -471,6 +587,11 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 根据id获取帖子
+		/// </summary>
+		/// <param name="id">帖子id</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-post-by-id")]
 		[Produces(typeof(QPost))]
@@ -500,7 +621,11 @@ namespace Leopard.API.Controllers
 			return Ok(qpost);
 		}
 
-
+		/// <summary>
+		/// 回帖
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("send-reply")]
 		[Consumes(Application.Json)]
 		[Produces(typeof(IdResponse))]
@@ -537,6 +662,12 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 获取某帖子的回帖
+		/// </summary>
+		/// <param name="postId">帖子id</param>
+		/// <param name="page">页码</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("get-replies")]
 		[Produces(typeof(QReply[]))]
@@ -567,9 +698,20 @@ namespace Leopard.API.Controllers
 		{
 			public Guid Id { get; set; }
 			public Guid SenderId { get; set; }
+
+			/// <summary>
+			/// 帖子id
+			/// </summary>
 			public Guid PostId { get; set; }
+
+			/// <summary>
+			/// 文字
+			/// </summary>
 			public string Text { get; set; }
 
+			/// <summary>
+			/// 回帖者
+			/// </summary>
 			public QUser User { get; set; }
 
 			public static QReply NormalView(Reply p, User user)
@@ -586,7 +728,12 @@ namespace Leopard.API.Controllers
 			}
 		}
 
-
+		/// <summary>
+		/// 搜索回帖
+		/// </summary>
+		/// <param name="word">关键词</param>
+		/// <param name="page">页码，从0开始。</param>
+		/// <returns></returns>
 		[HttpGet("search-replies")]
 		[Produces(typeof(QReply[]))]
 		public async Task<IActionResult> SearchReplies(string word, int page)
@@ -608,7 +755,11 @@ namespace Leopard.API.Controllers
 			return Ok(repliesV);
 		}
 
-
+		/// <summary>
+		/// 管理帖子
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("do-admin")]
 		[Consumes(Application.Json)]
 
@@ -645,18 +796,48 @@ namespace Leopard.API.Controllers
 		}
 		public class DoAdminModel
 		{
+			/// <summary>
+			/// 帖子id
+			/// </summary>
 			public string PostId { get; set; }
+
+			/// <summary>
+			/// 操作
+			/// </summary>
 			public AdminAction Action { get; set; }
+
+			/// <summary>
+			/// 状态值。例如Action=IsPinned, Status=false，就意味着对帖子【取消精华】。
+			/// </summary>
 			public bool Status { get; set; }
 		}
 
 		public enum AdminAction
 		{
-			IsPinned, IsEssence, Remove
+			/// <summary>
+			/// 是否置顶
+			/// </summary>
+			IsPinned,
+
+			/// <summary>
+			/// 是否是精华帖
+			/// </summary>
+			IsEssence, 
+
+			/// <summary>
+			/// 删除帖子
+			/// </summary>
+			Remove
 		}
 
 
-
+		/// <summary>
+		/// 搜索话题/小组
+		/// </summary>
+		/// <param name="word">关键词</param>
+		/// <param name="isGroup">是否是小组</param>
+		/// <param name="page">页码。start from 0</param>
+		/// <returns></returns>
 		[HttpGet("search-topics")]
 		[Produces(typeof(QTopic[]))]
 		public async Task<IActionResult> SearchTopics(string word, bool isGroup, int page)

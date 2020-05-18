@@ -140,13 +140,35 @@ namespace Leopard.API.Controllers
 			/// 评论标题
 			/// </summary>
 			public string Title { get; set; }
+
+			/// <summary>
+			/// 评论正文
+			/// </summary>
 			public string Text { get; set; }
+
+			/// <summary>
+			/// 评分（1-5）
+			/// </summary>
 			public int Rating { get; set; }
+
+			/// <summary>
+			/// 赞同数量
+			/// </summary>
 			public int AgreeCount { get; set; }
+
+			/// <summary>
+			/// 反对数量
+			/// </summary>
 			public int DisagreeCount { get; set; }
 
+			/// <summary>
+			/// 评论发送者
+			/// </summary>
 			public QUser User { get; set; }
 
+			/// <summary>
+			/// 我的态度。true/false/null对应点赞/点踩/无
+			/// </summary>
 			public bool? MyAttitude { get; set; }
 
 			public static QComment NormalView(Comment c, QUser user, bool? myAttitude)
@@ -170,6 +192,12 @@ namespace Leopard.API.Controllers
 		}
 
 
+		/// <summary>
+		/// 设置态度状态。
+		/// </summary>
+		/// <param name="commentId">评论id</param>
+		/// <param name="agree">是否点赞。true/false/null</param>
+		/// <returns></returns>
 		[HttpPost("express-attitude")]
 		[Consumes(Application.Json)]
 
@@ -238,7 +266,13 @@ namespace Leopard.API.Controllers
 			return Ok();
 		}
 
-
+		/// <summary>
+		/// 获取作品的评论列表
+		/// </summary>
+		/// <param name="workId">作品id</param>
+		/// <param name="order">如何排序</param>
+		/// <param name="page">页码。从0开始。</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("by-work")]
 		[Produces(typeof(QComment[]))]
@@ -287,11 +321,23 @@ namespace Leopard.API.Controllers
 
 		public enum OrderByType
 		{
+			/// <summary>
+			/// 最新
+			/// </summary>
 			Newest,
+
+			/// <summary>
+			/// 热度最高
+			/// </summary>
 			Hottest,
 		}
 
 
+		/// <summary>
+		/// 举报评论
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("report")]
 		[Consumes(Application.Json)]
 
@@ -320,13 +366,22 @@ namespace Leopard.API.Controllers
 		}
 		public class ReportModel
 		{
+			/// <summary>
+			/// 评论id
+			/// </summary>
 			[Required]
 			public string CommentId { get; set; }
 
+			/// <summary>
+			/// 标题
+			/// </summary>
 			[Required]
 			[MinLength(1)]
 			public string Title { get; set; }
 
+			/// <summary>
+			/// 举报理由
+			/// </summary>
 			[Required]
 			[MinLength(15)]
 			public string Text { get; set; }

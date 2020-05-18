@@ -82,5 +82,491 @@
             评论标题
             </summary>
         </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.Text">
+            <summary>
+            评论正文
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.Rating">
+            <summary>
+            评分（1-5）
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.AgreeCount">
+            <summary>
+            赞同数量
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.DisagreeCount">
+            <summary>
+            反对数量
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.User">
+            <summary>
+            评论发送者
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.MyAttitude">
+            <summary>
+            我的态度。true/false/null对应点赞/点踩/无
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.CommentsController.ExpressAttitude(System.String,System.Nullable{System.Boolean})">
+            <summary>
+            设置态度状态。
+            </summary>
+            <param name="commentId">评论id</param>
+            <param name="agree">是否点赞。true/false/null</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.CommentsController.GetByWork(System.String,Leopard.API.Controllers.CommentsController.OrderByType,System.Int32)">
+            <summary>
+            获取作品的评论列表
+            </summary>
+            <param name="workId">作品id</param>
+            <param name="order">如何排序</param>
+            <param name="page">页码。从0开始。</param>
+            <returns></returns>
+        </member>
+        <member name="F:Leopard.API.Controllers.CommentsController.OrderByType.Newest">
+            <summary>
+            最新
+            </summary>
+        </member>
+        <member name="F:Leopard.API.Controllers.CommentsController.OrderByType.Hottest">
+            <summary>
+            热度最高
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.CommentsController.Report(Leopard.API.Controllers.CommentsController.ReportModel)">
+            <summary>
+            举报评论
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.ReportModel.CommentId">
+            <summary>
+            评论id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.ReportModel.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.ReportModel.Text">
+            <summary>
+            举报理由
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.GroupManageController.SendAdminRequest(Leopard.API.Controllers.GroupManageController.SendAdminRequestModel)">
+            <summary>
+            发送请求，希望成为管理员。注意，只有小组有管理员。
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.SendAdminRequestModel.TopicId">
+            <summary>
+            小组id
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.GroupManageController.GetRequestById(System.String)">
+            <summary>
+            根据某一个管理员请求。
+            </summary>
+            <param name="id">请求id</param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.QAdminRequest.TopicId">
+            <summary>
+            小组id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.QAdminRequest.SenderId">
+            <summary>
+            发送者id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.QAdminRequest.Text">
+            <summary>
+            原因
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.QAdminRequest.Status">
+            <summary>
+            请求状态
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.QAdminRequest.User">
+            <summary>
+            请求发送者
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.GroupManageController.HandleRequest(Leopard.API.Controllers.GroupManageController.HandleRequestModel)">
+            <summary>
+            （超级管理员）处理请求
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.HandleRequestModel.RequestId">
+            <summary>
+            请求id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.GroupManageController.HandleRequestModel.Accept">
+            <summary>
+            是否接受
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.GroupManageController.GetUnhandledRequests(System.String,System.Int32,System.Boolean)">
+            <summary>
+            获取某小组未处理的请求
+            </summary>
+            <param name="topicId">小组id</param>
+            <param name="page">页码，从0开始。</param>
+            <param name="newest">true：最新（时间倒序）；false：最旧（时间正序）</param>
+            <returns></returns>
+        </member>
+        <member name="T:Leopard.API.Controllers.IdResponse">
+            <summary>
+            这是一个通用的返回结构，用于返回生成的实体的id。
+            返回id对于前端后续的操作来说很有方便。
+            例如，我发送了评论，那么就会返回评论的id。
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.CreateTopic(Leopard.API.Controllers.TopicController.CreateTopicModel)">
+            <summary>
+            创建话题/小组。
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.CreateTopicModel.IsGroup">
+            <summary>
+            true：小组；false：话题
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.CreateTopicModel.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.CreateTopicModel.Description">
+            <summary>
+            简介
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.CreateTopicModel.RelatedWork">
+            <summary>
+            关联的作品。如果无关联的作品，则为null。
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.JoinTopic(Leopard.API.Controllers.TopicController.JoinTopicModel)">
+            <summary>
+            加入话题/小组。
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SendPost(Leopard.API.Controllers.TopicController.SendPostModel)">
+            <summary>
+            在小组内发送帖子
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.SendPostModel.TopicId">
+            <summary>
+            小组id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.SendPostModel.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.SendPostModel.Text">
+            <summary>
+            正文
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SendDiscussion(Leopard.API.Controllers.TopicController.SendDiscussionModel)">
+            <summary>
+            在话题内发送讨论
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.SendDiscussionModel.TopicId">
+            <summary>
+            话题id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.SendDiscussionModel.Text">
+            <summary>
+            文字
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.SendDiscussionModel.ImageUrl">
+            <summary>
+            图片url。这个怎么使用呢？首先用单独的一个请求上传图片，获取id，然后再在这里附带id。
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.GetDiscussions(System.Guid,System.Int32)">
+            <summary>
+            获取话题的讨论
+            </summary>
+            <param name="topicId">话题id</param>
+            <param name="page">页码。start from 0</param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QDiscussion.User">
+            <summary>
+            发送者
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SearchDiscussions(System.String,System.Int32)">
+            <summary>
+            搜索话题中的讨论
+            </summary>
+            <param name="word">关键词</param>
+            <param name="page">页码。start from 0</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.UploadFile(Leopard.API.Controllers.TopicController.UploadFileModel,Leopard.Infrastructure.IBlobBucket)">
+            <summary>
+            上传文件。
+            这是一个通用的上传文件的接口。
+            限制大小：5mb。
+            </summary>
+            <param name="model"></param>
+            <param name="blobBucket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.GetTopicProfile(System.String)">
+            <summary>
+            获取话题/小组的基本信息
+            </summary>
+            <param name="topicId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QTopic.MemberCount">
+            <summary>
+            成员数量
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.GetMembership(System.Guid)">
+            <summary>
+            获取当前登录用户和话题/小组的成员关系实体。
+            不是成员：返回null。
+            如果是话题成员，那么请忽略Role，因为Role只对小组有用。
+            </summary>
+            <param name="topicId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QTopicMember.Role">
+            <summary>
+            成员角色。只在目标是小组时有效。
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.GetPosts(System.String,System.Int32)">
+            <summary>
+            获取小组的帖子
+            </summary>
+            <param name="topicId">小组id</param>
+            <param name="page">页码。从0开始。</param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QPost.IsPinned">
+            <summary>
+            是否是置顶帖
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QPost.IsEssense">
+            <summary>
+            是否是精华帖
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QPost.User">
+            <summary>
+            发送者
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QPost.ReplyCount">
+            <summary>
+            回帖数量
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QPost.LastReply">
+            <summary>
+            最新回帖时间
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SearchPosts(System.String,System.Int32)">
+            <summary>
+            搜索帖子
+            </summary>
+            <param name="word">关键词</param>
+            <param name="page">页码。从0开始。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.GetPostById(System.String)">
+            <summary>
+            根据id获取帖子
+            </summary>
+            <param name="id">帖子id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SendReply(Leopard.API.Controllers.TopicController.SendReplyModel)">
+            <summary>
+            回帖
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.GetReplies(System.String,System.Int32)">
+            <summary>
+            获取某帖子的回帖
+            </summary>
+            <param name="postId">帖子id</param>
+            <param name="page">页码</param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QReply.PostId">
+            <summary>
+            帖子id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QReply.Text">
+            <summary>
+            文字
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.QReply.User">
+            <summary>
+            回帖者
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SearchReplies(System.String,System.Int32)">
+            <summary>
+            搜索回帖
+            </summary>
+            <param name="word">关键词</param>
+            <param name="page">页码，从0开始。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.DoAdmin(Leopard.API.Controllers.TopicController.DoAdminModel)">
+            <summary>
+            管理帖子
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.DoAdminModel.PostId">
+            <summary>
+            帖子id
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.DoAdminModel.Action">
+            <summary>
+            操作
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.TopicController.DoAdminModel.Status">
+            <summary>
+            状态值。例如Action=IsPinned, Status=false，就意味着对帖子【取消精华】。
+            </summary>
+        </member>
+        <member name="F:Leopard.API.Controllers.TopicController.AdminAction.IsPinned">
+            <summary>
+            是否置顶
+            </summary>
+        </member>
+        <member name="F:Leopard.API.Controllers.TopicController.AdminAction.IsEssence">
+            <summary>
+            是否是精华帖
+            </summary>
+        </member>
+        <member name="F:Leopard.API.Controllers.TopicController.AdminAction.Remove">
+            <summary>
+            删除帖子
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.TopicController.SearchTopics(System.String,System.Boolean,System.Int32)">
+            <summary>
+            搜索话题/小组
+            </summary>
+            <param name="word">关键词</param>
+            <param name="isGroup">是否是小组</param>
+            <param name="page">页码。start from 0</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.UsersController.Register(Leopard.API.Controllers.UsersController.RegisterModel)">
+            <summary>
+            注册用户
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.UsersController.RegisterModel.Username">
+            <summary>
+            用户名。仅仅用于登录
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.UsersController.RegisterModel.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.UsersController.RegisterModel.Nickname">
+            <summary>
+            昵称，用于展示。
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.UsersController.RegisterModel.Description">
+            <summary>
+            简介
+            </summary>
+        </member>
+        <member name="M:Leopard.API.Controllers.WorkController.GetWorkById(System.Guid)">
+            <summary>
+            根据id获取作品。
+            </summary>
+            <param name="id">作品id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Leopard.API.Controllers.WorkController.GetWorkByKeyword(Leopard.Domain.WorkAG.WorkType,System.String,System.Int32)">
+            <summary>
+            搜索作品
+            </summary>
+            <param name="type">作品类型</param>
+            <param name="keyword">关键词</param>
+            <param name="page">页码。从0开始。</param>
+            <returns></returns>
+        </member>
+        <member name="P:Leopard.API.Controllers.WorkController.QWork.Name">
+            <summary>
+            作品名称
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.WorkController.QWork.Author">
+            <summary>
+            作者
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.WorkController.QWork.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Leopard.API.Controllers.WorkController.QWork.Type">
+            <summary>
+            作品类型
+            </summary>
+        </member>
     </members>
 </doc>

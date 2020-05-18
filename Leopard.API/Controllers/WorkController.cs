@@ -22,6 +22,11 @@ namespace Leopard.API.Controllers
 			Context = context;
 		}
 
+		/// <summary>
+		/// 根据id获取作品。
+		/// </summary>
+		/// <param name="id">作品id</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("by-id")]
 		[Produces(typeof(QWork))]
@@ -34,6 +39,13 @@ namespace Leopard.API.Controllers
 			return Ok(qwork);
 		}
 
+		/// <summary>
+		/// 搜索作品
+		/// </summary>
+		/// <param name="type">作品类型</param>
+		/// <param name="keyword">关键词</param>
+		/// <param name="page">页码。从0开始。</param>
+		/// <returns></returns>
 		[NotCommand]
 		[HttpGet("by-keyword")]
 		[Produces(typeof(QWork[]))]
@@ -74,9 +86,25 @@ namespace Leopard.API.Controllers
 		public class QWork
 		{
 			public Guid Id { get; set; }
+
+			/// <summary>
+			/// 作品名称
+			/// </summary>
 			public string Name { get; set; }
+
+			/// <summary>
+			/// 作者
+			/// </summary>
 			public string Author { get; set; }
+
+			/// <summary>
+			/// 描述
+			/// </summary>
 			public string Description { get; set; }
+
+			/// <summary>
+			/// 作品类型
+			/// </summary>
 			public WorkType Type { get; set; }
 
 			public static QWork NormalView(Work p)

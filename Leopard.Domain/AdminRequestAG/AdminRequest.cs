@@ -39,8 +39,19 @@ namespace Leopard.Domain.AdminRequestAG
 
 	public enum RequestStatus
 	{
+		/// <summary>
+		/// 未处理
+		/// </summary>
 		Unhandled = 0,
+
+		/// <summary>
+		/// 已被接受
+		/// </summary>
 		Accepted = 1,
+
+		/// <summary>
+		/// 已被拒绝
+		/// </summary>
 		Refused = 2,
 	}
 }
