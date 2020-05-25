@@ -60,7 +60,7 @@ namespace Leopard.API.Controllers
 			if (keyword.Length >= 20)
 				keyword = keyword.Substring(0, 20);
 
-			var query = from p in Context.Works.AsNoTracking()
+			var query = from p in Context.Works.AsNoTracking().Where(p => p.Type == type)
 						select new
 						{
 							work = p,
