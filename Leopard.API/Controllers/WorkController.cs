@@ -107,6 +107,8 @@ namespace Leopard.API.Controllers
 			/// </summary>
 			public WorkType Type { get; set; }
 
+			public int CommentCount { get; set; }
+
 			public static QWork NormalView(Work p)
 			{
 				return p == null ? null : new QWork
@@ -115,9 +117,45 @@ namespace Leopard.API.Controllers
 					Name = p.Name,
 					Author = p.Author,
 					Description = p.Description,
-					Type = p.Type
+					Type = p.Type,
+					CommentCount = 0
 				};
 			}
+
+			public static QWork NormalView(Work p, int commentCount)
+			{
+				return p == null ? null : new QWork
+				{
+					Id = p.Id,
+					Name = p.Name,
+					Author = p.Author,
+					Description = p.Description,
+					Type = p.Type,
+					CommentCount = commentCount
+				};
+			}
+		}
+
+
+		[NotCommand]
+		[HttpGet("hotest-works")]
+		[Produces(typeof(QWork[]))]
+		public async Task<IActionResult> HotestWorks(WorkType type)
+		{
+			var query = from p in Context.Works.Where(p => p.Type == type)
+						select new
+						{
+							work = p,
+							commentCount = Context.Comments.Where(o => o.WorkId == p.Id).Count()
+						}
+						into k
+						orderby k.commentCount descending
+						select k;
+
+			var works = await query.Take(20).ToListAsync();
+			var qworks = works.Select(p => QWork.NormalView(p.work, p.commentCount));
+
+			return Ok(qworks);
 		}
 	}
 }
