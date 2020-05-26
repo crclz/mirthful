@@ -45,7 +45,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> CreateTopic([FromBody]CreateTopicModel model)
+		public async Task<IActionResult> CreateTopic([FromBody] CreateTopicModel model)
 		{
 			// check related work
 			var workId = XUtils.ParseId(model.RelatedWork);
@@ -100,7 +100,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> JoinTopic([FromBody]JoinTopicModel model)
+		public async Task<IActionResult> JoinTopic([FromBody] JoinTopicModel model)
 		{
 			var topicId = XUtils.ParseId(model.TopicId);
 			if (topicId == null)
@@ -143,7 +143,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> SendPost([FromBody]SendPostModel model)
+		public async Task<IActionResult> SendPost([FromBody] SendPostModel model)
 		{
 			var topicId = XUtils.ParseId(model.TopicId);
 			if (topicId == null)
@@ -200,7 +200,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> SendDiscussion([FromBody]SendDiscussionModel model)
+		public async Task<IActionResult> SendDiscussion([FromBody] SendDiscussionModel model)
 		{
 			var topicId = model.TopicId;
 			if (topicId == null)
@@ -336,7 +336,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(UploadFileResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> UploadFile([FromForm]UploadFileModel model, [FromServices]IBlobBucket blobBucket)
+		public async Task<IActionResult> UploadFile([FromForm] UploadFileModel model, [FromServices] IBlobBucket blobBucket)
 		{
 			var file = model.File;
 
@@ -389,7 +389,7 @@ namespace Leopard.API.Controllers
 			public string Name { get; set; }
 			public string Description { get; set; }
 			public Guid? RelatedWork { get; set; }
-			
+
 			/// <summary>
 			/// 成员数量
 			/// </summary>
@@ -631,7 +631,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> SendReply([FromBody]SendReplyModel model)
+		public async Task<IActionResult> SendReply([FromBody] SendReplyModel model)
 		{
 			// post exist
 			var postId = XUtils.ParseId(model.PostId);
@@ -764,7 +764,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> DoAdmin([FromBody]DoAdminModel model)
+		public async Task<IActionResult> DoAdmin([FromBody] DoAdminModel model)
 		{
 			// post exist
 			var postId = XUtils.ParseId(model.PostId);
@@ -822,7 +822,7 @@ namespace Leopard.API.Controllers
 			/// <summary>
 			/// 是否是精华帖
 			/// </summary>
-			IsEssence, 
+			IsEssence,
 
 			/// <summary>
 			/// 删除帖子
@@ -854,6 +854,28 @@ namespace Leopard.API.Controllers
 			var data = await query.Skip(page * pageSize).Take(pageSize).ToListAsync();
 
 			var qtopics = data.Select(p => QTopic.NormalView(p));
+
+			return Ok(qtopics);
+		}
+
+
+		[NotCommand]
+		[HttpGet("hotest-topic-not-group")]
+		[Produces(typeof(QTopic[]))]
+		public async Task<IActionResult> HotestTopicsNotGroup()
+		{
+			var query = from p in Context.Topics.Where(p => p.IsGroup == false)
+						select new
+						{
+							topic = p,
+							discussionCount = Context.Discussions.Count(o => o.TopicId == p.Id)
+						}
+						into k
+						orderby k.discussionCount
+						select k;
+			var topics = await query.Take(20).ToListAsync();
+
+			var qtopics = topics.Select(p => QTopic.NormalView(p.topic));
 
 			return Ok(qtopics);
 		}
