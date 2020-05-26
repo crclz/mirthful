@@ -57,7 +57,7 @@ namespace Leopard.API.Controllers
 		[Consumes(System.Net.Mime.MediaTypeNames.Application.Json)]
 		// Should not use string type.
 		[Produces(typeof(LoginResponse))]
-		public async Task<IActionResult> Login([FromBody]LoginModel data)
+		public async Task<IActionResult> Login([FromBody] LoginModel data)
 		{
 			var username = data.Username;
 			var password = data.Password;
@@ -124,7 +124,7 @@ namespace Leopard.API.Controllers
 
 		public static QUser NormalView(User user)
 		{
-			return new QUser
+			return user == null ? null : new QUser
 			{
 				Id = user.Id,
 				Description = user.Description,

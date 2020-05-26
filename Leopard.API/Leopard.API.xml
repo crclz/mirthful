@@ -112,6 +112,11 @@
             我的态度。true/false/null对应点赞/点踩/无
             </summary>
         </member>
+        <member name="P:Leopard.API.Controllers.CommentsController.QComment.Work">
+            <summary>
+            评论对应的作品。仅在“热门评论”功能有用。因为只有这里会让评论先于作品展示。
+            </summary>
+        </member>
         <member name="M:Leopard.API.Controllers.CommentsController.ExpressAttitude(System.String,System.Nullable{System.Boolean})">
             <summary>
             设置态度状态。

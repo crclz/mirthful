@@ -15,7 +15,9 @@ using Leopard.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using static System.Net.Mime.MediaTypeNames;
+using static Leopard.API.Controllers.WorkController;
 
 namespace Leopard.API.Controllers
 {
@@ -43,7 +45,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(IdResponse))]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> CreateComment([FromBody]CreateCommentModel model)
+		public async Task<IActionResult> CreateComment([FromBody] CreateCommentModel model)
 		{
 			var workId = XUtils.ParseId(model.WorkId);
 			var work = await Context.Works.FirstOrDefaultAsync(p => p.Id == workId);
@@ -171,7 +173,12 @@ namespace Leopard.API.Controllers
 			/// </summary>
 			public bool? MyAttitude { get; set; }
 
-			public static QComment NormalView(Comment c, QUser user, bool? myAttitude)
+			/// <summary>
+			/// 评论对应的作品。仅在“热门评论”功能有用。因为只有这里会让评论先于作品展示。
+			/// </summary>
+			public QWork Work { get; set; }
+
+			public static QComment NormalView(Comment c, QUser user, bool? myAttitude, QWork work = null)
 			{
 				return c == null ? null : new QComment
 				{
@@ -186,7 +193,9 @@ namespace Leopard.API.Controllers
 					AgreeCount = c.AgreeCount,
 					DisagreeCount = c.DisagreeCount,
 					User = user,
-					MyAttitude = myAttitude
+					MyAttitude = myAttitude,
+
+					Work = work
 				};
 			}
 		}
@@ -342,7 +351,7 @@ namespace Leopard.API.Controllers
 		[Consumes(Application.Json)]
 
 		[ServiceFilter(typeof(RequireLoginFilter))]
-		public async Task<IActionResult> Report([FromBody]ReportModel model)
+		public async Task<IActionResult> Report([FromBody] ReportModel model)
 		{
 			var commentId = XUtils.ParseId(model.CommentId);
 			if (commentId == null)
@@ -385,6 +394,41 @@ namespace Leopard.API.Controllers
 			[Required]
 			[MinLength(15)]
 			public string Text { get; set; }
+		}
+
+
+		[NotCommand]
+		[HttpGet("hotest-comments")]
+		[Produces(typeof(QComment[]))]
+		public async Task<IActionResult> HotestComments()
+		{
+			// 子查询可以有，但是只能查询一个scalar。outer join应当用正规的outer join
+			var query = from p in Context.Comments
+						select new
+						{
+							comment = p,
+							agreeCount = Context.Attitudes.Where(o => o.Agree == true && o.CommentId == p.Id).Count(),
+						}
+						into k
+						join u in Context.Users
+						on k.comment.SenderId equals u.Id
+						join w in Context.Works
+						on k.comment.WorkId equals w.Id
+						orderby k.agreeCount descending
+						select new
+						{
+							comment = k.comment,
+							agreeCount = k.agreeCount,
+							work = w,
+							user = u
+						};
+
+			var comments = await query.Take(20).ToListAsync();
+			var qcomments = comments.Select(
+				p => QComment.NormalView(p.comment, QUser.NormalView(p.user), null, QWork.NormalView(p.work)))
+				.ToList();
+
+			return Ok(qcomments);
 		}
 	}
 }
