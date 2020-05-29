@@ -544,7 +544,7 @@
             <param name="id">作品id</param>
             <returns></returns>
         </member>
-        <member name="M:Leopard.API.Controllers.WorkController.GetWorkByKeyword(Leopard.Domain.WorkAG.WorkType,System.String,System.Int32)">
+        <member name="M:Leopard.API.Controllers.WorkController.GetWorkByKeyword(System.Nullable{Leopard.Domain.WorkAG.WorkType},System.String,System.Int32)">
             <summary>
             搜索作品
             </summary>

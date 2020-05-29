@@ -49,7 +49,7 @@ namespace Leopard.API.Controllers
 		[NotCommand]
 		[HttpGet("by-keyword")]
 		[Produces(typeof(QWork[]))]
-		public async Task<IActionResult> GetWorkByKeyword(WorkType type, string keyword, int page)
+		public async Task<IActionResult> GetWorkByKeyword(WorkType? type, string keyword, int page)
 		{
 			page = Math.Max(0, page);
 			const int pageSize = 20;
@@ -60,7 +60,12 @@ namespace Leopard.API.Controllers
 			if (keyword.Length >= 20)
 				keyword = keyword.Substring(0, 20);
 
-			var query = from p in Context.Works.AsNoTracking().Where(p => p.Type == type)
+			var filteredTypeQuery = Context.Works.AsNoTracking().AsQueryable();
+
+			if (type != null)
+				filteredTypeQuery = filteredTypeQuery.Where(p => p.Type == type);
+
+			var query = from p in filteredTypeQuery
 						select new
 						{
 							work = p,

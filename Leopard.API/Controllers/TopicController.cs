@@ -246,6 +246,11 @@ namespace Leopard.API.Controllers
 			public string ImageUrl { get; set; }
 		}
 
+		static void ZeroMin(ref int page)
+		{
+			page = Math.Max(page, 0);
+		}
+
 		/// <summary>
 		/// 获取话题的讨论
 		/// </summary>
@@ -256,6 +261,7 @@ namespace Leopard.API.Controllers
 		[Produces(typeof(QDiscussion[]))]
 		public async Task<IActionResult> GetDiscussions(Guid topicId, int page)
 		{
+			ZeroMin(ref page);
 			const int pageSize = 20;
 
 			var query = from p in Context.Discussions.Where(p => p.TopicId == topicId)
@@ -264,7 +270,7 @@ namespace Leopard.API.Controllers
 						orderby p.CreatedAt descending
 						select new { Discussion = p, Sender = q };
 
-			var data = await query.ToListAsync();
+			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
 
 			var qdiscussions = data.Select(p => QDiscussion.NormalView(p.Discussion, p.Sender)).ToList();
 
