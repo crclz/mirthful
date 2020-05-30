@@ -12,6 +12,7 @@ namespace Leopard.Domain.WorkAG
 		public string Name { get; private set; }
 		public string Author { get; private set; }
 		public string Description { get; private set; }
+		public string CoverUrl { get; private set; }
 
 		public NpgsqlTsVector Tsv { get; private set; }
 
@@ -20,7 +21,7 @@ namespace Leopard.Domain.WorkAG
 		{
 		}
 
-		public Work(WorkType type, string name, string author, string description)
+		public Work(WorkType type, string name, string author, string description,string coverUrl)
 		{
 			Guard.Argument(() => type).Defined();
 
@@ -28,6 +29,7 @@ namespace Leopard.Domain.WorkAG
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			Author = author ?? throw new ArgumentNullException(nameof(author));
 			Description = description ?? throw new ArgumentNullException(nameof(description));
+			CoverUrl = coverUrl;
 		}
 	}
 

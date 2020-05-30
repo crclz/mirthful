@@ -112,6 +112,8 @@ namespace Leopard.API.Controllers
 			/// </summary>
 			public WorkType Type { get; set; }
 
+			public string CoverUrl { get; set; }
+
 			public int CommentCount { get; set; }
 
 			public static QWork NormalView(Work p)
@@ -123,6 +125,7 @@ namespace Leopard.API.Controllers
 					Author = p.Author,
 					Description = p.Description,
 					Type = p.Type,
+					CoverUrl = p.CoverUrl,
 					CommentCount = 0
 				};
 			}
@@ -136,6 +139,7 @@ namespace Leopard.API.Controllers
 					Author = p.Author,
 					Description = p.Description,
 					Type = p.Type,
+					CoverUrl = p.CoverUrl,
 					CommentCount = commentCount
 				};
 			}
