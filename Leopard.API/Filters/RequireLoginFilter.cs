@@ -1,4 +1,5 @@
 ﻿using Jose;
+using Leopard.API.ResponseConvension;
 using Leopard.Domain;
 using Leopard.Domain.UserAG;
 using Leopard.Infrastructure;
@@ -31,7 +32,7 @@ namespace Leopard.API.Filters
 		{
 			if (Store.UserId == null)
 			{
-				context.Result = new UnauthorizedResult();
+				context.Result = new ApiError("RequireLogin", "需要登录才能进行此操作").Wrap();
 				return;
 			}
 			else

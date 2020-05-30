@@ -63,7 +63,7 @@ namespace Leopard.API.Controllers
 			/// 密码
 			/// </summary>
 			[Required]
-			[MinLength(6)]
+			[MinLength(8)]
 			[MaxLength(32)]
 			public string Password { get; set; }
 

@@ -414,7 +414,7 @@ namespace Leopard.API.Controllers
 						on k.comment.SenderId equals u.Id
 						join w in Context.Works
 						on k.comment.WorkId equals w.Id
-						orderby k.agreeCount descending
+						orderby k.comment.AgreeCount descending
 						select new
 						{
 							comment = k.comment,

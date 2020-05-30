@@ -4,6 +4,7 @@ using Leopard.Domain.DiscussionAG;
 using Leopard.Domain.PostAG;
 using Leopard.Domain.ReplyAG;
 using Leopard.Domain.TopicAG;
+using Leopard.Domain.TopicMemberAG;
 using Leopard.Domain.UserAG;
 using Leopard.Domain.WorkAG;
 using Leopard.Infrastructure;
@@ -93,6 +94,7 @@ namespace Leopard.Seed
 					var topicName = work.Name + " " + randomText.Generate(6, 14);
 					var description = randomText.Generate(50, 200);
 					var topic = new Topic(false, topicName, description, work.Id, adminUser.Id);
+					topic.SetMemberCount(10);
 					topics.Add(topic);
 				}
 
@@ -101,7 +103,13 @@ namespace Leopard.Seed
 					var topicName = work.Name + " " + randomText.Generate(3, 10);
 					var description = randomText.Generate(50, 200);
 					var topic = new Topic(true/*diff*/, topicName, description, work.Id, adminUser.Id);
+					topic.SetMemberCount(10);
 					topics.Add(topic);
+
+					// super admin
+					var member = new TopicMember(topic.Id, adminUser.Id, MemberRole.Super, true);
+
+					context.Add(member);
 				}
 			}
 
@@ -132,12 +140,23 @@ namespace Leopard.Seed
 					context.Add(post);
 
 					int replyCount = random.Next(1, 50);
-					for(int j = 0; j < replyCount; j++)
+					for (int j = 0; j < replyCount; j++)
 					{
 						var reply = new Reply(adminUser.Id, post.Id, randomText.Generate(10, 50));
 						context.Add(reply);
 					}
 				}
+			}
+
+
+			// Create no content works
+			for (int i = 1; i <= 40; i++)
+			{
+				var work = new Work(WorkType.Book, $"example book {i}", "NULL", "HELLO", "/blob/matrix.webp");
+				context.Add(work);
+
+				work = new Work(WorkType.Film, $"example film {i}", "NULL", "HELLO", "/blob/matrix.webp");
+				context.Add(work);
 			}
 
 			Console.WriteLine("Start saving changes");

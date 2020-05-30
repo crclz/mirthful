@@ -661,7 +661,7 @@ namespace Leopard.API.Controllers
 		{
 			[Required]
 			public string PostId { get; set; }
-
+			
 			[Required]
 			[MinLength(3)]
 			public string Text { get; set; }
@@ -692,7 +692,7 @@ namespace Leopard.API.Controllers
 						 join q in Context.Users
 						 on p.SenderId equals q.Id
 						 select new { reply = p, user = q })
-						 .OrderBy(p => p.reply.CreatedAt);
+						 .OrderBy(p => p.reply.CreatedAt).ThenBy(p=>p.reply.Id);
 
 			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
 
@@ -877,7 +877,7 @@ namespace Leopard.API.Controllers
 							discussionCount = Context.Discussions.Count(o => o.TopicId == p.Id)
 						}
 						into k
-						orderby k.discussionCount
+						orderby k.discussionCount descending
 						select k;
 			var topics = await query.Take(20).ToListAsync();
 
