@@ -10,6 +10,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 VOLUME /root/.nuget /root/.nuget
 WORKDIR /src
 COPY ["Leopard.API/Leopard.API.csproj", "Leopard.API/"]
+COPY ["Leopard.Infrastructure.Shell/Leopard.Infrastructure.Shell.csproj", "Leopard.Infrastructure.Shell/"]
 COPY ["Leopard.Infrastructure/Leopard.Infrastructure.csproj", "Leopard.Infrastructure/"]
 COPY ["Leopard.Domain/Leopard.Domain.csproj", "Leopard.Domain/"]
 RUN dotnet restore "Leopard.API/Leopard.API.csproj"
