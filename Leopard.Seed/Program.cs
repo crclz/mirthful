@@ -35,13 +35,10 @@ namespace Leopard.Seed
 			// Clear all data in database
 			using var context = new OneContext(new DbContextOptions<OneContext>());
 
-			context.Database.ExecuteSqlRaw("CREATE EXTENSION zhparser;");
-			context.Database.ExecuteSqlRaw("CREATE TEXT SEARCH CONFIGURATION testzhcfg (PARSER = zhparser);");
-			context.Database.ExecuteSqlRaw("ALTER TEXT SEARCH CONFIGURATION testzhcfg ADD MAPPING FOR n,v,a,i,e,l WITH simple;");
-
+			context.Database.EnsureDeleted();
 			context.Database.Migrate();
 
-			Console.WriteLine("Database reseted");
+			Console.WriteLine("Database migrated");
 
 
 			// Insert work data
