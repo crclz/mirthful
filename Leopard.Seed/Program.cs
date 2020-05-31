@@ -27,7 +27,7 @@ namespace Leopard.Seed
 			// copy blob files
 			var blobStorePath = Environment.GetEnvironmentVariable("BLOB_STORE");
 
-			foreach (var file in new DirectoryInfo("../../../blob-seeddata").GetFiles())
+			foreach (var file in new DirectoryInfo("./blob-seeddata").GetFiles())
 			{
 				file.CopyTo(Path.Combine(blobStorePath, file.Name), true);
 			}

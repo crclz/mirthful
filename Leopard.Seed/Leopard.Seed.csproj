@@ -21,6 +21,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="blob-seeddata\black-swan.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="blob-seeddata\joker.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="blob-seeddata\matrix.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="blob-seeddata\three-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="blob-seeddata\three-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="blob-seeddata\three-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="random-text.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
