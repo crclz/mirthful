@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -30,6 +31,12 @@ namespace Leopard.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			using (var dbContext = new OneContext(new Microsoft.EntityFrameworkCore.DbContextOptions<OneContext>()))
+			{
+				dbContext.Database.EnsureCreated();
+				dbContext.Database.Migrate();
+			}
+
 			// Secret store for JWT
 			// TODO: put secret in env in docker-compose
 			var secret = new byte[] { 164, 60, 194, 0, 161, 189, 41, 38, 130, 89, 141, 164, 45,

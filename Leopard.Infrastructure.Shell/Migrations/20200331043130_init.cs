@@ -204,6 +204,11 @@ namespace Leopard.Infrastructure.Shell.Migrations
                 table: "DeduplicationTokens",
                 columns: new[] { "EventId", "HandlerType", "Additional" },
                 unique: true);
+
+            // Text search engine
+            migrationBuilder.Sql("CREATE EXTENSION zhparser;");
+            migrationBuilder.Sql("CREATE TEXT SEARCH CONFIGURATION testzhcfg (PARSER = zhparser);");
+            migrationBuilder.Sql("ALTER TEXT SEARCH CONFIGURATION testzhcfg ADD MAPPING FOR n,v,a,i,e,l WITH simple;");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
