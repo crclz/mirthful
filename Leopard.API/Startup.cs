@@ -31,6 +31,11 @@ namespace Leopard.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			using (var context = new OneContext(new DbContextOptions<OneContext>()))
+			{
+				context.Database.Migrate();
+			}
+
 			// Secret store for JWT
 			// TODO: put secret in env in docker-compose
 			var secret = new byte[] { 164, 60, 194, 0, 161, 189, 41, 38, 130, 89, 141, 164, 45,

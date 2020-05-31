@@ -21,7 +21,7 @@ namespace Leopard.Domain.WorkAG
 		{
 		}
 
-		public Work(WorkType type, string name, string author, string description,string coverUrl)
+		public Work(Guid id, WorkType type, string name, string author, string description, string coverUrl) : base(id)
 		{
 			Guard.Argument(() => type).Defined();
 
@@ -30,6 +30,11 @@ namespace Leopard.Domain.WorkAG
 			Author = author ?? throw new ArgumentNullException(nameof(author));
 			Description = description ?? throw new ArgumentNullException(nameof(description));
 			CoverUrl = coverUrl;
+		}
+
+		public Work(WorkType type, string name, string author, string description, string coverUrl)
+			: this(Guid.NewGuid(), type, name, author, description, coverUrl)
+		{
 		}
 	}
 
