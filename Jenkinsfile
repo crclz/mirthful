@@ -46,6 +46,9 @@ pipeline {
             steps {
                 sh 'docker rmi -f mirthful:latest || true' // quiet
                 sh 'docker build -f Leopard.API/Dockerfile -t mirthful:latest . '
+
+                sh 'docker rmi -f mirthful-seed:latest || true' // quiet
+                sh 'docker build -f Leopard.Seed/Dockerfile -t mirthful-seed:latest . '
             }
         }
     }
