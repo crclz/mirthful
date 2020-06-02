@@ -51,7 +51,7 @@ namespace Leopard.API.Controllers
 			var workId = XUtils.ParseId(model.RelatedWork);
 			var work = await Context.Works.FirstOrDefaultAsync(p => p.Id == workId);
 			if (work == null)
-				workId = null;
+				return new ApiError("ID_NOT_FOUND", "作品id无效").Wrap();
 
 			// create topic and set member=1
 			var topic = new Topic(model.IsGroup, model.Name, model.Description, workId, AuthStore.UserId.Value);
@@ -871,6 +871,28 @@ namespace Leopard.API.Controllers
 		public async Task<IActionResult> HotestTopicsNotGroup()
 		{
 			var query = from p in Context.Topics.Where(p => p.IsGroup == false)
+						select new
+						{
+							topic = p,
+							discussionCount = Context.Discussions.Count(o => o.TopicId == p.Id)
+						}
+						into k
+						orderby k.discussionCount descending
+						select k;
+			var topics = await query.Take(20).ToListAsync();
+
+			var qtopics = topics.Select(p => QTopic.NormalView(p.topic));
+
+			return Ok(qtopics);
+		}
+
+
+		[NotCommand]
+		[HttpGet("hotest-group")]
+		[Produces(typeof(QTopic[]))]
+		public async Task<IActionResult> HotestGroups()
+		{
+			var query = from p in Context.Topics.Where(p => p.IsGroup == true)
 						select new
 						{
 							topic = p,
