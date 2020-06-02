@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Leopard.API.Controllers
@@ -103,6 +104,14 @@ namespace Leopard.API.Controllers
 		public class LoginResponse
 		{
 			public string AccessToken { get; set; }
+		}
+
+		[HttpPost("clear-access-cookie")]
+		//[ServiceFilter(typeof(RequireLoginFilter))]
+		public async Task<IActionResult> ClearAccessCookie()
+		{
+			Response.Cookies.Delete("AccessToken");
+			return Ok();
 		}
 	}
 
