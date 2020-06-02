@@ -661,7 +661,7 @@ namespace Leopard.API.Controllers
 		{
 			[Required]
 			public string PostId { get; set; }
-			
+
 			[Required]
 			[MinLength(3)]
 			public string Text { get; set; }
@@ -692,7 +692,7 @@ namespace Leopard.API.Controllers
 						 join q in Context.Users
 						 on p.SenderId equals q.Id
 						 select new { reply = p, user = q })
-						 .OrderBy(p => p.reply.CreatedAt).ThenBy(p=>p.reply.Id);
+						 .OrderBy(p => p.reply.CreatedAt).ThenBy(p => p.reply.Id);
 
 			var data = await query.Skip(pageSize * page).Take(pageSize).ToListAsync();
 
@@ -908,5 +908,20 @@ namespace Leopard.API.Controllers
 			return Ok(qtopics);
 		}
 
+
+		[NotCommand]
+		[HttpGet("query-topics")]
+		[Produces(typeof(QTopic[]))]
+		public async Task<IActionResult> QueryTopics(Guid relatedWork, bool? isGroup)
+		{
+			var query = from p in Context.Topics.Where(p => p.RelatedWork == relatedWork) select p;
+			query = isGroup == null ? query : query.Where(p => p.IsGroup == isGroup);
+
+			var topics = await query.OrderBy(p => p.CreatedAt).Take(20).ToListAsync();
+
+			var qtopics = topics.Select(p => QTopic.NormalView(p)).ToList();
+
+			return Ok(qtopics);
+		}
 	}
 }
