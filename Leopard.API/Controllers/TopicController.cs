@@ -48,10 +48,18 @@ namespace Leopard.API.Controllers
 		public async Task<IActionResult> CreateTopic([FromBody] CreateTopicModel model)
 		{
 			// check related work
-			var workId = XUtils.ParseId(model.RelatedWork);
-			var work = await Context.Works.FirstOrDefaultAsync(p => p.Id == workId);
-			if (work == null)
-				return new ApiError("ID_NOT_FOUND", "作品id无效").Wrap();
+			Guid? workId;
+			if (model.RelatedWork == null)
+			{
+				workId = null;
+			}
+			else
+			{
+				workId = XUtils.ParseId(model.RelatedWork);
+				var work = await Context.Works.FirstOrDefaultAsync(p => p.Id == workId);
+				if (work == null)
+					return new ApiError("ID_NOT_FOUND", "作品id无效").Wrap();
+			}
 
 			// create topic and set member=1
 			var topic = new Topic(model.IsGroup, model.Name, model.Description, workId, AuthStore.UserId.Value);
